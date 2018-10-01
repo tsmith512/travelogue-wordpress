@@ -2,20 +2,20 @@
 
 
 function travelogue_geo_settings_init() {
-  register_setting('travelogue_geo', 'travelogue_geo_settings');
+  register_setting('travelogue-geo-settings', 'travelogue_geo_settings');
 
 	add_settings_section(
     'integrations',
 		'Travelogue Geo Settings',
 		'integrations_callback',
-		'travelogue_geo'
+		'travelogue-geo-settings'
 	);
 
 	add_settings_field(
     'location_tracker_endpoint',
     'Location Tracker Endpoint URL',
 		'location_tracker_endpoint_render',
-		'travelogue_geo',
+		'travelogue-geo-settings',
 		'integrations'
   );
 
@@ -23,7 +23,7 @@ function travelogue_geo_settings_init() {
     'mapbox_api_token',
     'Mapbox API Token',
 		'mapbox_api_token_render',
-		'travelogue_geo',
+		'travelogue-geo-settings',
 		'integrations'
 	);
 
@@ -31,7 +31,7 @@ function travelogue_geo_settings_init() {
     'mapbox_style',
     'Mapbox Map Style URI',
 		'mapbox_style_render',
-		'travelogue_geo',
+		'travelogue-geo-settings',
 		'integrations'
 	);
 }
@@ -67,8 +67,8 @@ function travelogue_geo_options_page() {
 		<h1>Travelogue Geo, Location, and Maps Configuration</h1>
 
 		<?php
-		settings_fields( 'travelogue_geo' );
-		do_settings_sections( 'travelogue_geo' );
+		settings_fields( 'travelogue-geo-settings' );
+		do_settings_sections( 'travelogue-geo-settings' );
 		submit_button();
 		?>
 
