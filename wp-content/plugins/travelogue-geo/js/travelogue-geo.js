@@ -30,4 +30,32 @@
     }
   };
   xhr.send();
+
+  var mapJumpLinks = document.querySelectorAll('article a.tqor-map-jump');
+  mapJumpLinks.forEach(function (el) {
+    el.addEventListener('click', function (e) {
+      e.preventDefault();
+      var timestamp = el.getAttribute('data-timestamp');
+
+      if (!window.tqor.cache.hasOwnProperty(timestamp)) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', tqor.locationApi + '/api/location/history/timestamp/' + timestamp);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onload = function () {
+          if (xhr.status === 200) {
+            var response = JSON.parse(xhr.responseText);
+            if (response.hasOwnProperty('lat')) {
+              map.setView([response.lat, response.lon], 10);
+              window.tqor.cache[timestamp] = [response.lat, response.lon];
+            }
+          }
+        };
+        xhr.send();
+      }
+      else {
+        map.setView(window.tqor.cache[timestamp], 10);
+      }
+      map.invalidateSize();
+    });
+  });
 })();

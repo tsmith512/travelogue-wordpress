@@ -37,7 +37,7 @@ function travelogue_geo_register_assets() {
     'mapboxApi' => !empty($options['mapbox_api_token']) ? $options['mapbox_api_token'] : null,
     'mapboxStyle' => !empty($options['mapbox_style']) ? $options['mapbox_style'] : null,
     'locationApi' => !empty($options['location_tracker_endpoint']) ? $options['location_tracker_endpoint'] : null,
-    'locationHistory' => !empty($options['location_tracker_endpoint']) ? $options['location_tracker_endpoint'] . '/api/location/latest' : null,
+    'cache' => array(),
   );
   wp_localize_script('travelogue-geo-js', 'tqor', $tqor);
 }

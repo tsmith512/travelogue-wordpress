@@ -36,3 +36,28 @@ function travelogue_theme_register_lightbox() {
   wp_add_inline_style('colorbox-style', "#cboxOverlay {background: black;}");
 }
 add_action( 'wp_enqueue_scripts', 'travelogue_theme_register_lightbox', 10 );
+
+/**
+ * Output a post date as a permalink. Overrides twentyseventeen's default to also
+ * add a "show on map" link in the same place.
+ */
+function twentyseventeen_time_link() {
+	$time_string = '<time class="entry-date published updated" datetime="%1$s">%2$s</time>';
+	if ( get_the_time( 'U' ) !== get_the_modified_time( 'U' ) ) {
+		$time_string = '<time class="entry-date published" datetime="%1$s">%2$s</time><time class="updated" datetime="%3$s">%4$s</time>';
+	}
+
+	$time_string = sprintf( $time_string,
+		get_the_date( DATE_W3C ),
+		get_the_date(),
+		get_the_modified_date( DATE_W3C ),
+		get_the_modified_date()
+	);
+
+  // Wrap the time string in a link, and preface it with 'Posted on'.
+  $esc_path = esc_url( get_permalink() );
+  $timestamp = get_the_time('U');
+  return "<a href='{$esc_path}' rel='bookmark'>{$time_string}</a> " .
+         "<a href='#' class='tqor-map-jump' data-timestamp='{$timestamp}'>Show on Map</a>";
+
+}
