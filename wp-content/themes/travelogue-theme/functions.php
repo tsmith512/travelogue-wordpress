@@ -23,7 +23,10 @@ add_action( 'wp_enqueue_scripts', 'travelogue_theme_enqueue_own_scripts_and_styl
  * @TODO: Can this be executed only when needed? Also replace with PhotoSwipe
  */
 function travelogue_theme_enqueue_lightbox() {
-  wp_enqueue_style( 'colorbox-style', get_stylesheet_directory_uri() . '/vendor/colorbox/example3/colorbox.css', array());
+  wp_enqueue_style( 'colorbox-style', get_stylesheet_directory_uri() . '/vendor/colorbox/example2/colorbox.css', array());
   wp_enqueue_script('colorbox-script', get_stylesheet_directory_uri() . '/vendor/colorbox/jquery.colorbox.js', array('jquery'), false, true);
+
+  wp_add_inline_style('colorbox-style', "#cboxWrapper button {transition: none !important; filter: invert(100%);}");
+  wp_add_inline_style('colorbox-style', "#cboxOverlay {background: black;}");
 }
 add_action( 'wp_enqueue_scripts', 'travelogue_theme_enqueue_lightbox', 10 );
