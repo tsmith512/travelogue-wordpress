@@ -22,11 +22,24 @@ require_once "travelogue-geo-admin.php";
 require_once "travelogue-geo-settings.php";
 
 /**
- * Register but do not enqueue scripts and stylesheets for the itnegrations
+ * Register but do not enqueue scripts and stylesheets for integrations and map
+ * displays, including passing in the travelogue_geo_settings data.
  */
-function travelogue_geo_register_external_assets() {
+function travelogue_geo_register_assets() {
   wp_register_script('mapbox-core', 'https://api.mapbox.com/mapbox.js/v3.0.1/mapbox.js', array(), false, true);
   wp_register_style('mapbox-style', 'https://api.mapbox.com/mapbox.js/v3.0.1/mapbox.css', array(), false);
+  wp_register_script('travelogue-geo-js', plugin_dir_url( __FILE__ ) . 'js/travelogue-geo.js', array('mapbox-core'), false, true);
+  wp_register_style('travelogue-style', plugin_dir_url( __FILE__ ) . 'css/travelogue-geo-maps.css', array(), false);
+
+
+  $options = get_option( 'travelogue_geo_settings' );
+  $tqor = array(
+    'mapboxApi' => !empty($options['mapbox_api_token']) ? $options['mapbox_api_token'] : null,
+    'mapboxStyle' => !empty($options['mapbox_style']) ? $options['mapbox_style'] : null,
+    'locationApi' => !empty($options['location_tracker_endpoint']) ? $options['location_tracker_endpoint'] : null,
+    'locationHistory' => !empty($options['location_tracker_endpoint']) ? $options['location_tracker_endpoint'] . '/api/location/latest' : null,
+  );
+  wp_localize_script('travelogue-geo-js', 'tqor', $tqor);
 }
-add_action('wp_enqueue_scripts', 'travelogue_geo_register_external_assets', 5);
-add_action('admin_enqueue_scripts', 'travelogue_geo_register_external_assets');
+add_action('wp_enqueue_scripts', 'travelogue_geo_register_assets', 5);
+add_action('admin_enqueue_scripts', 'travelogue_geo_register_assets');

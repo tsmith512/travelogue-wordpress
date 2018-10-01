@@ -29,9 +29,13 @@ class Travelogue_Geo_Map_Widget extends WP_Widget {
   public function widget($args, $instance) {
     wp_enqueue_style('mapbox-style');
     wp_enqueue_script('mapbox-core');
-    print '<pre>';
-    var_dump($args);
-    var_dump($instance);
-    print '</pre>';
+    wp_enqueue_style('travelogue-style');
+    wp_enqueue_script('travelogue-geo-js');
+
+    ?>
+
+      <div id="map"></div>
+
+    <?php
   }
 }
