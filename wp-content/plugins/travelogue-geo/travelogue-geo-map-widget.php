@@ -27,6 +27,8 @@ class Travelogue_Geo_Map_Widget extends WP_Widget {
    * @param array $instance Saved values from database.
    */
   public function widget($args, $instance) {
+    wp_enqueue_style('mapbox-style');
+    wp_enqueue_script('mapbox-core');
     print '<pre>';
     var_dump($args);
     var_dump($instance);

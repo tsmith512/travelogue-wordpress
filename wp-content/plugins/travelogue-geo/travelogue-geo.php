@@ -13,10 +13,20 @@ add_action( 'widgets_init', function() { register_widget( 'Travelogue_Geo_Map_Wi
  * Implements admin_menu to add the options page to the sidebar menu for admins.
  * See travelogue-geo-settings.php for the output of this page.
  */
-function travelogue_geo_add_admin_menu(  ) {
+function travelogue_geo_add_admin_menu() {
   add_menu_page('Travelogue Geo', 'Travelogue Geo', 'manage_options', 'travelogue-geo', 'travelogue_geo_admin_page', 'dashicons-location-alt', 78);
   add_submenu_page('travelogue-geo', 'Travelogue Geo Settings', 'Settings', 'manage_options', 'travelogue-geo-settings', 'travelogue_geo_options_page');
 }
-add_action( 'admin_menu', 'travelogue_geo_add_admin_menu' );
+add_action('admin_menu', 'travelogue_geo_add_admin_menu');
 require_once "travelogue-geo-admin.php";
 require_once "travelogue-geo-settings.php";
+
+/**
+ * Register but do not enqueue scripts and stylesheets for the itnegrations
+ */
+function travelogue_geo_register_external_assets() {
+  wp_register_script('mapbox-core', 'https://api.mapbox.com/mapbox.js/v3.0.1/mapbox.js', array(), false, true);
+  wp_register_style('mapbox-style', 'https://api.mapbox.com/mapbox.js/v3.0.1/mapbox.css', array(), false);
+}
+add_action('wp_enqueue_scripts', 'travelogue_geo_register_external_assets', 5);
+add_action('admin_enqueue_scripts', 'travelogue_geo_register_external_assets');
