@@ -43,3 +43,26 @@ function travelogue_geo_register_assets() {
 }
 add_action('wp_enqueue_scripts', 'travelogue_geo_register_assets', 5);
 add_action('admin_enqueue_scripts', 'travelogue_geo_register_assets');
+
+/**
+ * Go get the trips list from the location tracker, match 'em up with WP
+ * categories if possible.
+ */
+function travelogue_geo_get_trips() {
+  $transient = get_transient('travelogue_geo_trips_cache');
+  if( ! empty( $transient ) ) {
+    return $transient;
+  }
+
+  $options = get_option('travelogue_geo_settings');
+  $endpoint = $options['location_tracker_endpoint'] . '/api/trips';
+  $result = wp_remote_get($endpoint);
+
+  if ($result['response']['code'] == 200) {
+    $trips = json_decode($result['body']);
+    set_transient( 'travelogue_geo_trips_cache', $output, 10 /*WEEK_IN_SECONDS*/ );
+    return $trips;
+  } else {
+    return false;
+  }
+}

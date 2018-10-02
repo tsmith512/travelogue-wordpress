@@ -10,6 +10,4 @@
       maxHeight: "95%"
     });
   });
-
-  console.log('howdy');
 })(jQuery);
