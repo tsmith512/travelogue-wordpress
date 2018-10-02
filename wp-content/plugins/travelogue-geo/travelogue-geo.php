@@ -90,7 +90,7 @@ function travelogue_geo_get_trips($trip_id = null) {
 
   if ($result['response']['code'] == 200) {
     $trips = json_decode($result['body']);
-    set_transient( 'travelogue_geo_trips_cache', $output, 10 /*WEEK_IN_SECONDS*/ );
+    set_transient( 'travelogue_geo_trips_cache', $output, DAY_IN_SECONDS );
   }
 
   // If we're only looking for data on a single Trip (an ID was provided),
