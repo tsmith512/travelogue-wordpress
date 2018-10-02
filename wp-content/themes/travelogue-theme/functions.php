@@ -13,10 +13,19 @@ add_action( 'wp_enqueue_scripts', 'travelogue_theme_enqueue_parent_styles', 5 );
  * Currently this is only CSS and JS for Colorbox, so we'll only actually
  * enqueue this stuff on post_gallery filter.
  */
-function travelogue_theme_register_own_scripts_and_styles() {
+function travelogue_theme_register_scripts_and_styles() {
+  // (Own) General site-wide stuff
+  wp_register_script('travelogue-js-main', get_stylesheet_directory_uri() . '/js/main.js', array('sticky-sidebar'), false, true);
+  wp_enqueue_script('travelogue-js-main');
+
+  // (Own) Media handlers
   wp_register_script('travelogue-js-media', get_stylesheet_directory_uri() . '/js/media.js', array('colorbox-script', 'jquery'), false, true);
+
+  // (Vendor) Sticky Sidebar
+  wp_register_script('sticky-sidebar', get_stylesheet_directory_uri() . '/vendor/sticky-sidebar/sticky-sidebar.min.js', array(), false, true);
+
 }
-add_action( 'wp_enqueue_scripts', 'travelogue_theme_register_own_scripts_and_styles', 20 );
+add_action( 'wp_enqueue_scripts', 'travelogue_theme_register_scripts_and_styles', 20 );
 // On the post_gallery filter's execution, enqueue our scripts, but return
 // nothing so that WP's own gallery builder will still run. My JS is written for
 // its output.
