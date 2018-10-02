@@ -48,7 +48,7 @@ add_action('admin_enqueue_scripts', 'travelogue_geo_register_assets');
  * Go get the trips list from the location tracker, match 'em up with WP
  * categories if possible.
  */
-function travelogue_geo_get_trips() {
+function travelogue_geo_get_trips($trip_id = null) {
   $transient = get_transient('travelogue_geo_trips_cache');
   if( ! empty( $transient ) ) {
     return $transient;
@@ -57,12 +57,51 @@ function travelogue_geo_get_trips() {
   $options = get_option('travelogue_geo_settings');
   $endpoint = $options['location_tracker_endpoint'] . '/api/trips';
   $result = wp_remote_get($endpoint);
+  $trips = array();
 
   if ($result['response']['code'] == 200) {
     $trips = json_decode($result['body']);
     set_transient( 'travelogue_geo_trips_cache', $output, 10 /*WEEK_IN_SECONDS*/ );
-    return $trips;
-  } else {
+  }
+
+  // If we're only looking for data on a single Trip (an ID was provided),
+  // then filter _now_ so we don't pound the DB looking for taxonomy terms for
+  // trips we don't care about.
+  if ($trip_id) {
+    $trips = array_filter($trips, function($t) use ($trip_id) {
+      // Typecast both because the ID we're testing for may have come in as a
+      // string via AJAX, and for some stupid reason I'm returning the ID as a
+      // string from the Location Tracker API as well. @TODO: Don't.
+      return (int) $t->id === (int) $trip_id;
+    });
+  }
+
+  foreach ($trips as &$trip) {
+    $trip->wp_category = get_term_by('slug', $trip->machine_name, 'category');
+  }
+
+  return empty($trips) ? false : $trips;
+}
+
+/**
+ * Create a category for a given trip it. Should receive a trip object or trip it
+ */
+function travelogue_geo_ajax_create_trip_category() {
+  $trip_id = (int) $_POST['trip_id'];
+  $trips = travelogue_geo_get_trips($trip_id);
+
+  if (empty($trips)) {
+    // @TODO: ERROR
     return false;
   }
+
+  $trip = reset($trips);
+  $term = wp_insert_term($trip->label, 'category', array(
+    'slug' => $trip->machine_name
+  ));
+  add_term_meta($term['term_id'], 'travelogue_geo_trip_id', $trip->id, true);
+
+  print json_encode($term);
+  wp_die();
 }
+add_action( 'wp_ajax_tqor_create_term', 'travelogue_geo_ajax_create_trip_category' );
