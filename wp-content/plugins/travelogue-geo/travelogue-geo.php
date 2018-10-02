@@ -65,6 +65,7 @@ function travelogue_geo_register_assets() {
     'mapboxStyle' => !empty($options['mapbox_style']) ? $options['mapbox_style'] : null,
     'locationApi' => !empty($options['location_tracker_endpoint']) ? $options['location_tracker_endpoint'] : null,
     'cache' => array(),
+    'trips' => array(),
     'start' => $start
   );
 
