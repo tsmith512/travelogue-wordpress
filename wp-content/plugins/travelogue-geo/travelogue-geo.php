@@ -45,7 +45,6 @@ function travelogue_geo_register_assets() {
     $trip_id = get_term_meta($object->term_id, 'travelogue_geo_trip_id', true);
 
     if (is_numeric($trip_id) && (int) $trip_id > 0) {
-      print "And the ID is $trip_id";
       $start = array(
         'type' => 'trip',
         'trip_id' => $trip_id,
