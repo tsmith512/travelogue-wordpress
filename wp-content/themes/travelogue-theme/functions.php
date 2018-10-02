@@ -21,15 +21,18 @@ function travelogue_theme_register_scripts_and_styles() {
   // (Own) Media handlers
   wp_register_script('travelogue-js-media', get_stylesheet_directory_uri() . '/js/media.js', array('colorbox-script', 'jquery'), false, true);
 
+  // Was loading this conditionally on `post_gallery` filter, but I haven't
+  // figured out how to attach it to Gutenberg blocks yet, and let's face it,
+  // this is an entirely photo-driven site, this is actually needed on all
+  // pages.
+  wp_enqueue_style('colorbox-style');
+  wp_enqueue_script('travelogue-js-media');
+
   // (Vendor) Sticky Sidebar
   wp_register_script('sticky-sidebar', get_stylesheet_directory_uri() . '/vendor/sticky-sidebar/sticky-sidebar.min.js', array(), false, true);
 
 }
 add_action( 'wp_enqueue_scripts', 'travelogue_theme_register_scripts_and_styles', 20 );
-// On the post_gallery filter's execution, enqueue our scripts, but return
-// nothing so that WP's own gallery builder will still run. My JS is written for
-// its output.
-add_filter('post_gallery', function() { wp_enqueue_script('travelogue-js-media'); wp_enqueue_style('colorbox-style'); });
 
 /**
  * Implements wp_enqueue_scripts to register the scripts and styles for the
