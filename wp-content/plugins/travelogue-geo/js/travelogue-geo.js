@@ -31,31 +31,52 @@
   };
   xhr.send();
 
+  var mapToTimestamp = function(timestamp) {
+    if (!window.tqor.cache.hasOwnProperty(timestamp)) {
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', tqor.locationApi + '/api/location/history/timestamp/' + timestamp);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.onload = function () {
+        if (xhr.status === 200) {
+          var response = JSON.parse(xhr.responseText);
+          if (response.hasOwnProperty('lat')) {
+            map.setView([response.lat, response.lon], 10);
+            window.tqor.cache[timestamp] = [response.lat, response.lon];
+          }
+        }
+      };
+      xhr.send();
+    }
+    else {
+      map.setView(window.tqor.cache[timestamp], 10);
+    }
+    map.invalidateSize();
+  }
+
+  // Decide what to show on the map given what kind of page we're on
+  // @TODO: A trip category page is going to need the trip data from above,
+  // may need to wrap this in a promise.
+  if (tqor.hasOwnProperty('start')) {
+    switch (window.tqor.start.type) {
+      case 'trip':
+        var delayPlaceholder = window.setTimeout(function(){
+          // @TODO THIS IS SO MANY KINDS OF A BAD WAY TO DO THIS.
+          // Also need to deploy to the location tracker the thing that returns boundaries
+          console.log(window.tqor.tripLines[window.tqor.start.trip_id]);
+        }, 3000);
+        break;
+      case 'post':
+        mapToTimestamp(window.tqor.start.timestamp);
+        break;
+    }
+  }
+
   var mapJumpLinks = document.querySelectorAll('article a.tqor-map-jump');
   mapJumpLinks.forEach(function (el) {
     el.addEventListener('click', function (e) {
       e.preventDefault();
       var timestamp = el.getAttribute('data-timestamp');
-
-      if (!window.tqor.cache.hasOwnProperty(timestamp)) {
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', tqor.locationApi + '/api/location/history/timestamp/' + timestamp);
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.onload = function () {
-          if (xhr.status === 200) {
-            var response = JSON.parse(xhr.responseText);
-            if (response.hasOwnProperty('lat')) {
-              map.setView([response.lat, response.lon], 10);
-              window.tqor.cache[timestamp] = [response.lat, response.lon];
-            }
-          }
-        };
-        xhr.send();
-      }
-      else {
-        map.setView(window.tqor.cache[timestamp], 10);
-      }
-      map.invalidateSize();
+      mapToTimestamp(timestamp);
     });
   });
 })();

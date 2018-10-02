@@ -31,6 +31,33 @@ function travelogue_geo_register_assets() {
   wp_register_script('travelogue-geo-js', plugin_dir_url( __FILE__ ) . 'js/travelogue-geo.js', array('mapbox-core'), false, true);
   wp_register_style('travelogue-style', plugin_dir_url( __FILE__ ) . 'css/travelogue-geo-maps.css', array(), false);
 
+  // Figure out where we are so we can tell the map where to start
+  $object = get_queried_object();
+  $start = array();
+  if ($object instanceof WP_Post) {
+    // A single post was called, let's start the map on the post's location
+    $start = array(
+      'type' => 'post',
+      'timestamp' => get_the_time('U'),
+    );
+  } elseif ($object instanceof WP_Term) {
+    // It's a taxonomy term. Check to see if a trip id is associated.
+    $trip_id = get_term_meta($object->term_id, 'travelogue_geo_trip_id', true);
+
+    if (is_numeric($trip_id) && (int) $trip_id > 0) {
+      print "And the ID is $trip_id";
+      $start = array(
+        'type' => 'trip',
+        'trip_id' => $trip_id,
+      );
+    }
+  } else {
+    // There is no queried object. The main use-case for this is the default
+    // blog view.
+    $start = array(
+      'type' => false,
+    );
+  }
 
   $options = get_option( 'travelogue_geo_settings' );
   $tqor = array(
@@ -38,7 +65,9 @@ function travelogue_geo_register_assets() {
     'mapboxStyle' => !empty($options['mapbox_style']) ? $options['mapbox_style'] : null,
     'locationApi' => !empty($options['location_tracker_endpoint']) ? $options['location_tracker_endpoint'] : null,
     'cache' => array(),
+    'start' => $start
   );
+
   wp_localize_script('travelogue-geo-js', 'tqor', $tqor);
 }
 add_action('wp_enqueue_scripts', 'travelogue_geo_register_assets', 5);
