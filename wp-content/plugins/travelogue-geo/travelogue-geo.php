@@ -105,3 +105,18 @@ function travelogue_geo_ajax_create_trip_category() {
   wp_die();
 }
 add_action( 'wp_ajax_tqor_create_term', 'travelogue_geo_ajax_create_trip_category' );
+
+/**
+ * Display a Location Tracker Trip ID on the taxonomy term management page if
+ * there is one.
+ */
+function travelogue_geo_category_add_id_display($term) {
+  $trip_id = get_term_meta( $term->term_id, 'travelogue_geo_trip_id', true );
+
+  if ($trip_id) {
+    print "Location Tracker Trip ID: $trip_id";
+  } else {
+    print "<em>Term not associated to a trip. Create from Travelogue Geo page directly.</em>";
+  }
+}
+add_action('category_edit_form_fields', 'travelogue_geo_category_add_id_display');
