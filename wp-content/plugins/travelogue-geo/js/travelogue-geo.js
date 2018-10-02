@@ -23,7 +23,9 @@
     xhr.send();
   }
 
-  var loadTrip = function(trip_id) {
+  var loadTrip = function(trip_id, callback) {
+    callback = callback || false;
+
     var tripXhr = new XMLHttpRequest();
     tripXhr.open('GET', tqor.locationApi + '/api/trips/' + trip_id);
     tripXhr.setRequestHeader('Content-Type', 'application/json');
@@ -32,6 +34,10 @@
         var tripResponse = JSON.parse(tripXhr.responseText);
         window.tqor.trips[trip_id] = tripResponse;
         window.tqor.trips[trip_id].line = L.mapbox.featureLayer(tripResponse.line).addTo(map);
+
+        if (callback) {
+          callback(tripResponse);
+        }
       }
     };
     tripXhr.send();
@@ -74,12 +80,11 @@
   if (tqor.hasOwnProperty('start')) {
     switch (window.tqor.start.type) {
       case 'trip':
-        loadTrip(window.tqor.start.trip_id);
-        // @TODO: ^^ That works. But we need to wait until it finishes for vv.
-        var tripOnPage = (window.tqor.trips[window.tqor.start.trip_id]);
-        if (tripOnPage.hasOwnProperty('boundaries')) {
-          window.map.fitBounds(tripOnPage.boundaries, {animate: true, padding: [10, 10]});
-        }
+        loadTrip(window.tqor.start.trip_id, function(trip) {
+          if (trip.hasOwnProperty('boundaries')) {
+            window.map.fitBounds(trip.boundaries, {animate: true, padding: [10, 10]});
+          }
+        });
         break;
       case 'post':
         loadAllTrips();
