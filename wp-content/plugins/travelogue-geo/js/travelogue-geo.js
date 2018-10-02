@@ -12,7 +12,7 @@
   xhr.onload = function () {
     if (xhr.status === 200) {
       var response = JSON.parse(xhr.responseText);
-      window.tqor.tripLines = [];
+      window.tqor.trips = [];
       // For every trip identified in the database, fetch its information and
       // add the LineString to the map.
       response.forEach(function (trip) {
@@ -22,7 +22,8 @@
         tripXhr.onload = function () {
           if (tripXhr.status === 200) {
             var tripResponse = JSON.parse(tripXhr.responseText);
-            window.tqor.tripLines[trip.id] = L.mapbox.featureLayer(tripResponse.line).addTo(map);
+            window.tqor.trips[trip.id] = tripResponse;
+            window.tqor.trips[trip.id].line = L.mapbox.featureLayer(tripResponse.line).addTo(map);
           }
         };
         tripXhr.send();
@@ -62,7 +63,10 @@
         var delayPlaceholder = window.setTimeout(function(){
           // @TODO THIS IS SO MANY KINDS OF A BAD WAY TO DO THIS.
           // Also need to deploy to the location tracker the thing that returns boundaries
-          console.log(window.tqor.tripLines[window.tqor.start.trip_id]);
+          var tripOnPage = (window.tqor.trips[window.tqor.start.trip_id]);
+          if (tripOnPage.hasOwnProperty('boundaries')) {
+            window.map.fitBounds(tripOnPage.boundaries, {animate: true, padding: [10, 10]});
+          }
         }, 3000);
         break;
       case 'post':
