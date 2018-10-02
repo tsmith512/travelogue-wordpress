@@ -18,3 +18,19 @@ function travelogue_gallery_overrides($out, $pairs, $atts, $shortcode) {
   return $out;
 };
 add_filter('shortcode_atts_gallery', 'travelogue_gallery_overrides', 10, 4);
+
+/**
+ * Implements pre_get_posts on category pages only for categories that have a
+ * trip ID saved (i.e. someone is reading a full trip) so we can flip the order
+ */
+function travelogue_trip_archives_in_chorno(&$query) {
+  if ($query->is_category) {
+    $term = get_queried_object();
+    $trip_id = get_term_meta($term->term_id, 'travelogue_geo_trip_id', true);
+
+    if (is_numeric($trip_id) && (int) $trip_id > 0) {
+      $query->set( 'order', 'ASC' );
+    }
+  }
+}
+add_filter('pre_get_posts', 'travelogue_trip_archives_in_chorno');
