@@ -1,0 +1,6 @@
+#map {
+  min-width: 200px;
+  min-height: 200px;
+  height: 500px;
+  max-height: 80vh;
+}
