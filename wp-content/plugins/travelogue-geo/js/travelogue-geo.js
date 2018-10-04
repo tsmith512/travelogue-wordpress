@@ -5,7 +5,12 @@
   window.map = L.mapbox.map('map').fitBounds([[34.4,-100.0],[36.8,-96.2]], {animate: true, padding: [30, 30]});
   L.mapbox.styleLayer(tqor.mapboxStyle).addTo(map);
 
-  var loadAllTrips = function() {
+  // @TODO: NOTE! THIS CALLBACK IS EXECUTED FOR EACH LOAD at the moment. It's
+  // original usecase was just to check dates anyway, but we need a way to call
+  // loadAllTrips's callback _after_ all of forEach(laodTrip()) is done.
+  var loadAllTrips = function(callback) {
+    callback = callback || false;
+
     // Request from the location server API all of the Trips in the database.
     var xhr = new XMLHttpRequest();
     xhr.open('GET', tqor.locationApi + '/api/trips');
@@ -16,7 +21,7 @@
         // For every trip identified in the database, fetch its information and
         // add the LineString to the map.
         response.forEach(function (trip) {
-          loadTrip(trip.id);
+          loadTrip(trip.id, callback);
         });
       }
     };
@@ -92,7 +97,15 @@
         // @TODO: On a post-only page, it'd be great to only load the trip it was on?
         break;
       default:
-        loadAllTrips();
+        var currentTimestamp = Date.now() / 1000;
+        loadAllTrips(function(tripResponse){
+          if (tripResponse.starttime <= currentTimestamp && currentTimestamp <= tripResponse.endtime) {
+            // This trip is happening now, zoom to it.
+            if (tripResponse.hasOwnProperty('boundaries')) {
+              window.map.fitBounds(tripResponse.boundaries, {animate: true, padding: [10, 10]});
+            }
+          }
+        });
         // @TODO: Where should we center the map in this case?
     }
   }
