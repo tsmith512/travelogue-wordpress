@@ -65,6 +65,7 @@ function travelogue_geo_register_assets() {
     'locationApi' => !empty($options['location_tracker_endpoint']) ? $options['location_tracker_endpoint'] : null,
     'cache' => array(),
     'trips' => array(),
+    'trips_with_content' => travelogue_geo_get_trips_with_content(),
     'start' => $start
   );
 
@@ -110,6 +111,24 @@ function travelogue_geo_get_trips($trip_id = null) {
   }
 
   return empty($trips) ? false : $trips;
+}
+
+/**
+ * Return a list of trip IDs we have taxonomy terms for (i.e. not the list of
+ * trips that exist on the remote service, but the ones we've written about).
+ */
+function travelogue_geo_get_trips_with_content() {
+  // The trip IDs are stored as a term-meta value for each category that is a
+  // trip. There's not a Term Meta API way to aggregate "all values for this key
+  // across all terms" without first fetching all terms, so just get 'em from
+  // the DB:
+  global $wpdb;
+  $trip_ids = $wpdb->get_col("SELECT meta_value FROM {$wpdb->prefix}termmeta WHERE meta_key = 'travelogue_geo_trip_id'");
+
+  // WP meta values are all strings, but these should be integers
+  array_walk($trip_ids, function(&$e) { $e = (int) $e; });
+
+  return $trip_ids;
 }
 
 /**
