@@ -31,7 +31,6 @@
       xhr.send();
     } else {
       tripsToLoad.forEach(function (trip) {
-        console.log(trip);
         loadTrip(trip, callback);
       });
     }
