@@ -58,6 +58,10 @@ function travelogue_geo_register_assets() {
     );
   }
 
+  // @TODO: Pull all category term trip_id values and pass them down so that the
+  // frontend of the blog only draws lines for trips that have been written about
+  // instead of everything I've ever recorded.
+
   $options = get_option( 'travelogue_geo_settings' );
   $tqor = array(
     'mapboxApi' => !empty($options['mapbox_api_token']) ? $options['mapbox_api_token'] : null,
