@@ -38,7 +38,7 @@ function travelogue_geo_register_assets() {
     // A single post was called, let's start the map on the post's location
     $start = array(
       'type' => 'post',
-      'timestamp' => get_the_time('U'),
+      'timestamp' => get_post_time('U', true),
     );
   } elseif ($object instanceof WP_Term) {
     // It's a taxonomy term. Check to see if a trip id is associated.
