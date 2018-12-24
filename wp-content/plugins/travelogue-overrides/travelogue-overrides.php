@@ -34,3 +34,19 @@ function travelogue_trip_archives_in_chorno(&$query) {
   }
 }
 add_filter('pre_get_posts', 'travelogue_trip_archives_in_chorno');
+
+/**
+ * Set up site-specific Gutenberg blocks, probably won't be many.
+ */
+function travelogue_gutenberg_block() {
+  wp_register_script(
+    'travelogue-gutenberg-link-card',
+    plugins_url('js/link-card-block.js', __FILE__),
+    array('wp-blocks', 'wp-element')
+  );
+
+  register_block_type('travelogue-gutenberg/link-card', array(
+    'editor_script' => 'travelogue-gutenberg-link-card',
+  ));
+}
+add_action('init', 'travelogue_gutenberg_block');
