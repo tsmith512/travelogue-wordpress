@@ -6,3 +6,19 @@
  * Author URI: https://www.tsmithcreative.com
  * Template: twentyseventeen
  */
+
+.entry-content a {
+  color: rgb(27, 119, 236);
+  text-decoration: underline;
+  text-decoration-color: rgba(27, 119, 236, 0.25);
+
+  /* Override twentyseventeen's stuff */
+  box-shadow: none !important;
+  transition: none !important;
+}
+
+.entry-content a:hover {
+  color: rgb(15, 95, 195);
+  text-decoration: underline;
+  text-decoration-color: rgb(15, 95, 195);
+}
