@@ -11,8 +11,33 @@ var el = wp.element.createElement,
       icon: 'admin-links',
       category: 'embed',
 
-      edit: function() {
-        return el('p', {style: blockStyle}, 'Hello world');
+      attributes: {
+        title: {
+          source: 'text',
+          selector: '.card__title'
+        },
+        link: {
+          source: 'text',
+          selector: '.card__link'
+        }
+      }
+/* BELOW THIS IS BROKEN */
+/* WELL, ABOVE THIS IS BROKEN TOO */
+      edit: function(props) {
+        var content = props.attributes.content;
+        function onChangeContent(newContent) {
+          props.setAttributes({content: newContent});
+        }
+        return el(
+          'p',
+          {
+            key: 'editable',
+            tagName: 'p',
+            style: blockStyle,
+            onChange: onChangeContent,
+            value: content,
+          }
+        );
       },
 
       save: function() {
