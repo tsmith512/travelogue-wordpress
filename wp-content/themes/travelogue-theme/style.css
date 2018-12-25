@@ -22,3 +22,22 @@
   text-decoration: underline;
   text-decoration-color: rgb(15, 95, 195);
 }
+
+.travelogue-card {
+  border: 1px solid #eee;
+  background: #f6f6f6;
+  margin: 0 0 1.5em;
+}
+
+.travelogue-card img {
+  display: block;
+  box-shadow: none !important;
+}
+
+.travelogue-card a {
+  display: block;
+}
+
+.travelogue-card-link {
+  margin: 1em;
+}
