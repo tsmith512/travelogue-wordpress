@@ -69,7 +69,7 @@ function twentyseventeen_time_link() {
   // Wrap the time string in a link, and preface it with 'Posted on'.
   $esc_path = esc_url( get_permalink() );
   $timestamp = get_post_time('U', true);
-  return "<a href='{$esc_path}' rel='bookmark'>{$time_string}</a> " .
-         "<a href='#' class='tqor-map-jump' data-timestamp='{$timestamp}'>Show on Map</a>";
+  return "<a href='{$esc_path}' rel='bookmark'>{$time_string}</a> | " .
+         "<a href='#' class='tqor-map-jump' data-timestamp='{$timestamp}'>Map</a>";
 
 }
