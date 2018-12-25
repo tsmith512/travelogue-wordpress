@@ -34,10 +34,15 @@
   box-shadow: none !important;
 }
 
-.travelogue-card a {
-  display: block;
+.travelogue-card-text {
+  margin: 1em;
 }
 
 .travelogue-card-link {
-  margin: 1em;
+  display: block;
+}
+.travelogue-card-citation {
+  text-transform: uppercase;
+  font-size: 0.75em;
+  color: #666;
 }

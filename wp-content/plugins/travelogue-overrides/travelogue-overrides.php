@@ -40,7 +40,7 @@ add_filter('pre_get_posts', 'travelogue_trip_archives_in_chorno');
  * Informed by https://github.com/scottmac/opengraph/blob/master/OpenGraph.php
  * Disclaimer: This isn't the most awesome way to do this ever...
  */
-function travelogue_overrides_embed_alltrails_handler($matches, $attr, $url, $rawattr) {
+function travelogue_overrides_oembed_handler($matches, $attr, $url, $rawattr) {
   $embed = "$url";
   $response = wp_remote_get($url, array());
 
@@ -64,9 +64,14 @@ function travelogue_overrides_embed_alltrails_handler($matches, $attr, $url, $ra
     }
 
     // For pages which use "value" isntead of "content" for the og data (which is wrong, but in the wild)
-    if ($tag ->hasAttribute('value') && $tag->hasAttribute('property') && strpos($tag->getAttribute('property'), 'og:') === 0) {
+    if ($tag->hasAttribute('value') && $tag->hasAttribute('property') && strpos($tag->getAttribute('property'), 'og:') === 0) {
       $key = strtr(substr($tag->getAttribute('property'), 3), '-', '_');
       $meta[$key] = $tag->getAttribute('value');
+    }
+
+    // Handle the author, if set
+    if ($tag->hasAttribute('name') && $tag->getAttribute('name') == 'author') {
+      $meta['author'] = $tag->getAttribute('content');
     }
   }
 
@@ -76,29 +81,42 @@ function travelogue_overrides_embed_alltrails_handler($matches, $attr, $url, $ra
     'width' => $meta['image:width'] ?: false,
     'title' => $meta['title'] ?: $title,
     'site' => $meta['site_name'] ?: false,
+    'author' => $meta['author'] ?: false,
   );
 
   $render = array();
 
   $render[] = "<div class='travelogue-card'>";
-  $render[] = "<a href='{$url}'>";
 
   if (!empty($data['src'])) {
+    $render[] = "<a href='{$url}'>";
     $render[] = "<img src='{$data['src']}'";
     if (!empty($data['height'] && !empty($data['width']))) {
       $render[] = "height='{$data['height']}' width ='{$data['width']}'";
     }
     $render[] = "/ >";
+    $render[] = "</a>";
   }
 
+  $render[] = "<p class='travelogue-card-text'>";
   if (!empty($data['title'])) {
-    $render[] = "<p class='travelogue-card-link'>{$data['title']}</p>";
+    $render[] = "<a href='{$url}' class='travelogue-card-link'>{$data['title']}</a>";
   }
-  $render[] = "</a>";
+
+  if (!empty($data['author'] || !empty($data['site']))) {
+    $render[] = "<span class='travelogue-card-citation'>";
+    if ($data['author']) $render[] = "{$data['author']}";
+    if ($data['author'] && $data['site']) $render[] = "|";
+    if ($data['site']) $render[] = "{$data['site']}";
+    $render[] = "</span>";
+  }
+  $render[] = "</p>";
+
   $render[] = "</div>";
 
   $output = implode(' ', $render);
 
   return apply_filters('embed_alltrails', $output, $matches, $attr, $url, $rawattr);
 }
-wp_embed_register_handler('alltrails', '#https?://www.alltrails.com.+#', 'travelogue_overrides_embed_alltrails_handler', 5);
+wp_embed_register_handler('alltrails', '#https?://www.alltrails.com.+#', 'travelogue_overrides_oembed_handler', 5);
+wp_embed_register_handler('oppo', '#https?://oppositelock.kinja.com.+#', 'travelogue_overrides_oembed_handler', 5);
