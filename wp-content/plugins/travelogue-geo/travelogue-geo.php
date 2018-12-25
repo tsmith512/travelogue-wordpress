@@ -28,7 +28,8 @@ require_once "travelogue-geo-settings.php";
 function travelogue_geo_register_assets() {
   wp_register_script('mapbox-core', 'https://api.mapbox.com/mapbox.js/v3.0.1/mapbox.js', array(), false, true);
   wp_register_style('mapbox-style', 'https://api.mapbox.com/mapbox.js/v3.0.1/mapbox.css', array(), false);
-  wp_register_script('travelogue-geo-js', plugin_dir_url( __FILE__ ) . 'js/travelogue-geo.js', array('mapbox-core'), false, true);
+  wp_register_script('travelogue-geo-js', plugin_dir_url( __FILE__ ) . 'js/travelogue-geo.js', array('mapbox-core', 'travelogue-geo-js-vendor'), false, true);
+  wp_register_script('travelogue-geo-js-vendor', plugin_dir_url( __FILE__ ) . 'js/vendor.js', array('jquery'), false, true);
   wp_register_style('travelogue-style', plugin_dir_url( __FILE__ ) . 'css/travelogue-geo-maps.css', array(), false);
 
   // Figure out where we are so we can tell the map where to start

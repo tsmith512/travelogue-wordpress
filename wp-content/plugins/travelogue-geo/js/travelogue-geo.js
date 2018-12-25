@@ -78,6 +78,37 @@
     map.invalidateSize();
   }
 
+  var mapDotTimestamp = function(timestamp) {
+    if (window.tqor.cache.hasOwnProperty(timestamp)) { return; }
+
+    // @TODO: DRY this up a little, it repeats entirely from above.
+    if (!window.tqor.cache.hasOwnProperty(timestamp)) {
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', tqor.locationApi + '/api/location/history/timestamp/' + timestamp);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.onload = function () {
+        if (xhr.status === 200) {
+          var response = JSON.parse(xhr.responseText);
+          console.log(response);
+          if (response.hasOwnProperty('lat')) {
+            window.tqor.markers[timestamp] = L.circle([response.lat, response.lon], {color: 'black', radius: 300}).addTo(map);
+            window.tqor.cache[timestamp] = [response.lat, response.lon];
+          }
+        }
+      };
+      xhr.send();
+    }
+    else {
+      window.tqor.markers[timestamp] = L.circle(window.tqor.cache[timestamp], {color: 'black', radius: 300}).addTo(map);
+    }
+  }
+
+  window.setInterval(function(){
+    jQuery('article:onScreen').each(function(i, el){
+      mapDotTimestamp(jQuery('.tqor-map-jump', el).attr('data-timestamp'));
+    });
+  }, 1000);
+
   var mapJumpLinks = document.querySelectorAll('article a.tqor-map-jump');
   mapJumpLinks.forEach(function (el) {
     el.addEventListener('click', function (e) {
