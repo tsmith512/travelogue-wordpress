@@ -120,3 +120,4 @@ function travelogue_overrides_oembed_handler($matches, $attr, $url, $rawattr) {
 }
 wp_embed_register_handler('alltrails', '#https?://www.alltrails.com.+#', 'travelogue_overrides_oembed_handler', 5);
 wp_embed_register_handler('oppo', '#https?://oppositelock.kinja.com.+#', 'travelogue_overrides_oembed_handler', 5);
+wp_embed_register_handler('oppo', '#https?://overland.kinja.com.+#', 'travelogue_overrides_oembed_handler', 5);
