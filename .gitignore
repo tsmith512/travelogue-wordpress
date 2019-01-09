@@ -2,6 +2,7 @@
 /wp
 /wp-content/vendor
 /wp-content/plugins
+/wp-content/themes
 # @TODO: But my own plugins should be enabled by pattern here.
 
 # My own wp-config and .htaccess files
