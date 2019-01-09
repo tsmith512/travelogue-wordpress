@@ -1,0 +1,29 @@
+# Paths managed by Composer
+/wp
+/wp-content/vendor
+/wp-content/plugins
+# @TODO: But my own plugins should be enabled by pattern here.
+
+# My own wp-config and .htaccess files
+/wp-config*.php
+
+# Content directories
+wp-content/uploads
+
+# Auto-generated stuff
+wp-content/upgrade
+sitemap.xml
+sitemap.xml.gz
+*.log
+
+# Package manager and compiler stuff
+.sass-cache
+node_modules
+
+# OS Generated stuff (from Pantheon's .gitignore)
+.DS_Store*
+ehthumbs.db
+Icon?
+Thumbs.db
+._*
+*.un~
