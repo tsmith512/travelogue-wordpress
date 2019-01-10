@@ -1,14 +1,19 @@
 # See https://codex.wordpress.org/Giving_WordPress_Its_Own_Directory
 # @TODO: This appears to not work with my DrupalVM-based php-fpm setup.
 
+# * @TODO: WordPress's docs spec a HTTP_HOST check on these lines, but
+#   I have no idea why since it doesn't seem to matter unless this same
+#   web root would be called by another hostname for other reasons.
+#   After more tesing, remove.
+
 <IfModule mod_rewrite.c>
 RewriteEngine on
 RewriteBase /
-RewriteCond %{HTTP_HOST} ^(www.)?routenotfound.com$
+# * RewriteCond %{HTTP_HOST} ^(www.)?routenotfound.com$
 RewriteCond %{REQUEST_URI} !^/wp/
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ /wp/$1
-RewriteCond %{HTTP_HOST} ^(www.)?routenotfound.com$
+# * RewriteCond %{HTTP_HOST} ^(www.)?routenotfound.com$
 RewriteRule ^(/)?$ wp/index.php [L]
 </IfModule>
