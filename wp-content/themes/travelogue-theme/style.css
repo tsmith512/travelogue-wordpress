@@ -62,7 +62,7 @@ blockquote + .attribution:before {
 
 .travelogue-card {
   border: 1px solid #eee;
-  background: #f6f6f6;
+  background: #fbfbfb;
   margin: 0 0 1.5em;
 }
 
@@ -72,16 +72,20 @@ blockquote + .attribution:before {
 }
 
 .travelogue-card-text {
-  margin: 1em;
+  margin: 0.75em;
 }
 
 .travelogue-card-link {
   display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
 }
 .travelogue-card-citation {
+  display: block;
+  text-align: right;
   text-transform: uppercase;
   font-size: 0.75em;
-  color: #666;
+  color: #999;
 }
 
 /* Twentyseventeen does a line-height drop to 1.5 for wider screens, but I think
