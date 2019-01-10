@@ -1,0 +1,48 @@
+/*
+ * Theme Name: Travelogue Theme
+ * Theme URI: http://travelogue.news
+ * Description: Child of TwentySeventeen for Travelogue
+ * Author: Taylor Smith
+ * Author URI: https://www.tsmithcreative.com
+ * Template: twentyseventeen
+ */
+
+.entry-content a {
+  color: rgb(27, 119, 236);
+  text-decoration: underline;
+  text-decoration-color: rgba(27, 119, 236, 0.25);
+
+  /* Override twentyseventeen's stuff */
+  box-shadow: none !important;
+  transition: none !important;
+}
+
+.entry-content a:hover {
+  color: rgb(15, 95, 195);
+  text-decoration: underline;
+  text-decoration-color: rgb(15, 95, 195);
+}
+
+.travelogue-card {
+  border: 1px solid #eee;
+  background: #f6f6f6;
+  margin: 0 0 1.5em;
+}
+
+.travelogue-card img {
+  display: block;
+  box-shadow: none !important;
+}
+
+.travelogue-card-text {
+  margin: 1em;
+}
+
+.travelogue-card-link {
+  display: block;
+}
+.travelogue-card-citation {
+  text-transform: uppercase;
+  font-size: 0.75em;
+  color: #666;
+}
