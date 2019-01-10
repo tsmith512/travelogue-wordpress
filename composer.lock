@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "19bae7782baed3232359e1b2207a92e0",
-    "content-hash": "97bc43ede80a6fd7ebcdb1993c163788",
+    "hash": "2ac53fbc250c76bac44ef3b5924c977f",
+    "content-hash": "51a687faefbd7dcdbfb8a0b9566603e3",
     "packages": [
         {
             "name": "johnpbloch/wordpress",
@@ -319,15 +319,15 @@
         },
         {
             "name": "wpackagist-theme/twentyseventeen",
-            "version": "1.9",
+            "version": "2.0",
             "source": {
                 "type": "svn",
                 "url": "https://themes.svn.wordpress.org/twentyseventeen/",
-                "reference": "1.9"
+                "reference": "2.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/theme/twentyseventeen.1.9.zip",
+                "url": "https://downloads.wordpress.org/theme/twentyseventeen.2.0.zip",
                 "reference": null,
                 "shasum": null
             },

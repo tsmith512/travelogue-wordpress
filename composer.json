@@ -21,7 +21,7 @@
     "johnpbloch/wordpress": "=5.0.3"
   },
   "require-dev": {
-    "wpackagist-theme/twentyseventeen":"1.9",
+    "wpackagist-theme/twentyseventeen":"~2.0",
     "wpackagist-plugin/auto-upload-images": "3.1.1",
     "wpackagist-plugin/responsive-lightbox": "2.0.5",
     "wpackagist-plugin/tumblr-importer":"0.8"
