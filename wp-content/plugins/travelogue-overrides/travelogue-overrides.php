@@ -76,12 +76,12 @@ function travelogue_overrides_oembed_handler($matches, $attr, $url, $rawattr) {
   }
 
   $data = array(
-    'src' => $meta['image:secure_url'] ?: ($meta['image'] ?: false),
-    'height' => $meta['image:height'] ?: false,
-    'width' => $meta['image:width'] ?: false,
-    'title' => $meta['title'] ?: $title,
-    'site' => $meta['site_name'] ?: false,
-    'author' => $meta['author'] ?: false,
+    'src'    => isset($meta['image:secure_url']) ? $meta['image:secure_url'] : ($meta['image'] ?: false),
+    'height' => isset($meta['image:height'])     ? $meta['image:height']     : false,
+    'width'  => isset($meta['image:width'])      ? $meta['image:width']      : false,
+    'title'  => isset($meta['title'])            ? $meta['title']            : $title,
+    'site'   => isset($meta['site_name'])        ? $meta['site_name']        : false,
+    'author' => isset($meta['author'])           ? $meta['author']           : false,
   );
 
   $render = array();
