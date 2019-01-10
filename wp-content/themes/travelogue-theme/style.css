@@ -23,6 +23,43 @@
   text-decoration-color: rgb(15, 95, 195);
 }
 
+/* BLOCKQUOTE ADJUSTMENTS */
+
+/* Add hanging quote icons for blockquotes used in regular posts. */
+article.format-standard blockquote  {
+  position: relative;
+  overflow: visible;
+    /* No idea why this is set to hidden for standard-post blockquotes in twentyseventeen */
+}
+
+.format-standard blockquote .icon {
+	display: block;
+	height: 20px;
+	left: -1.25em;
+	position: absolute;
+	top: 0.4em;
+	-webkit-transform: scale(-1, 1);
+	-ms-transform: scale(-1, 1);
+	transform: scale(-1, 1);
+	width: 20px;
+}
+
+@media screen and (min-width: 48em) {
+  .format-standard blockquote .icon {
+    left: -1.5em;
+  }
+}
+
+blockquote + .attribution {
+  color: #999;
+  font-style: italic;
+  font-size: 0.875rem;
+}
+blockquote + .attribution:before {
+  content: "\2014\2009";
+}
+/* /QUOTE */
+
 .travelogue-card {
   border: 1px solid #eee;
   background: #f6f6f6;
