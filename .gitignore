@@ -8,8 +8,9 @@
 !/wp-content/plugins/travelogue*
 !/wp-content/themes/travelogue*
 
-# My own wp-config and .htaccess files
+# My own wp-config files, except the sample
 /wp-config*.php
+!/wp-config-sample.php
 
 # Content directories
 wp-content/uploads
