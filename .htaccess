@@ -1,0 +1,14 @@
+# See https://codex.wordpress.org/Giving_WordPress_Its_Own_Directory
+# @TODO: This appears to not work with my DrupalVM-based php-fpm setup.
+
+<IfModule mod_rewrite.c>
+RewriteEngine on
+RewriteBase /
+RewriteCond %{HTTP_HOST} ^(www.)?routenotfound.com$
+RewriteCond %{REQUEST_URI} !^/wp/
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ /wp/$1
+RewriteCond %{HTTP_HOST} ^(www.)?routenotfound.com$
+RewriteRule ^(/)?$ wp/index.php [L]
+</IfModule>
