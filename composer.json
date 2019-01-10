@@ -28,5 +28,10 @@
   },
   "extra": {
     "wordpress-install-dir": "wp"
+  },
+  "scripts": {
+    "post-update-cmd": [
+      "cp .htaccess-wp wp/.htaccess"
+    ]
   }
 }

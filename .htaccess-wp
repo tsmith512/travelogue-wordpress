@@ -1,12 +1,16 @@
 # This is the default WordPress htaccess file, which is not actually
 # included in the WordPress code root. After Composer pulls WordPress,
-# we'll copy this into place.
+# we'll copy this into place inside /wp/.
 
-# BEGIN WordPress
 <IfModule mod_rewrite.c>
 RewriteEngine On
 RewriteBase /
 RewriteRule ^index\.php$ - [L]
+
+# If the file doesn't exist within /wp/ (this would catch WordPress core
+# files like wp-login.php) then rewrite to the index. That would leave
+# "pretty paths" / post permalinks mostly.
+
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule . /index.php [L]
