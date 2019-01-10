@@ -1,0 +1,30 @@
+# See https://codex.wordpress.org/Giving_WordPress_Its_Own_Directory
+# this allows WordPress to be installed at /wp/ and be outside of this repo.
+# When Composer installs/updates a package, it deletes the project root to do
+# a clean install, but that'd wipe out everything in /wp-content/ if we don't
+# silo WordPress into its own directory.
+
+# Personal notes for php-fpm and ProxyPassMatch (which is just a relic of the
+# old DrupalVM I use as a build box at the moment), need to redeclare
+# ProxyPassMatch in the vhost config:
+
+# ADD LINE (so that /wp/wp doesn't get repeated when FPM and Rewrite clash)
+# ProxyPassMatch ^/wp/(.*\.php(/.*)?)$ "fcgi://127.0.0.1:9000/var/www/drupalvm/drupal"
+# EDIT LINE (add "/wp" on proxy path so that paths without /wp/ get executed within the correct root for when Rewrite doesn't pick it up)
+# ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://127.0.0.1:9000/var/www/drupalvm/drupal/wp"
+
+<IfModule mod_rewrite.c>
+RewriteEngine on
+RewriteBase /
+
+# In this docroot, if the file doesn't exist, send it along to /wp/
+# (so: catch theme and plugin assets here)
+RewriteCond %{REQUEST_URI} !^/wp/
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ /wp/$1
+
+# And if there's a request for the home page (site root), send it
+# straight to the WordPress index
+RewriteRule ^(/)?$ wp/index.php [L]
+</IfModule>

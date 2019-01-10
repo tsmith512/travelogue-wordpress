@@ -34,3 +34,90 @@ function travelogue_trip_archives_in_chorno(&$query) {
   }
 }
 add_filter('pre_get_posts', 'travelogue_trip_archives_in_chorno');
+
+/**
+ * Add embed handlers for a couple sites I link to a lot on here.
+ * Informed by https://github.com/scottmac/opengraph/blob/master/OpenGraph.php
+ * Disclaimer: This isn't the most awesome way to do this ever...
+ */
+function travelogue_overrides_oembed_handler($matches, $attr, $url, $rawattr) {
+  $embed = "$url";
+  $response = wp_remote_get($url, array());
+
+  $old_libxml_error = libxml_use_internal_errors(true);
+
+  $doc = new DOMDocument();
+  $doc->loadHTML($response['body']);
+
+  libxml_use_internal_errors($old_libxml_error);
+
+  $title_tags = $doc->getElementsByTagName('title');
+  $meta_tags = $doc->getElementsByTagName('meta');
+
+  $title = trim($title_tags->item(0)->nodeValue);
+  $meta = array();
+
+  foreach($meta_tags as $tag) {
+    if ($tag->hasAttribute('property') && strpos($tag->getAttribute('property'), 'og:') === 0) {
+      $key = strtr(substr($tag->getAttribute('property'), 3), '-', '_');
+      $meta[$key] = $tag->getAttribute('content');
+    }
+
+    // For pages which use "value" isntead of "content" for the og data (which is wrong, but in the wild)
+    if ($tag->hasAttribute('value') && $tag->hasAttribute('property') && strpos($tag->getAttribute('property'), 'og:') === 0) {
+      $key = strtr(substr($tag->getAttribute('property'), 3), '-', '_');
+      $meta[$key] = $tag->getAttribute('value');
+    }
+
+    // Handle the author, if set
+    if ($tag->hasAttribute('name') && $tag->getAttribute('name') == 'author') {
+      $meta['author'] = $tag->getAttribute('content');
+    }
+  }
+
+  $data = array(
+    'src'    => isset($meta['image:secure_url']) ? $meta['image:secure_url'] : ($meta['image'] ?: false),
+    'height' => isset($meta['image:height'])     ? $meta['image:height']     : false,
+    'width'  => isset($meta['image:width'])      ? $meta['image:width']      : false,
+    'title'  => isset($meta['title'])            ? $meta['title']            : $title,
+    'site'   => isset($meta['site_name'])        ? $meta['site_name']        : false,
+    'author' => isset($meta['author'])           ? $meta['author']           : false,
+  );
+
+  $render = array();
+
+  $render[] = "<div class='travelogue-card'>";
+
+  if (!empty($data['src'])) {
+    $render[] = "<a href='{$url}'>";
+    $render[] = "<img src='{$data['src']}'";
+    if (!empty($data['height'] && !empty($data['width']))) {
+      $render[] = "height='{$data['height']}' width ='{$data['width']}'";
+    }
+    $render[] = "/ >";
+    $render[] = "</a>";
+  }
+
+  $render[] = "<p class='travelogue-card-text'>";
+  if (!empty($data['title'])) {
+    $render[] = "<a href='{$url}' class='travelogue-card-link'>{$data['title']}</a>";
+  }
+
+  if (!empty($data['author'] || !empty($data['site']))) {
+    $render[] = "<span class='travelogue-card-citation'>";
+    if ($data['author']) $render[] = "{$data['author']}";
+    if ($data['author'] && $data['site']) $render[] = "|";
+    if ($data['site']) $render[] = "{$data['site']}";
+    $render[] = "</span>";
+  }
+  $render[] = "</p>";
+
+  $render[] = "</div>";
+
+  $output = implode(' ', $render);
+
+  return apply_filters('embed_alltrails', $output, $matches, $attr, $url, $rawattr);
+}
+wp_embed_register_handler('alltrails', '#https?://www.alltrails.com.+#', 'travelogue_overrides_oembed_handler', 5);
+wp_embed_register_handler('oppo', '#https?://oppositelock.kinja.com.+#', 'travelogue_overrides_oembed_handler', 5);
+wp_embed_register_handler('oande', '#https?://overland.kinja.com.+#', 'travelogue_overrides_oembed_handler', 5);

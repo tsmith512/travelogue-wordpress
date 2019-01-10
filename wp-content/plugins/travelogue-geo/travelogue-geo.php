@@ -40,6 +40,16 @@ function travelogue_geo_register_assets() {
       'type' => 'post',
       'timestamp' => get_post_time('U', true),
     );
+
+    // And only show the line for the trip the post is on
+    $trip_term_id = wp_get_post_categories($object->ID, array('meta_key' => 'travelogue_geo_trip_id'));
+    if (!empty($trip_term_id) && $trip_term_id[0] > 0) {
+      $trip_id = get_term_meta($trip_term_id[0], 'travelogue_geo_trip_id', true);
+      if (is_numeric($trip_id) && (int) $trip_id > 0) {
+        $start['trip_id'] = $trip_id;
+      }
+    }
+
   } elseif ($object instanceof WP_Term) {
     // It's a taxonomy term. Check to see if a trip id is associated.
     $trip_id = get_term_meta($object->term_id, 'travelogue_geo_trip_id', true);

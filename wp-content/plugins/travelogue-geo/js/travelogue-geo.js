@@ -106,7 +106,15 @@
         });
         break;
       case 'post':
-        loadAllTrips(tripsToLoad);
+        if (window.tqor.start.hasOwnProperty('trip_id')) {
+          loadTrip(window.tqor.start.trip_id, function(trip) {
+            if (trip.hasOwnProperty('boundaries')) {
+              window.map.fitBounds(trip.boundaries, {animate: true, padding: [10, 10]});
+            }
+          });
+        } else {
+          loadAllTrips(tripsToLoad);
+        }
         mapToTimestamp(window.tqor.start.timestamp);
         // @TODO: On a post-only page, it'd be great to only load the trip it was on?
         break;

@@ -1,0 +1,37 @@
+{
+  "name": "tsmith512/routenotfound",
+  "description": "Route Not Found. Site root and custom code repo.",
+  "authors": [
+    {
+      "name": "Taylor Smith",
+      "homepage": "https://www.tsmithcreative.com"
+    }
+  ],
+  "type": "project",
+  "repositories": [
+    {
+      "type": "composer",
+      "url" : "https://wpackagist.org"
+    }
+  ],
+  "config": {
+    "vendor-dir": "wp-content/vendor"
+  },
+  "require": {
+    "johnpbloch/wordpress": "=5.0.3"
+  },
+  "require-dev": {
+    "wpackagist-theme/twentyseventeen":"~2.0",
+    "wpackagist-plugin/auto-upload-images": "3.1.1",
+    "wpackagist-plugin/responsive-lightbox": "2.0.5",
+    "wpackagist-plugin/tumblr-importer":"0.8"
+  },
+  "extra": {
+    "wordpress-install-dir": "wp"
+  },
+  "scripts": {
+    "post-update-cmd": [
+      "cp .htaccess-wp wp/.htaccess"
+    ]
+  }
+}
