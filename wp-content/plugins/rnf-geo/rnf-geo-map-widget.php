@@ -1,17 +1,17 @@
 <?php
 /**
- * Create Travelogue_Geo_Map_Widget widget which will be a container for a
+ * Create RNF_Geo_Map_Widget widget which will be a container for a
  * Mapbox map with annotations built in Mapbox and/or Location data from the
  * Location Tracker API.
  */
-class Travelogue_Geo_Map_Widget extends WP_Widget {
+class RNF_Geo_Map_Widget extends WP_Widget {
   /**
    * Constructor with admin info
    */
   public function __construct() {
     parent::__construct(
-      'travelogue_geo_map_widget',
-      'Travelogue Map',
+      'rnf_geo_map_widget',
+      'RNF Map',
       array(
         'description' => 'A Mapbox Map with TL/Location Tracker Data'
       )
@@ -29,8 +29,8 @@ class Travelogue_Geo_Map_Widget extends WP_Widget {
   public function widget($args, $instance) {
     wp_enqueue_style('mapbox-style');
     wp_enqueue_script('mapbox-core');
-    wp_enqueue_style('travelogue-style');
-    wp_enqueue_script('travelogue-geo-js');
+    wp_enqueue_style('rnf-style');
+    wp_enqueue_script('rnf-geo-js');
 
     ?>
 

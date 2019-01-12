@@ -1,7 +1,7 @@
 <?php
 /*
- * Plugin Name: Travelogue Overrides
- * Description: Limited-scope overrides to tweak defaults for Travelogue Powered by WordPress
+ * Plugin Name: RNF Overrides
+ * Description: Limited-scope overrides to tweak defaults and other functionality
  * Version: 0.1
  * Author: Taylor Smith
  */
@@ -13,34 +13,34 @@
  * images, and also this will just make it easier to ensure consistency on
  * hastily uploaded stuff from mobile.
  */
-function travelogue_gallery_overrides($out, $pairs, $atts, $shortcode) {
+function rnf_gallery_overrides($out, $pairs, $atts, $shortcode) {
   $out['link'] = 'file';
   return $out;
 };
-add_filter('shortcode_atts_gallery', 'travelogue_gallery_overrides', 10, 4);
+add_filter('shortcode_atts_gallery', 'rnf_gallery_overrides', 10, 4);
 
 /**
  * Implements pre_get_posts on category pages only for categories that have a
  * trip ID saved (i.e. someone is reading a full trip) so we can flip the order
  */
-function travelogue_trip_archives_in_chorno(&$query) {
+function rnf_trip_archives_in_chorno(&$query) {
   if ($query->is_category) {
     $term = get_queried_object();
-    $trip_id = get_term_meta($term->term_id, 'travelogue_geo_trip_id', true);
+    $trip_id = get_term_meta($term->term_id, 'rnf_geo_trip_id', true);
 
     if (is_numeric($trip_id) && (int) $trip_id > 0) {
       $query->set( 'order', 'ASC' );
     }
   }
 }
-add_filter('pre_get_posts', 'travelogue_trip_archives_in_chorno');
+add_filter('pre_get_posts', 'rnf_trip_archives_in_chorno');
 
 /**
  * Add embed handlers for a couple sites I link to a lot on here.
  * Informed by https://github.com/scottmac/opengraph/blob/master/OpenGraph.php
  * Disclaimer: This isn't the most awesome way to do this ever...
  */
-function travelogue_overrides_oembed_handler($matches, $attr, $url, $rawattr) {
+function rnf_overrides_oembed_handler($matches, $attr, $url, $rawattr) {
   $embed = "$url";
   $response = wp_remote_get($url, array());
 
@@ -86,7 +86,7 @@ function travelogue_overrides_oembed_handler($matches, $attr, $url, $rawattr) {
 
   $render = array();
 
-  $render[] = "<div class='travelogue-card'>";
+  $render[] = "<div class='rnf-card'>";
 
   if (!empty($data['src'])) {
     $render[] = "<a href='{$url}'>";
@@ -98,13 +98,13 @@ function travelogue_overrides_oembed_handler($matches, $attr, $url, $rawattr) {
     $render[] = "</a>";
   }
 
-  $render[] = "<p class='travelogue-card-text'>";
+  $render[] = "<p class='rnf-card-text'>";
   if (!empty($data['title'])) {
-    $render[] = "<a href='{$url}' class='travelogue-card-link'>{$data['title']}</a>";
+    $render[] = "<a href='{$url}' class='rnf-card-link'>{$data['title']}</a>";
   }
 
   if (!empty($data['author'] || !empty($data['site']))) {
-    $render[] = "<span class='travelogue-card-citation'>";
+    $render[] = "<span class='rnf-card-citation'>";
     if ($data['author']) $render[] = "{$data['author']}";
     if ($data['author'] && $data['site']) $render[] = "|";
     if ($data['site']) $render[] = "{$data['site']}";
@@ -118,6 +118,6 @@ function travelogue_overrides_oembed_handler($matches, $attr, $url, $rawattr) {
 
   return apply_filters('embed_alltrails', $output, $matches, $attr, $url, $rawattr);
 }
-wp_embed_register_handler('alltrails', '#https?://www.alltrails.com.+#', 'travelogue_overrides_oembed_handler', 5);
-wp_embed_register_handler('oppo', '#https?://oppositelock.kinja.com.+#', 'travelogue_overrides_oembed_handler', 5);
-wp_embed_register_handler('oande', '#https?://overland.kinja.com.+#', 'travelogue_overrides_oembed_handler', 5);
+wp_embed_register_handler('alltrails', '#https?://www.alltrails.com.+#', 'rnf_overrides_oembed_handler', 5);
+wp_embed_register_handler('oppo', '#https?://oppositelock.kinja.com.+#', 'rnf_overrides_oembed_handler', 5);
+wp_embed_register_handler('oande', '#https?://overland.kinja.com.+#', 'rnf_overrides_oembed_handler', 5);

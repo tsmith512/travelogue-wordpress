@@ -17,6 +17,13 @@
 RewriteEngine on
 RewriteBase /
 
+# Append a slash if it is omitted and would map to a directory,
+# Helps deal with incorrect redirect_to values on wp-login
+RewriteCond %{REQUEST_URI} !^/wp/
+RewriteCond %{REQUEST_URI} !/$
+RewriteCond %{DOCUMENT_ROOT}/wp/$1 -d
+RewriteRule (.*) /$1/ [R=302,L]
+
 # In this docroot, if the file doesn't exist, send it along to /wp/
 # (so: catch theme and plugin assets here)
 RewriteCond %{REQUEST_URI} !^/wp/

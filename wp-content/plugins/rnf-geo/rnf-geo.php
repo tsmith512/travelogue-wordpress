@@ -1,35 +1,35 @@
 <?php
 /*
- * Plugin Name: Travelogue Trips, Maps, and Geography
+ * Plugin Name: RNF Trips, Maps, and Geography
  * Description: Provides taxonomy support, Location Tracker API integration, and Maps
  * Version: 0.1
  * Author: Taylor Smith
  */
 
-require_once "travelogue-geo-map-widget.php";
-add_action( 'widgets_init', function() { register_widget( 'Travelogue_Geo_Map_Widget' ); } );
+require_once "rnf-geo-map-widget.php";
+add_action( 'widgets_init', function() { register_widget( 'RNF_Geo_Map_Widget' ); } );
 
 /**
  * Implements admin_menu to add the options page to the sidebar menu for admins.
- * See travelogue-geo-settings.php for the output of this page.
+ * See rnf-geo-settings.php for the output of this page.
  */
-function travelogue_geo_add_admin_menu() {
-  add_menu_page('Travelogue Geo', 'Travelogue Geo', 'manage_options', 'travelogue-geo', 'travelogue_geo_admin_page', 'dashicons-location-alt', 78);
-  add_submenu_page('travelogue-geo', 'Travelogue Geo Settings', 'Settings', 'manage_options', 'travelogue-geo-settings', 'travelogue_geo_options_page');
+function rnf_geo_add_admin_menu() {
+  add_menu_page('RNF Geo', 'RNF Geo', 'manage_options', 'rnf-geo', 'rnf_geo_admin_page', 'dashicons-location-alt', 78);
+  add_submenu_page('rnf-geo', 'RNF Geo Settings', 'Settings', 'manage_options', 'rnf-geo-settings', 'rnf_geo_options_page');
 }
-add_action('admin_menu', 'travelogue_geo_add_admin_menu');
-require_once "travelogue-geo-admin.php";
-require_once "travelogue-geo-settings.php";
+add_action('admin_menu', 'rnf_geo_add_admin_menu');
+require_once "rnf-geo-admin.php";
+require_once "rnf-geo-settings.php";
 
 /**
  * Register but do not enqueue scripts and stylesheets for integrations and map
- * displays, including passing in the travelogue_geo_settings data.
+ * displays, including passing in the rnf_geo_settings data.
  */
-function travelogue_geo_register_assets() {
+function rnf_geo_register_assets() {
   wp_register_script('mapbox-core', 'https://api.mapbox.com/mapbox.js/v3.0.1/mapbox.js', array(), false, true);
   wp_register_style('mapbox-style', 'https://api.mapbox.com/mapbox.js/v3.0.1/mapbox.css', array(), false);
-  wp_register_script('travelogue-geo-js', plugin_dir_url( __FILE__ ) . 'js/travelogue-geo.js', array('mapbox-core'), false, true);
-  wp_register_style('travelogue-style', plugin_dir_url( __FILE__ ) . 'css/travelogue-geo-maps.css', array(), false);
+  wp_register_script('rnf-geo-js', plugin_dir_url( __FILE__ ) . 'js/rnf-geo.js', array('mapbox-core'), false, true);
+  wp_register_style('rnf-style', plugin_dir_url( __FILE__ ) . 'css/rnf-geo-maps.css', array(), false);
 
   // Figure out where we are so we can tell the map where to start
   $object = get_queried_object();
@@ -42,9 +42,9 @@ function travelogue_geo_register_assets() {
     );
 
     // And only show the line for the trip the post is on
-    $trip_term_id = wp_get_post_categories($object->ID, array('meta_key' => 'travelogue_geo_trip_id'));
+    $trip_term_id = wp_get_post_categories($object->ID, array('meta_key' => 'rnf_geo_trip_id'));
     if (!empty($trip_term_id) && $trip_term_id[0] > 0) {
-      $trip_id = get_term_meta($trip_term_id[0], 'travelogue_geo_trip_id', true);
+      $trip_id = get_term_meta($trip_term_id[0], 'rnf_geo_trip_id', true);
       if (is_numeric($trip_id) && (int) $trip_id > 0) {
         $start['trip_id'] = $trip_id;
       }
@@ -52,7 +52,7 @@ function travelogue_geo_register_assets() {
 
   } elseif ($object instanceof WP_Term) {
     // It's a taxonomy term. Check to see if a trip id is associated.
-    $trip_id = get_term_meta($object->term_id, 'travelogue_geo_trip_id', true);
+    $trip_id = get_term_meta($object->term_id, 'rnf_geo_trip_id', true);
 
     if (is_numeric($trip_id) && (int) $trip_id > 0) {
       $start = array(
@@ -68,40 +68,40 @@ function travelogue_geo_register_assets() {
     );
   }
 
-  $options = get_option( 'travelogue_geo_settings' );
+  $options = get_option( 'rnf_geo_settings' );
   $tqor = array(
     'mapboxApi' => !empty($options['mapbox_api_token']) ? $options['mapbox_api_token'] : null,
     'mapboxStyle' => !empty($options['mapbox_style']) ? $options['mapbox_style'] : null,
     'locationApi' => !empty($options['location_tracker_endpoint']) ? $options['location_tracker_endpoint'] : null,
     'cache' => array(),
     'trips' => array(),
-    'trips_with_content' => travelogue_geo_get_trips_with_content(),
+    'trips_with_content' => rnf_geo_get_trips_with_content(),
     'start' => $start
   );
 
-  wp_localize_script('travelogue-geo-js', 'tqor', $tqor);
+  wp_localize_script('rnf-geo-js', 'tqor', $tqor);
 }
-add_action('wp_enqueue_scripts', 'travelogue_geo_register_assets', 5);
-add_action('admin_enqueue_scripts', 'travelogue_geo_register_assets');
+add_action('wp_enqueue_scripts', 'rnf_geo_register_assets', 5);
+add_action('admin_enqueue_scripts', 'rnf_geo_register_assets');
 
 /**
  * Go get the trips list from the location tracker, match 'em up with WP
  * categories if possible.
  */
-function travelogue_geo_get_trips($trip_id = null) {
-  $transient = get_transient('travelogue_geo_trips_cache');
+function rnf_geo_get_trips($trip_id = null) {
+  $transient = get_transient('rnf_geo_trips_cache');
   if( ! empty( $transient ) ) {
     return $transient;
   }
 
-  $options = get_option('travelogue_geo_settings');
+  $options = get_option('rnf_geo_settings');
   $endpoint = $options['location_tracker_endpoint'] . '/api/trips';
   $result = wp_remote_get($endpoint);
   $trips = array();
 
   if ($result['response']['code'] == 200) {
     $trips = json_decode($result['body']);
-    set_transient( 'travelogue_geo_trips_cache', $output, DAY_IN_SECONDS );
+    set_transient( 'rnf_geo_trips_cache', $output, DAY_IN_SECONDS );
   }
 
   // If we're only looking for data on a single Trip (an ID was provided),
@@ -127,13 +127,13 @@ function travelogue_geo_get_trips($trip_id = null) {
  * Return a list of trip IDs we have taxonomy terms for (i.e. not the list of
  * trips that exist on the remote service, but the ones we've written about).
  */
-function travelogue_geo_get_trips_with_content() {
+function rnf_geo_get_trips_with_content() {
   // The trip IDs are stored as a term-meta value for each category that is a
   // trip. There's not a Term Meta API way to aggregate "all values for this key
   // across all terms" without first fetching all terms, so just get 'em from
   // the DB:
   global $wpdb;
-  $trip_ids = $wpdb->get_col("SELECT meta_value FROM {$wpdb->prefix}termmeta WHERE meta_key = 'travelogue_geo_trip_id'");
+  $trip_ids = $wpdb->get_col("SELECT meta_value FROM {$wpdb->prefix}termmeta WHERE meta_key = 'rnf_geo_trip_id'");
 
   // WP meta values are all strings, but these should be integers
   array_walk($trip_ids, function(&$e) { $e = (int) $e; });
@@ -144,9 +144,9 @@ function travelogue_geo_get_trips_with_content() {
 /**
  * Create a category for a given trip it. Should receive a trip object or trip it
  */
-function travelogue_geo_ajax_create_trip_category() {
+function rnf_geo_ajax_create_trip_category() {
   $trip_id = (int) $_POST['trip_id'];
-  $trips = travelogue_geo_get_trips($trip_id);
+  $trips = rnf_geo_get_trips($trip_id);
 
   if (empty($trips)) {
     // @TODO: ERROR
@@ -157,24 +157,24 @@ function travelogue_geo_ajax_create_trip_category() {
   $term = wp_insert_term($trip->label, 'category', array(
     'slug' => $trip->machine_name
   ));
-  add_term_meta($term['term_id'], 'travelogue_geo_trip_id', $trip->id, true);
+  add_term_meta($term['term_id'], 'rnf_geo_trip_id', $trip->id, true);
 
   print json_encode($term);
   wp_die();
 }
-add_action( 'wp_ajax_tqor_create_term', 'travelogue_geo_ajax_create_trip_category' );
+add_action( 'wp_ajax_tqor_create_term', 'rnf_geo_ajax_create_trip_category' );
 
 /**
  * Display a Location Tracker Trip ID on the taxonomy term management page if
  * there is one.
  */
-function travelogue_geo_category_add_id_display($term) {
-  $trip_id = get_term_meta( $term->term_id, 'travelogue_geo_trip_id', true );
+function rnf_geo_category_add_id_display($term) {
+  $trip_id = get_term_meta( $term->term_id, 'rnf_geo_trip_id', true );
 
   if ($trip_id) {
     print "Location Tracker Trip ID: $trip_id";
   } else {
-    print "<em>Term not associated to a trip. Create from Travelogue Geo page directly.</em>";
+    print "<em>Term not associated to a trip. Create from RNF Geo page directly.</em>";
   }
 }
-add_action('category_edit_form_fields', 'travelogue_geo_category_add_id_display');
+add_action('category_edit_form_fields', 'rnf_geo_category_add_id_display');
