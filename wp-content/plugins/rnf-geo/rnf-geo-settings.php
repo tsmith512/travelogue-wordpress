@@ -6,7 +6,7 @@ function rnf_geo_settings_init() {
 
   add_settings_section(
     'integrations',
-    'Travelogue Geo Settings',
+    'RNF Geo Settings',
     'integrations_callback',
     'rnf-geo-settings'
   );
@@ -64,7 +64,7 @@ function rnf_geo_options_page() {
   ?>
   <form action='options.php' method='post'>
 
-    <h1>Travelogue Geo, Location, and Maps Configuration</h1>
+    <h1>RNF Geo, Location, and Maps Configuration</h1>
 
     <?php
     settings_fields( 'rnf-geo-settings' );
