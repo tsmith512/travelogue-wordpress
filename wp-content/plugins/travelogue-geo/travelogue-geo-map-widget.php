@@ -10,7 +10,7 @@ class Travelogue_Geo_Map_Widget extends WP_Widget {
    */
   public function __construct() {
     parent::__construct(
-      'travelogue_geo_map_widget',
+      'rnf_geo_map_widget',
       'Travelogue Map',
       array(
         'description' => 'A Mapbox Map with TL/Location Tracker Data'
@@ -29,8 +29,8 @@ class Travelogue_Geo_Map_Widget extends WP_Widget {
   public function widget($args, $instance) {
     wp_enqueue_style('mapbox-style');
     wp_enqueue_script('mapbox-core');
-    wp_enqueue_style('travelogue-style');
-    wp_enqueue_script('travelogue-geo-js');
+    wp_enqueue_style('rnf-style');
+    wp_enqueue_script('rnf-geo-js');
 
     ?>
 

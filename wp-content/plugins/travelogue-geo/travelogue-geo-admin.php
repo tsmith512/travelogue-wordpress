@@ -1,7 +1,7 @@
 <?php
 
-function travelogue_geo_admin_page() {
-  $trips = travelogue_geo_get_trips();
+function rnf_geo_admin_page() {
+  $trips = rnf_geo_get_trips();
 
   ?>
   <div class="wrap">
