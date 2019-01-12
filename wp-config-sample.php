@@ -28,15 +28,18 @@
 require __DIR__ . '/wp-content/vendor/autoload.php';
   // In case I use Composer libraries
 define( 'WP_CONTENT_DIR', dirname(__FILE__) . '/wp-content' );
-	// To handle wp-content outside wp root
+  // To handle wp-content outside wp root
 define( 'DISALLOW_FILE_MODS', true );
-	// Disallow edits and updates on themes and plugins; it's all handled in code
-	// so hide the editor in the admin to keep it out of the way.
+  // Disallow edits and updates on themes and plugins; it's all handled in code
+  // so hide the editor in the admin to keep it out of the way.
 
 if ($_SERVER['HTTP_HOST'] !== 'PRODUCTION HOSTNAME HERE') {
-	define('WP_DEBUG', true);
-	define('WP_DEBUG_LOG', false);
-	define('WP_DEBUG_DISPLAY', true);
+  define('WP_DEBUG', true);
+  define('WP_DEBUG_LOG', false);
+  define('WP_DEBUG_DISPLAY', true);
+} else {
+  // @TODO: This should be for all dev/stage envs, too, need to confirm they're working first
+  define('FORCE_SSL_ADMIN', true);
 }
 
 

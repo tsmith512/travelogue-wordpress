@@ -17,6 +17,12 @@
 RewriteEngine on
 RewriteBase /
 
+<IfModule mod_ssl.c>
+  RewriteCond %{HTTPS} off
+  RewriteCond %{HTTP_HOST} (www\.|staging\.)?routenotfound.com
+  RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+
 # Append a slash if it is omitted and would map to a directory,
 # Helps deal with incorrect redirect_to values on wp-login
 RewriteCond %{REQUEST_URI} !^/wp/
