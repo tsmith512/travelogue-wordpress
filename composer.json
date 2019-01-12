@@ -32,6 +32,9 @@
   "scripts": {
     "post-update-cmd": [
       "cp .htaccess-wp wp/.htaccess"
+    ],
+    "post-install-cmd": [
+      "cp .htaccess-wp wp/.htaccess"
     ]
   }
 }
