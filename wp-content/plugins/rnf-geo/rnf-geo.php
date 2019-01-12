@@ -1,6 +1,6 @@
 <?php
 /*
- * Plugin Name: Travelogue Trips, Maps, and Geography
+ * Plugin Name: RNF Trips, Maps, and Geography
  * Description: Provides taxonomy support, Location Tracker API integration, and Maps
  * Version: 0.1
  * Author: Taylor Smith
