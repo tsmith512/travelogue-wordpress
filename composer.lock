@@ -1,10 +1,9 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "hash": "2ac53fbc250c76bac44ef3b5924c977f",
     "content-hash": "51a687faefbd7dcdbfb8a0b9566603e3",
     "packages": [
         {
@@ -44,7 +43,7 @@
                 "cms",
                 "wordpress"
             ],
-            "time": "2019-01-09 18:42:21"
+            "time": "2019-01-09T18:42:21+00:00"
         },
         {
             "name": "johnpbloch/wordpress-core",
@@ -84,7 +83,7 @@
                 "cms",
                 "wordpress"
             ],
-            "time": "2019-01-09 18:42:15"
+            "time": "2019-01-09T18:42:15+00:00"
         },
         {
             "name": "johnpbloch/wordpress-core-installer",
@@ -133,7 +132,7 @@
             "keywords": [
                 "wordpress"
             ],
-            "time": "2018-11-09 20:10:38"
+            "time": "2018-11-09T20:10:38+00:00"
         }
     ],
     "packages-dev": [
@@ -255,7 +254,7 @@
                 "zend",
                 "zikula"
             ],
-            "time": "2018-08-27 06:10:37"
+            "time": "2018-08-27T06:10:37+00:00"
         },
         {
             "name": "wpackagist-plugin/auto-upload-images",
