@@ -51,14 +51,21 @@ function rnf_overrides_oembed_handler($matches, $attr, $url, $rawattr) {
   }
 
   // We didn't, continue on:
-  $response = wp_remote_get($url, array());
+  try {
+    $response = wp_remote_get($url, array());
 
-  $old_libxml_error = libxml_use_internal_errors(true);
+    $old_libxml_error = libxml_use_internal_errors(true);
 
-  $doc = new DOMDocument();
-  $doc->loadHTML($response['body']);
+    $doc = new DOMDocument();
+    $doc->loadHTML($response['body']);
 
-  libxml_use_internal_errors($old_libxml_error);
+    libxml_use_internal_errors($old_libxml_error);
+  }
+  catch (WP_Error | Throwable | Exception $e) {
+    // Handle general failure of "can't get and parse the content of that page"
+    $output = "<a href='{url}'>{$url}</a>";
+    return apply_filters('embed_rnf_failed', $value, $matches, $attr, $url, $rawattr);
+  }
 
   $title_tags = $doc->getElementsByTagName('title');
   $meta_tags = $doc->getElementsByTagName('meta');
@@ -85,7 +92,8 @@ function rnf_overrides_oembed_handler($matches, $attr, $url, $rawattr) {
   }
 
   $data = array(
-    'src'    => isset($meta['image:secure_url']) ? $meta['image:secure_url'] : ($meta['image'] ?: false),
+    'src'    => isset($meta['image:secure_url']) ? $meta['image:secure_url'] :
+                  (isset($meta['image'])           ? $meta['image']            : false),
     'height' => isset($meta['image:height'])     ? $meta['image:height']     : false,
     'width'  => isset($meta['image:width'])      ? $meta['image:width']      : false,
     'title'  => isset($meta['title'])            ? $meta['title']            : $title,
