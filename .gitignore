@@ -5,8 +5,8 @@
 /wp-content/themes/*
 
 # Override to include my own themes/plugins
-!/wp-content/plugins/travelogue*
-!/wp-content/themes/travelogue*
+!/wp-content/plugins/rnf*
+!/wp-content/themes/rnf*
 
 # My own wp-config files, except the sample
 /wp-config*.php

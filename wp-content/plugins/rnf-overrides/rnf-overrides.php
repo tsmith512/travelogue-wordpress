@@ -41,15 +41,38 @@ add_filter('pre_get_posts', 'rnf_trip_archives_in_chorno');
  * Disclaimer: This isn't the most awesome way to do this ever...
  */
 function rnf_overrides_oembed_handler($matches, $attr, $url, $rawattr) {
-  $embed = "$url";
-  $response = wp_remote_get($url, array());
+  // We'll store these fully rendered in the transient cache:
+  $cache_name = "rnf_og_embed_" . md5($url);
 
-  $old_libxml_error = libxml_use_internal_errors(true);
+  // Attempt to fetch the transient cache version and use it if we get one:
+  if (false !== ($value = get_transient($cache_name)) ) {
+    // We got a response from the cache and it is current:
+    return apply_filters('embed_rnf', $value, $matches, $attr, $url, $rawattr);
+  }
 
-  $doc = new DOMDocument();
-  $doc->loadHTML($response['body']);
+  // We didn't, continue on:
+  try {
+    $response = wp_remote_get($url, array());
 
-  libxml_use_internal_errors($old_libxml_error);
+    $old_libxml_error = libxml_use_internal_errors(true);
+
+    $doc = new DOMDocument();
+    $doc->loadHTML($response['body']);
+
+    libxml_use_internal_errors($old_libxml_error);
+  }
+  catch (WP_Error | Throwable | Exception $e) {
+    // Handle general failure of "can't get and parse the content of that page"
+    // by returning the URL as a link. We'll add an optional filter in case I
+    // want to dress that up later.
+    $output = "<a href='{url}'>{$url}</a>";
+
+    // In case this was a resolvable condition (timeout, remote content being
+    // edited), cache this failure to keep the site moving in the short-term,
+    // but only for an hour so it can hopefully resolve itself.
+    set_transient($cache_name, $output, HOUR_IN_SECONDS);
+    return apply_filters('embed_rnf_failed', $value, $matches, $attr, $url, $rawattr);
+  }
 
   $title_tags = $doc->getElementsByTagName('title');
   $meta_tags = $doc->getElementsByTagName('meta');
@@ -76,7 +99,8 @@ function rnf_overrides_oembed_handler($matches, $attr, $url, $rawattr) {
   }
 
   $data = array(
-    'src'    => isset($meta['image:secure_url']) ? $meta['image:secure_url'] : ($meta['image'] ?: false),
+    'src'    => isset($meta['image:secure_url']) ? $meta['image:secure_url'] :
+                  (isset($meta['image'])           ? $meta['image']            : false),
     'height' => isset($meta['image:height'])     ? $meta['image:height']     : false,
     'width'  => isset($meta['image:width'])      ? $meta['image:width']      : false,
     'title'  => isset($meta['title'])            ? $meta['title']            : $title,
@@ -116,8 +140,49 @@ function rnf_overrides_oembed_handler($matches, $attr, $url, $rawattr) {
 
   $output = implode(' ', $render);
 
-  return apply_filters('embed_alltrails', $output, $matches, $attr, $url, $rawattr);
+  // Save for use later:
+  set_transient($cache_name, $output, WEEK_IN_SECONDS);
+
+  return apply_filters('embed_rnf', $output, $matches, $attr, $url, $rawattr);
 }
 wp_embed_register_handler('alltrails', '#https?://www.alltrails.com.+#', 'rnf_overrides_oembed_handler', 5);
 wp_embed_register_handler('oppo', '#https?://oppositelock.kinja.com.+#', 'rnf_overrides_oembed_handler', 5);
 wp_embed_register_handler('oande', '#https?://overland.kinja.com.+#', 'rnf_overrides_oembed_handler', 5);
+wp_embed_register_handler('tsc', '#https?://(www.)?tsmithcreative.com.+#', 'rnf_overrides_oembed_handler', 5);
+
+/**
+ * Add a marker to the admin bar with an environment label.
+ * Inspired by https://wordpress.org/plugins/show-environment-in-admin-bar
+ */
+function rnf_overrides_admin_bar_env_note(&$admin_menu_bar) {
+  $environment = FALSE;
+  $class = "rnf-env-";
+
+  if ($_SERVER['HTTP_HOST'] == "www.routenotfound.com" || $_SERVER['HTTP_HOST'] == "routenotfound.com") {
+    $environment = "Production";
+    $class .= "prod";
+  } else if ($_SERVER['HTTP_HOST'] == "staging.routenotfound.com") {
+    $environment = "Staging";
+    $class .= "staging";
+  } else {
+    // @TODO: This is a bold assumption to make an an unqualified else{} statement...
+    $environment = "Dev";
+    $class .= "dev";
+  }
+
+  if ($environment) {
+    $admin_menu_bar->add_node(array(
+      'id' => 'rnf-env-marker',
+      'parent' => 'root-default',
+      'title' => $environment,
+      'meta'   => array( 'class' => "rnf-env-marker-link {$class}" ),
+    ));
+  }
+}
+add_action('admin_bar_menu', 'rnf_overrides_admin_bar_env_note', 1);
+
+function rnf_overrides_admin_bar_styles() {
+  wp_register_style('rnf-env-marker-style', plugin_dir_url( __FILE__ ) . 'css/rnf-env-marker.css', array(), false);
+  wp_enqueue_style('rnf-env-marker-style');
+}
+add_action('admin_enqueue_scripts', 'rnf_overrides_admin_bar_styles');

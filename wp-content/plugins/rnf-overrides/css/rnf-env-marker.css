@@ -1,0 +1,34 @@
+/* RNF Environment Toolbar Marker CSS */
+
+/* Referenced by ID because everything else in WP admin bar is, raising specificity */
+#wpadminbar #wp-admin-bar-rnf-env-marker div {
+  font-weight: bold;
+  text-transform: uppercase;
+  color: white !important; /* Also override the hover state since this is not a link */
+}
+
+#wpadminbar #wp-admin-bar-rnf-env-marker:hover div {
+  background: transparent !important;
+}
+
+@media screen and (max-width: 782px) {
+  #wpadminbar #wp-admin-bar-rnf-env-marker {
+    display: block;
+    float: right;
+  }
+
+  #wpadminbar #wp-admin-bar-rnf-env-marker div {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+}
+
+#wp-admin-bar-rnf-env-marker.rnf-env-prod {
+  background: #CC1133 !important;
+}
+#wp-admin-bar-rnf-env-marker.rnf-env-staging {
+  background: #EE9933 !important;
+}
+#wp-admin-bar-rnf-env-marker.rnf-env-dev {
+  background: #339966 !important;
+}
