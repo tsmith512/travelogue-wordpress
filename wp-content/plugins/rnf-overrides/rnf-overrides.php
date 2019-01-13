@@ -121,3 +121,40 @@ function rnf_overrides_oembed_handler($matches, $attr, $url, $rawattr) {
 wp_embed_register_handler('alltrails', '#https?://www.alltrails.com.+#', 'rnf_overrides_oembed_handler', 5);
 wp_embed_register_handler('oppo', '#https?://oppositelock.kinja.com.+#', 'rnf_overrides_oembed_handler', 5);
 wp_embed_register_handler('oande', '#https?://overland.kinja.com.+#', 'rnf_overrides_oembed_handler', 5);
+
+/**
+ * Add a marker to the admin bar with an environment label.
+ * Inspired by https://wordpress.org/plugins/show-environment-in-admin-bar
+ */
+function rnf_overrides_admin_bar_env_note(&$admin_menu_bar) {
+  $environment = FALSE;
+  $class = "rnf-env-";
+
+  if ($_SERVER['HTTP_HOST'] == "www.routenotfound.com" || $_SERVER['HTTP_HOST'] == "routenotfound.com") {
+    $environment = "Production";
+    $class .= "prod";
+  } else if ($_SERVER['HTTP_HOST'] == "staging.routenotfound.com") {
+    $environment = "Staging";
+    $class .= "staging";
+  } else {
+    // @TODO: This is a bold assumption to make an an unqualified else{} statement...
+    $environment = "Dev";
+    $class .= "dev";
+  }
+
+  if ($environment) {
+    $admin_menu_bar->add_node(array(
+      'id' => 'rnf-env-marker',
+      'parent' => 'root-default',
+      'title' => $environment,
+      'meta'   => array( 'class' => "rnf-env-marker-link {$class}" ),
+    ));
+  }
+}
+add_action('admin_bar_menu', 'rnf_overrides_admin_bar_env_note', 1);
+
+function rnf_overrides_admin_bar_styles() {
+  wp_register_style('rnf-env-marker-style', plugin_dir_url( __FILE__ ) . 'css/rnf-env-marker.css', array(), false);
+  wp_enqueue_style('rnf-env-marker-style');
+}
+add_action('admin_enqueue_scripts', 'rnf_overrides_admin_bar_styles');
