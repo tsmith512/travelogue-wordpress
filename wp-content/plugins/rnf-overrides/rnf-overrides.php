@@ -63,7 +63,14 @@ function rnf_overrides_oembed_handler($matches, $attr, $url, $rawattr) {
   }
   catch (WP_Error | Throwable | Exception $e) {
     // Handle general failure of "can't get and parse the content of that page"
+    // by returning the URL as a link. We'll add an optional filter in case I
+    // want to dress that up later.
     $output = "<a href='{url}'>{$url}</a>";
+
+    // In case this was a resolvable condition (timeout, remote content being
+    // edited), cache this failure to keep the site moving in the short-term,
+    // but only for an hour so it can hopefully resolve itself.
+    set_transient($cache_name, $output, HOUR_IN_SECONDS);
     return apply_filters('embed_rnf_failed', $value, $matches, $attr, $url, $rawattr);
   }
 
