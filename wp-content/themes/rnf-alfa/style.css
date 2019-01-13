@@ -51,12 +51,16 @@ article.format-standard blockquote  {
   }
 }
 
-blockquote + .attribution {
+/* Overriding the style on the gutenberg bq block requires weird specificity */
+blockquote + .attribution,
+.entry-content blockquote.wp-block-quote cite {
   color: #999;
   font-style: italic;
   font-size: 0.875rem;
+  font-weight: inherit;
 }
-blockquote + .attribution:before {
+blockquote + .attribution:before,
+.entry-content blockquote.wp-block-quote cite:before {
   content: "\2014\2009";
 }
 /* /QUOTE */
