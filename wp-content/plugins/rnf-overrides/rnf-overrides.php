@@ -41,7 +41,16 @@ add_filter('pre_get_posts', 'rnf_trip_archives_in_chorno');
  * Disclaimer: This isn't the most awesome way to do this ever...
  */
 function rnf_overrides_oembed_handler($matches, $attr, $url, $rawattr) {
-  $embed = "$url";
+  // We'll store these fully rendered in the transient cache:
+  $cache_name = "rnf_og_embed_" . md5($url);
+
+  // Attempt to fetch the transient cache version and use it if we get one:
+  if (false !== ($value = get_transient($cache_name)) ) {
+    // We got a response from the cache and it is current:
+    return apply_filters('embed_rnf', $value, $matches, $attr, $url, $rawattr);
+  }
+
+  // We didn't, continue on:
   $response = wp_remote_get($url, array());
 
   $old_libxml_error = libxml_use_internal_errors(true);
@@ -116,7 +125,10 @@ function rnf_overrides_oembed_handler($matches, $attr, $url, $rawattr) {
 
   $output = implode(' ', $render);
 
-  return apply_filters('embed_alltrails', $output, $matches, $attr, $url, $rawattr);
+  // Save for use later:
+  set_transient($cache_name, $output, WEEK_IN_SECONDS);
+
+  return apply_filters('embed_rnf', $output, $matches, $attr, $url, $rawattr);
 }
 wp_embed_register_handler('alltrails', '#https?://www.alltrails.com.+#', 'rnf_overrides_oembed_handler', 5);
 wp_embed_register_handler('oppo', '#https?://oppositelock.kinja.com.+#', 'rnf_overrides_oembed_handler', 5);
