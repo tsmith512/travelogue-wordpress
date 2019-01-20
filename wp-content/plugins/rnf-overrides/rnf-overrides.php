@@ -154,7 +154,7 @@ wp_embed_register_handler('tsc', '#https?://(www.)?tsmithcreative.com.+#', 'rnf_
  * Add a marker to the admin bar with an environment label.
  * Inspired by https://wordpress.org/plugins/show-environment-in-admin-bar
  */
-function rnf_overrides_admin_bar_env_note(&$admin_menu_bar) {
+function rnf_overrides_admin_bar_env_note($admin_menu_bar) {
   $environment = FALSE;
   $class = "rnf-env-";
 
@@ -173,7 +173,6 @@ function rnf_overrides_admin_bar_env_note(&$admin_menu_bar) {
   if ($environment) {
     $admin_menu_bar->add_node(array(
       'id' => 'rnf-env-marker',
-      'parent' => 'root-default',
       'title' => $environment,
       'meta'   => array( 'class' => "rnf-env-marker-link {$class}" ),
     ));
@@ -183,6 +182,7 @@ add_action('admin_bar_menu', 'rnf_overrides_admin_bar_env_note', 1);
 
 function rnf_overrides_admin_bar_styles() {
   wp_register_style('rnf-env-marker-style', plugin_dir_url( __FILE__ ) . 'css/rnf-env-marker.css', array(), false);
-  wp_enqueue_style('rnf-env-marker-style');
+  if (is_user_logged_in()) wp_enqueue_style('rnf-env-marker-style');
 }
 add_action('admin_enqueue_scripts', 'rnf_overrides_admin_bar_styles');
+add_action('wp_enqueue_scripts', 'rnf_overrides_admin_bar_styles');
