@@ -49,6 +49,22 @@ function rnf_theme_drop_jqmigrate($scripts) {
 add_action('wp_default_scripts', 'rnf_theme_drop_jqmigrate', 100);
 
 /**
+ * Implements wp_default_scripts to move jQuery core to the footer for pages
+ * viewed in this theme.
+ * See: https://wordpress.stackexchange.com/a/240612
+ */
+function rnf_theme_move_jq($scripts) {
+  // This function would probably only execute on the customizer, but check
+  // anyway, this would break admin.
+  if (is_admin()) return;
+
+  $scripts->add_data('jquery', 'group', 1);
+  $scripts->add_data('jquery-core', 'group', 1);
+  // StackOverflow answer also moved jquery-migrate, but I've dropped that.
+}
+add_action('wp_default_scripts', 'rnf_theme_move_jq');
+
+/**
  * Implements wp_enqueue_scripts to register the scripts and styles for the
  * Colorbox lightbox library which will attach to all image galleries.
  *
