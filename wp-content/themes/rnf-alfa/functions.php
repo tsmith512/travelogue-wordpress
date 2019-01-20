@@ -30,9 +30,23 @@ function rnf_theme_register_scripts_and_styles() {
 
   // (Vendor) Sticky Sidebar
   wp_register_script('sticky-sidebar', get_stylesheet_directory_uri() . '/vendor/sticky-sidebar/sticky-sidebar.min.js', array(), false, true);
-
 }
 add_action( 'wp_enqueue_scripts', 'rnf_theme_register_scripts_and_styles', 20 );
+
+/**
+ * Implements wp_default_scripts to drop jQuery Migrate from pages viewed in
+ * this theme. (Or should this go in rnf_overrides and limit to !is_admin?)
+ */
+function rnf_theme_drop_jqmigrate($scripts) {
+  if (isset( $scripts->registered['jquery'] ) ) {
+    $script = $scripts->registered['jquery'];
+
+    if ( $script->deps ) { // Check whether the script has any dependencies
+      $script->deps = array_diff( $script->deps, array( 'jquery-migrate' ) );
+    }
+  }
+}
+add_action('wp_default_scripts', 'rnf_theme_drop_jqmigrate', 100);
 
 /**
  * Implements wp_enqueue_scripts to register the scripts and styles for the
