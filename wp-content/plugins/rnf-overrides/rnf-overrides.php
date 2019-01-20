@@ -186,3 +186,6 @@ function rnf_overrides_admin_bar_styles() {
 }
 add_action('admin_enqueue_scripts', 'rnf_overrides_admin_bar_styles');
 add_action('wp_enqueue_scripts', 'rnf_overrides_admin_bar_styles');
+
+// Include external files
+include_once "rnf-overrides-drop-wpemoji.php";
