@@ -39,6 +39,12 @@ function rnf_theme_register_scripts_and_styles() {
 
   // (Vendor) Sticky Sidebar
   wp_register_script('sticky-sidebar', get_stylesheet_directory_uri() . '/vendor/sticky-sidebar/sticky-sidebar.min.js', array(), false, true);
+
+  // And remove TwentySeventeen stuff we do not need
+  wp_dequeue_style('twentyseventeen-ie8');
+  wp_dequeue_script('html5');
+  wp_dequeue_script('twentyseventeen-global');
+  wp_dequeue_script('jquery-scrollto');
 }
 add_action( 'wp_enqueue_scripts', 'rnf_theme_register_scripts_and_styles', 20 );
 
