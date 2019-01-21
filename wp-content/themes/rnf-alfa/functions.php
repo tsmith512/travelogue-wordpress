@@ -9,6 +9,15 @@ function rnf_theme_enqueue_parent_styles() {
 add_action( 'wp_enqueue_scripts', 'rnf_theme_enqueue_parent_styles', 5 );
 
 /**
+ * Implements init to drop twentyseventeen's social icons SVGs include in the
+ * footer.
+ */
+function rnf_theme_dequeue_icons() {
+  remove_action( 'wp_footer', 'twentyseventeen_include_svg_icons', 9999 );
+}
+add_action('init', 'rnf_theme_dequeue_icons', 100);
+
+/**
  * Implements wp_enqueue_scripts to register scripts/styles for my overrides.
  * Currently this is only CSS and JS for Colorbox, so we'll only actually
  * enqueue this stuff on post_gallery filter.
