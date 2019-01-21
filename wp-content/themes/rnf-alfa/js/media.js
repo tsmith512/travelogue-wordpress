@@ -14,7 +14,8 @@
 
     $('.gallery-item a, .wp-block-gallery a, .wp-block-image a').colorbox({
       maxWidth: "95%",
-      maxHeight: "95%"
+      maxHeight: "95%",
+      fixed: true
     });
   });
 })(jQuery);
