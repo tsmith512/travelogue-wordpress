@@ -42,6 +42,7 @@ if ($_SERVER['HTTP_HOST'] !== 'PRODUCTION HOSTNAME HERE') {
   define('FORCE_SSL_ADMIN', true);
 }
 
+define('DISABLE_WP_CRON', true);
 
 // ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */

@@ -9,6 +9,15 @@ function rnf_theme_enqueue_parent_styles() {
 add_action( 'wp_enqueue_scripts', 'rnf_theme_enqueue_parent_styles', 5 );
 
 /**
+ * Implements init to drop twentyseventeen's social icons SVGs include in the
+ * footer.
+ */
+function rnf_theme_dequeue_icons() {
+  remove_action( 'wp_footer', 'twentyseventeen_include_svg_icons', 9999 );
+}
+add_action('init', 'rnf_theme_dequeue_icons', 100);
+
+/**
  * Implements wp_enqueue_scripts to register scripts/styles for my overrides.
  * Currently this is only CSS and JS for Colorbox, so we'll only actually
  * enqueue this stuff on post_gallery filter.
@@ -31,8 +40,44 @@ function rnf_theme_register_scripts_and_styles() {
   // (Vendor) Sticky Sidebar
   wp_register_script('sticky-sidebar', get_stylesheet_directory_uri() . '/vendor/sticky-sidebar/sticky-sidebar.min.js', array(), false, true);
 
+  // And remove TwentySeventeen stuff we do not need
+  wp_dequeue_style('twentyseventeen-ie8');
+  wp_dequeue_script('html5');
+  wp_dequeue_script('twentyseventeen-global');
+  wp_dequeue_script('jquery-scrollto');
 }
 add_action( 'wp_enqueue_scripts', 'rnf_theme_register_scripts_and_styles', 20 );
+
+/**
+ * Implements wp_default_scripts to drop jQuery Migrate from pages viewed in
+ * this theme. (Or should this go in rnf_overrides and limit to !is_admin?)
+ */
+function rnf_theme_drop_jqmigrate($scripts) {
+  if (isset( $scripts->registered['jquery'] ) ) {
+    $script = $scripts->registered['jquery'];
+
+    if ( $script->deps ) { // Check whether the script has any dependencies
+      $script->deps = array_diff( $script->deps, array( 'jquery-migrate' ) );
+    }
+  }
+}
+add_action('wp_default_scripts', 'rnf_theme_drop_jqmigrate', 100);
+
+/**
+ * Implements wp_default_scripts to move jQuery core to the footer for pages
+ * viewed in this theme.
+ * See: https://wordpress.stackexchange.com/a/240612
+ */
+function rnf_theme_move_jq($scripts) {
+  // This function would probably only execute on the customizer, but check
+  // anyway, this would break admin.
+  if (is_admin()) return;
+
+  $scripts->add_data('jquery', 'group', 1);
+  $scripts->add_data('jquery-core', 'group', 1);
+  // StackOverflow answer also moved jquery-migrate, but I've dropped that.
+}
+add_action('wp_default_scripts', 'rnf_theme_move_jq');
 
 /**
  * Implements wp_enqueue_scripts to register the scripts and styles for the

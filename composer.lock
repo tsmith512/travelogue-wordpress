@@ -1,10 +1,11 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "51a687faefbd7dcdbfb8a0b9566603e3",
+    "hash": "a76693b0409d35fabd84d25712f944fc",
+    "content-hash": "001c018e980a5d5ca42a184058b2bf00",
     "packages": [
         {
             "name": "johnpbloch/wordpress",
@@ -43,7 +44,7 @@
                 "cms",
                 "wordpress"
             ],
-            "time": "2019-01-09T18:42:21+00:00"
+            "time": "2019-01-09 18:42:21"
         },
         {
             "name": "johnpbloch/wordpress-core",
@@ -83,7 +84,7 @@
                 "cms",
                 "wordpress"
             ],
-            "time": "2019-01-09T18:42:15+00:00"
+            "time": "2019-01-09 18:42:15"
         },
         {
             "name": "johnpbloch/wordpress-core-installer",
@@ -132,7 +133,7 @@
             "keywords": [
                 "wordpress"
             ],
-            "time": "2018-11-09T20:10:38+00:00"
+            "time": "2018-11-09 20:10:38"
         }
     ],
     "packages-dev": [
@@ -254,7 +255,7 @@
                 "zend",
                 "zikula"
             ],
-            "time": "2018-08-27T06:10:37+00:00"
+            "time": "2018-08-27 06:10:37"
         },
         {
             "name": "wpackagist-plugin/auto-upload-images",
@@ -275,26 +276,6 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/auto-upload-images/"
-        },
-        {
-            "name": "wpackagist-plugin/responsive-lightbox",
-            "version": "2.0.5",
-            "source": {
-                "type": "svn",
-                "url": "https://plugins.svn.wordpress.org/responsive-lightbox/",
-                "reference": "tags/2.0.5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/responsive-lightbox.2.0.5.zip",
-                "reference": null,
-                "shasum": null
-            },
-            "require": {
-                "composer/installers": "~1.0"
-            },
-            "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/responsive-lightbox/"
         },
         {
             "name": "wpackagist-plugin/tumblr-importer",
