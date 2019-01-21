@@ -26,29 +26,22 @@
 
 /* BLOCKQUOTE ADJUSTMENTS */
 
+article.format-standard blockquote:before,
+article.format-quote blockquote:before {
+  content: "\201C";
+  font-weight: 300;
+  position: absolute;
+  left: -0.375em;
+  top: -0.375em;
+  font-size: 3em;
+  opacity: 0.5;
+}
+
 /* Add hanging quote icons for blockquotes used in regular posts. */
 article.format-standard blockquote  {
   position: relative;
   overflow: visible;
     /* No idea why this is set to hidden for standard-post blockquotes in twentyseventeen */
-}
-
-.format-standard blockquote .icon {
-  display: block;
-  height: 20px;
-  left: -1.25em;
-  position: absolute;
-  top: 0.4em;
-  -webkit-transform: scale(-1, 1);
-  -ms-transform: scale(-1, 1);
-  transform: scale(-1, 1);
-  width: 20px;
-}
-
-@media screen and (min-width: 48em) {
-  .format-standard blockquote .icon {
-    left: -1.5em;
-  }
 }
 
 /* Overriding the style on the gutenberg bq block requires weird specificity */
