@@ -36,13 +36,13 @@ function rnf_theme_register_scripts_and_styles() {
   wp_enqueue_script('rnf-alfa-js-main');
 
   // (Own) Media handlers
-  wp_register_script('rnf-alfa-js-media', get_stylesheet_directory_uri() . '/js/media.js', array('colorbox-script', 'jquery'), RNF_VERSION, true);
+  wp_register_script('rnf-alfa-js-media', get_stylesheet_directory_uri() . '/js/media.js', array('fancybox-script', 'jquery'), RNF_VERSION, true);
 
   // Was loading this conditionally on `post_gallery` filter, but I haven't
   // figured out how to attach it to Gutenberg blocks yet, and let's face it,
   // this is an entirely photo-driven site, this is actually needed on all
   // pages.
-  wp_enqueue_style('colorbox-style');
+  wp_enqueue_style('fancybox-style');
   wp_enqueue_script('rnf-alfa-js-media');
 
   // (Vendor) Sticky Sidebar
@@ -94,11 +94,8 @@ add_action('wp_default_scripts', 'rnf_theme_move_jq');
  * @TODO: Can this be executed only when needed? Also replace with PhotoSwipe
  */
 function rnf_theme_register_lightbox() {
-  wp_register_style( 'colorbox-style', get_stylesheet_directory_uri() . '/vendor/colorbox/example2/colorbox.css', array(), null);
-  wp_register_script('colorbox-script', get_stylesheet_directory_uri() . '/vendor/colorbox/jquery.colorbox.js', array('jquery'), null, true);
-
-  wp_add_inline_style('colorbox-style', "#cboxWrapper button {transition: none !important; filter: invert(100%);}");
-  wp_add_inline_style('colorbox-style', "#cboxOverlay {background: black;}");
+  wp_register_style('fancybox-style', content_url('/vendor/fancyapps/fancybox/dist/jquery.fancybox.min.css'), array(), null);
+  wp_register_script('fancybox-script', content_url('/vendor/fancyapps/fancybox/dist/jquery.fancybox.min.js'), array('jquery'), null, true);
 }
 add_action( 'wp_enqueue_scripts', 'rnf_theme_register_lightbox', 10 );
 
