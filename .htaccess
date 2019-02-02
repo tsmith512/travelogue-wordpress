@@ -41,3 +41,43 @@ RewriteRule ^(.*)$ /wp/$1
 # straight to the WordPress index
 RewriteRule ^(/)?$ wp/index.php [L]
 </IfModule>
+
+# Caching of assets and uploads
+Header unset ETag
+FileETag None
+
+<FilesMatch ".(ico|jpg|jpeg|png|gif|svg|mp4)$">
+  # 1 year
+  Header set Cache-Control "max-age=31536000, public"
+</FilesMatch>
+<FilesMatch ".(js|css)$">
+  # 2 months
+  Header set Cache-Control "max-age=5184000, public"
+</FilesMatch>
+
+<IfModule mod_expires.c>
+  ExpiresActive On
+
+  ExpiresByType text/html "access 1 hour"
+
+  # Images uploaded are valid "forever" because even re-uploads would get new
+  # names or dates. This does assume I wouldn't update a theme asset without
+  # changing its name though.
+  ExpiresByType image/jpg "access 1 year"
+  ExpiresByType image/jpeg "access 1 year"
+  ExpiresByType image/gif "access 1 year"
+  ExpiresByType image/png "access 1 year"
+  ExpiresByType image/svg "access 1 year"
+  ExpiresByType video/mp4 "access 1 year"
+
+  # CSS and JS all have cache buster tags on 'em tied to the WP release (core
+  # stuff) or git tag (my stuff)
+  ExpiresByType text/css "access 2 months"
+  ExpiresByType application/javascript "access 2 months"
+  ExpiresByType application/x-javascript "access 2 months"
+
+  # Favicon is good for life
+  ExpiresByType image/x-icon "access 1 year"
+
+  ExpiresDefault "access 2 days"
+</IfModule>
