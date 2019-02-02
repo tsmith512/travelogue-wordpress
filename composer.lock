@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a76693b0409d35fabd84d25712f944fc",
-    "content-hash": "001c018e980a5d5ca42a184058b2bf00",
+    "hash": "6ca6b0ee3b49761bf11a9d1ecb1e7069",
+    "content-hash": "e984c4c576005ebeafafd713c91e8fa7",
     "packages": [
         {
             "name": "johnpbloch/wordpress",
@@ -256,6 +256,16 @@
                 "zikula"
             ],
             "time": "2018-08-27 06:10:37"
+        },
+        {
+            "name": "fancyapps/fancybox",
+            "version": "3.5.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fancyapps/fancybox.git",
+                "reference": "v3.5.6"
+            },
+            "type": "library"
         },
         {
             "name": "wpackagist-plugin/auto-upload-images",

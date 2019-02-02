@@ -23,22 +23,30 @@ add_action('init', 'rnf_theme_dequeue_icons', 100);
  * enqueue this stuff on post_gallery filter.
  */
 function rnf_theme_register_scripts_and_styles() {
+  // twentyseventeen-style is registered by the parent theme but it's the active
+  // (so, child) theme's CSS file. I'll unregister that because it has a cache
+  // buster tied to the WP core version, not its own revision. Reregistering it
+  // by the same name makes sure that the parent theme's CSS dependencies
+  // (mostly for gberg blocks) still render.
+  wp_deregister_style('twentyseventeen-style');
+  wp_register_style('twentyseventeen-style', get_stylesheet_uri(), array(), RNF_VERSION);
+
   // (Own) General site-wide stuff
-  wp_register_script('rnf-js-main', get_stylesheet_directory_uri() . '/js/main.js', array('sticky-sidebar'), false, true);
-  wp_enqueue_script('rnf-js-main');
+  wp_register_script('rnf-alfa-js-main', get_stylesheet_directory_uri() . '/js/main.js', array('sticky-sidebar'), RNF_VERSION, true);
+  wp_enqueue_script('rnf-alfa-js-main');
 
   // (Own) Media handlers
-  wp_register_script('rnf-js-media', get_stylesheet_directory_uri() . '/js/media.js', array('colorbox-script', 'jquery'), false, true);
+  wp_register_script('rnf-alfa-js-media', get_stylesheet_directory_uri() . '/js/media.js', array('fancybox-script', 'jquery'), RNF_VERSION, true);
 
   // Was loading this conditionally on `post_gallery` filter, but I haven't
   // figured out how to attach it to Gutenberg blocks yet, and let's face it,
   // this is an entirely photo-driven site, this is actually needed on all
   // pages.
-  wp_enqueue_style('colorbox-style');
-  wp_enqueue_script('rnf-js-media');
+  wp_enqueue_style('fancybox-style');
+  wp_enqueue_script('rnf-alfa-js-media');
 
   // (Vendor) Sticky Sidebar
-  wp_register_script('sticky-sidebar', get_stylesheet_directory_uri() . '/vendor/sticky-sidebar/sticky-sidebar.min.js', array(), false, true);
+  wp_register_script('sticky-sidebar', get_stylesheet_directory_uri() . '/vendor/sticky-sidebar/sticky-sidebar.min.js', array(), RNF_VERSION, true);
 
   // And remove TwentySeventeen stuff we do not need
   wp_dequeue_style('twentyseventeen-ie8');
@@ -86,11 +94,8 @@ add_action('wp_default_scripts', 'rnf_theme_move_jq');
  * @TODO: Can this be executed only when needed? Also replace with PhotoSwipe
  */
 function rnf_theme_register_lightbox() {
-  wp_register_style( 'colorbox-style', get_stylesheet_directory_uri() . '/vendor/colorbox/example2/colorbox.css', array());
-  wp_register_script('colorbox-script', get_stylesheet_directory_uri() . '/vendor/colorbox/jquery.colorbox.js', array('jquery'), false, true);
-
-  wp_add_inline_style('colorbox-style', "#cboxWrapper button {transition: none !important; filter: invert(100%);}");
-  wp_add_inline_style('colorbox-style', "#cboxOverlay {background: black;}");
+  wp_register_style('fancybox-style', content_url('/vendor/fancyapps/fancybox/dist/jquery.fancybox.min.css'), array(), null);
+  wp_register_script('fancybox-script', content_url('/vendor/fancyapps/fancybox/dist/jquery.fancybox.min.js'), array('jquery'), null, true);
 }
 add_action( 'wp_enqueue_scripts', 'rnf_theme_register_lightbox', 10 );
 
