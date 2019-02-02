@@ -12,6 +12,18 @@
     {
       "type": "composer",
       "url" : "https://wpackagist.org"
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "fancyapps/fancybox",
+        "version": "3.5.6",
+        "source": {
+          "url": "https://github.com/fancyapps/fancybox.git",
+          "type": "git",
+          "reference": "v3.5.6"
+        }
+      }
     }
   ],
   "config": {
@@ -23,7 +35,8 @@
   "require-dev": {
     "wpackagist-theme/twentyseventeen":"~2.0",
     "wpackagist-plugin/auto-upload-images": "3.1.1",
-    "wpackagist-plugin/tumblr-importer":"0.8"
+    "wpackagist-plugin/tumblr-importer":"0.8",
+    "fancyapps/fancybox":"3.5.x"
   },
   "extra": {
     "wordpress-install-dir": "wp"
