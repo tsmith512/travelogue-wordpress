@@ -23,8 +23,15 @@ add_action('init', 'rnf_theme_dequeue_icons', 100);
  * enqueue this stuff on post_gallery filter.
  */
 function rnf_theme_register_scripts_and_styles() {
+  // twentyseventeen-style is registered by the parent theme but it's the active
+  // (so, child) theme's CSS file. I'll unregister that because it has a cache
+  // buster tied to the WP core version, not its own revision. Reregistering it
+  // by the same name makes sure that the parent theme's CSS dependencies
+  // (mostly for gberg blocks) still render.
+  wp_deregister_style('twentyseventeen-style');
+  wp_register_style('twentyseventeen-style', get_stylesheet_uri(), array(), RNF_VERSION);
+
   // (Own) General site-wide stuff
-  wp_enqueue_style('rnf-alfa-style', get_stylesheet_uri(), array(), RNF_VERSION);
   wp_register_script('rnf-alfa-js-main', get_stylesheet_directory_uri() . '/js/main.js', array('sticky-sidebar'), RNF_VERSION, true);
   wp_enqueue_script('rnf-alfa-js-main');
 
@@ -42,8 +49,6 @@ function rnf_theme_register_scripts_and_styles() {
   wp_register_script('sticky-sidebar', get_stylesheet_directory_uri() . '/vendor/sticky-sidebar/sticky-sidebar.min.js', array(), RNF_VERSION, true);
 
   // And remove TwentySeventeen stuff we do not need
-  wp_dequeue_style('twentyseventeen-style');
-  wp_deregister_style('twentyseventeen-style');
   wp_dequeue_style('twentyseventeen-ie8');
   wp_dequeue_script('html5');
   wp_dequeue_script('twentyseventeen-global');
