@@ -29,7 +29,7 @@ class RNF_Geo_Map_Widget extends WP_Widget {
   public function widget($args, $instance) {
     wp_enqueue_style('mapbox-style');
     wp_enqueue_script('mapbox-core');
-    wp_enqueue_style('rnf-style');
+    wp_enqueue_style('rnf-geo-style');
     wp_enqueue_script('rnf-geo-js');
 
     ?>
