@@ -24,19 +24,19 @@ add_action('init', 'rnf_theme_dequeue_icons', 100);
  */
 function rnf_theme_register_scripts_and_styles() {
   // (Own) General site-wide stuff
-  wp_enqueue_style('rnf-style', get_stylesheet_uri(), array(), RNF_VERSION);
-  wp_register_script('rnf-js-main', get_stylesheet_directory_uri() . '/js/main.js', array('sticky-sidebar'), RNF_VERSION, true);
-  wp_enqueue_script('rnf-js-main');
+  wp_enqueue_style('rnf-alfa-style', get_stylesheet_uri(), array(), RNF_VERSION);
+  wp_register_script('rnf-alfa-js-main', get_stylesheet_directory_uri() . '/js/main.js', array('sticky-sidebar'), RNF_VERSION, true);
+  wp_enqueue_script('rnf-alfa-js-main');
 
   // (Own) Media handlers
-  wp_register_script('rnf-js-media', get_stylesheet_directory_uri() . '/js/media.js', array('colorbox-script', 'jquery'), RNF_VERSION, true);
+  wp_register_script('rnf-alfa-js-media', get_stylesheet_directory_uri() . '/js/media.js', array('colorbox-script', 'jquery'), RNF_VERSION, true);
 
   // Was loading this conditionally on `post_gallery` filter, but I haven't
   // figured out how to attach it to Gutenberg blocks yet, and let's face it,
   // this is an entirely photo-driven site, this is actually needed on all
   // pages.
   wp_enqueue_style('colorbox-style');
-  wp_enqueue_script('rnf-js-media');
+  wp_enqueue_script('rnf-alfa-js-media');
 
   // (Vendor) Sticky Sidebar
   wp_register_script('sticky-sidebar', get_stylesheet_directory_uri() . '/vendor/sticky-sidebar/sticky-sidebar.min.js', array(), RNF_VERSION, true);
