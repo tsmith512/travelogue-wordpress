@@ -24,11 +24,12 @@ add_action('init', 'rnf_theme_dequeue_icons', 100);
  */
 function rnf_theme_register_scripts_and_styles() {
   // (Own) General site-wide stuff
-  wp_register_script('rnf-js-main', get_stylesheet_directory_uri() . '/js/main.js', array('sticky-sidebar'), false, true);
+  wp_enqueue_style('rnf-style', get_stylesheet_uri(), array(), RNF_VERSION);
+  wp_register_script('rnf-js-main', get_stylesheet_directory_uri() . '/js/main.js', array('sticky-sidebar'), RNF_VERSION, true);
   wp_enqueue_script('rnf-js-main');
 
   // (Own) Media handlers
-  wp_register_script('rnf-js-media', get_stylesheet_directory_uri() . '/js/media.js', array('colorbox-script', 'jquery'), false, true);
+  wp_register_script('rnf-js-media', get_stylesheet_directory_uri() . '/js/media.js', array('colorbox-script', 'jquery'), RNF_VERSION, true);
 
   // Was loading this conditionally on `post_gallery` filter, but I haven't
   // figured out how to attach it to Gutenberg blocks yet, and let's face it,
@@ -38,9 +39,11 @@ function rnf_theme_register_scripts_and_styles() {
   wp_enqueue_script('rnf-js-media');
 
   // (Vendor) Sticky Sidebar
-  wp_register_script('sticky-sidebar', get_stylesheet_directory_uri() . '/vendor/sticky-sidebar/sticky-sidebar.min.js', array(), false, true);
+  wp_register_script('sticky-sidebar', get_stylesheet_directory_uri() . '/vendor/sticky-sidebar/sticky-sidebar.min.js', array(), RNF_VERSION, true);
 
   // And remove TwentySeventeen stuff we do not need
+  wp_dequeue_style('twentyseventeen-style');
+  wp_deregister_style('twentyseventeen-style');
   wp_dequeue_style('twentyseventeen-ie8');
   wp_dequeue_script('html5');
   wp_dequeue_script('twentyseventeen-global');
@@ -86,8 +89,8 @@ add_action('wp_default_scripts', 'rnf_theme_move_jq');
  * @TODO: Can this be executed only when needed? Also replace with PhotoSwipe
  */
 function rnf_theme_register_lightbox() {
-  wp_register_style( 'colorbox-style', get_stylesheet_directory_uri() . '/vendor/colorbox/example2/colorbox.css', array());
-  wp_register_script('colorbox-script', get_stylesheet_directory_uri() . '/vendor/colorbox/jquery.colorbox.js', array('jquery'), false, true);
+  wp_register_style( 'colorbox-style', get_stylesheet_directory_uri() . '/vendor/colorbox/example2/colorbox.css', array(), null);
+  wp_register_script('colorbox-script', get_stylesheet_directory_uri() . '/vendor/colorbox/jquery.colorbox.js', array('jquery'), null, true);
 
   wp_add_inline_style('colorbox-style', "#cboxWrapper button {transition: none !important; filter: invert(100%);}");
   wp_add_inline_style('colorbox-style', "#cboxOverlay {background: black;}");

@@ -181,7 +181,7 @@ function rnf_overrides_admin_bar_env_note($admin_menu_bar) {
 add_action('admin_bar_menu', 'rnf_overrides_admin_bar_env_note', 1);
 
 function rnf_overrides_admin_bar_styles() {
-  wp_register_style('rnf-env-marker-style', plugin_dir_url( __FILE__ ) . 'css/rnf-env-marker.css', array(), false);
+  wp_register_style('rnf-env-marker-style', plugin_dir_url( __FILE__ ) . 'css/rnf-env-marker.css', RNF_VERSION, false);
   if (is_user_logged_in()) wp_enqueue_style('rnf-env-marker-style');
 }
 add_action('admin_enqueue_scripts', 'rnf_overrides_admin_bar_styles');
