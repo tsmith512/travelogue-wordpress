@@ -89,19 +89,21 @@ add_action('admin_enqueue_scripts', 'rnf_geo_register_assets');
  * categories if possible.
  */
 function rnf_geo_get_trips($trip_id = null) {
-  $transient = get_transient('rnf_geo_trips_cache');
-  if( ! empty( $transient ) ) {
-    return $transient;
-  }
-
-  $options = get_option('rnf_geo_settings');
-  $endpoint = $options['location_tracker_endpoint'] . '/api/trips';
-  $result = wp_remote_get($endpoint);
   $trips = array();
 
-  if ($result['response']['code'] == 200) {
-    $trips = json_decode($result['body']);
-    set_transient( 'rnf_geo_trips_cache', $output, DAY_IN_SECONDS );
+  $transient = get_transient('rnf_geo_trips_cache');
+
+  if (empty($transient)) {
+    $options = get_option('rnf_geo_settings');
+    $endpoint = $options['location_tracker_endpoint'] . '/api/trips';
+    $result = wp_remote_get($endpoint);
+
+    if ($result['response']['code'] == 200) {
+      $trips = json_decode($result['body']);
+      set_transient( 'rnf_geo_trips_cache', $trips, DAY_IN_SECONDS );
+    }
+  } else {
+    $trips = $transient;
   }
 
   // If we're only looking for data on a single Trip (an ID was provided),
