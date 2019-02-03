@@ -4,3 +4,12 @@
   height: 500px;
   max-height: 80vh;
 }
+
+.leaflet-control-zoom a {
+  display: inline-block;
+  border-bottom: none;
+  border-right: 1px solid #ddd;
+}
+.leaflet-control-zoom a:last-child {
+  border-right: none;
+}
