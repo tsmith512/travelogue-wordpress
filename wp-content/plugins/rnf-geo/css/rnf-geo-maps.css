@@ -3,6 +3,10 @@
   min-height: 200px;
   height: 500px;
   max-height: 80vh;
+
+  border-radius: 2px;
+  border: 1px solid #ccc;
+  border-bottom-width: 2px;
 }
 
 .leaflet-control-zoom a {
