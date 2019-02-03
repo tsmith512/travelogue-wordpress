@@ -2,7 +2,7 @@
   'use strict';
 
   L.mapbox.accessToken = tqor.mapboxApi;
-  window.map = L.mapbox.map('map').fitBounds([[34.4,-100.0],[36.8,-96.2]], {animate: true, padding: [30, 30]});
+  window.map = L.mapbox.map('map').fitBounds([[50.79204, -97.20703],[15.02968, -125.77148]], {animate: true, padding: [10, 10]});
   L.mapbox.styleLayer(tqor.mapboxStyle).addTo(map);
 
   // @TODO: NOTE! THIS CALLBACK IS EXECUTED FOR EACH LOAD at the moment. It's
