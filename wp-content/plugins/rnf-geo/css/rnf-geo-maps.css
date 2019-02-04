@@ -9,6 +9,29 @@
   border-bottom-width: 2px;
 }
 
+@media screen and (max-width: 48em) {
+  #map {
+    display: none;
+    position: fixed !important;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    height: auto;
+    max-height: none;
+    max-width: none;
+  }
+
+  #map.visible {
+    display: block;
+  }
+
+  body.admin-bar #map {
+    top: 46px;
+  }
+}
+
 .leaflet-control-zoom a {
   display: inline-block;
   border-bottom: none;
@@ -16,4 +39,24 @@
 }
 .leaflet-control-zoom a:last-child {
   border-right: none;
+}
+
+.rnfmap-custom-controls a {
+  background-repeat: no-repeat;
+  background-position: 0.25em center;
+  background-size: 1.5em;
+  padding-left: 2.5em;
+  width: 8em;
+  line-height: 2.25;
+  white-space: nowrap;
+}
+
+.rnfmap-custom-controls a.icon-close {
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTIgMGMtNi42MjcgMC0xMiA1LjM3My0xMiAxMnM1LjM3MyAxMiAxMiAxMiAxMi01LjM3MyAxMi0xMi01LjM3My0xMi0xMi0xMnptNC4xNTEgMTcuOTQzbC00LjE0My00LjEwMi00LjExNyA0LjE1OS0xLjgzMy0xLjgzMyA0LjEwNC00LjE1Ny00LjE2Mi00LjExOSAxLjgzMy0xLjgzMyA0LjE1NSA0LjEwMiA0LjEwNi00LjE2IDEuODQ5IDEuODQ5LTQuMSA0LjE0MSA0LjE1NyA0LjEwNC0xLjg0OSAxLjg0OXoiLz48L3N2Zz4=");
+}
+@media screen and (min-width: 48em) {
+  .rnfmap-custom-controls {
+  /* @TODO: Should be "a.rnfmap-close {" once we have other buttons in that tray */
+    display: none;
+  }
 }
