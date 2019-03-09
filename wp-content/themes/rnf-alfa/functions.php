@@ -1,14 +1,5 @@
 <?php
 /**
- * Implements wp_enqueue_scripts to pull in the parent theme's scripts and
- * stylesheets (since this is a twentyseventeen with very light customization).
- */
-function rnf_theme_enqueue_parent_styles() {
-  wp_enqueue_style( 'parent-style', get_template_directory_uri() . '/style.css' );
-}
-add_action( 'wp_enqueue_scripts', 'rnf_theme_enqueue_parent_styles', 5 );
-
-/**
  * Implements init to drop twentyseventeen's social icons SVGs include in the
  * footer.
  */
@@ -23,13 +14,14 @@ add_action('init', 'rnf_theme_dequeue_icons', 100);
  * enqueue this stuff on post_gallery filter.
  */
 function rnf_theme_register_scripts_and_styles() {
-  // twentyseventeen-style is registered by the parent theme but it's the active
-  // (so, child) theme's CSS file. I'll unregister that because it has a cache
-  // buster tied to the WP core version, not its own revision. Reregistering it
-  // by the same name makes sure that the parent theme's CSS dependencies
-  // (mostly for gberg blocks) still render.
+  // I've copied in twentyseventeen's original CSS and modified it.
+  // Reregistering it by the same name makes sure that the parent theme's CSS
+  // dependencies (mostly for gutenberg blocks) still render.
   wp_deregister_style('twentyseventeen-style');
-  wp_register_style('twentyseventeen-style', get_stylesheet_uri(), array(), RNF_VERSION);
+  wp_register_style('twentyseventeen-style', get_stylesheet_directory_uri() . '/original.css', array(), RNF_VERSION);
+
+  wp_register_style('rnf-style', get_stylesheet_uri(), array(), RNF_VERSION);
+  wp_enqueue_style('rnf-style');
 
   // (Own) General site-wide stuff
   wp_register_script('rnf-alfa-js-main', get_stylesheet_directory_uri() . '/js/main.js', array('sticky-sidebar'), RNF_VERSION, true);
