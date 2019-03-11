@@ -1222,11 +1222,12 @@ body {
 /* Site branding */
 
 .site-branding {
+  background: black;
 	padding: 1em 0;
 	position: relative;
 	-webkit-transition: margin-bottom 0.2s;
 	transition: margin-bottom 0.2s;
-	z-index: 3;
+  z-index: 3;
 }
 
 .site-branding a {
@@ -1241,21 +1242,23 @@ body {
 }
 
 .site-title {
+  background: white;
 	clear: none;
 	font-size: 24px;
 	font-size: 1.5rem;
 	font-weight: 300;
 	line-height: 1.25;
-	letter-spacing: 0.08em;
+	letter-spacing: -0.025em;
 	margin: 0;
-	padding: 0;
-  text-transform: uppercase;
+	padding: 0.25em 0.5em !important; /* Overrides a h1:first-child override :eyeroll: */
+  /* text-transform: uppercase; */
   font-family: "Ringside Condensed SSm A", "Ringside Condensed SSm B", Helvetica, Arial, sans-serif;
+  font-style: italic;
 }
 
 .site-title,
 .site-title a {
-	color: #222;
+	color: black;
 	opacity: 1; /* Prevent opacity from changing during selective refreshes in the customize preview */
 }
 
