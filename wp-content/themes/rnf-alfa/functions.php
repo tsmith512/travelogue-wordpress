@@ -20,6 +20,10 @@ function rnf_theme_register_scripts_and_styles() {
   wp_deregister_style('twentyseventeen-style');
   wp_register_style('twentyseventeen-style', get_stylesheet_directory_uri() . '/original.css', array(), RNF_VERSION);
 
+  // Drop the Libre Franklin, I'm gonna use something else.
+  wp_deregister_style('twentyseventeen-fonts');
+
+  // Add my own overrides. @TODO: Now that Twentyseventeen's CSS has been copied in; merge these files
   wp_register_style('rnf-style', get_stylesheet_uri(), array(), RNF_VERSION);
   wp_enqueue_style('rnf-style');
 
