@@ -113,7 +113,7 @@ strong {
 
 b,
 strong {
-	font-weight: 700;
+	font-weight: 800;
 }
 
 code,
@@ -314,7 +314,7 @@ template {
 	display: block;
 	font-size: 14px;
 	font-size: 0.875rem;
-	font-weight: 700;
+	font-weight: 800;
 	height: auto;
 	left: 5px;
 	line-height: normal;
@@ -409,10 +409,10 @@ input,
 select,
 textarea {
 	color: #333;
-	font-family: "Libre Franklin", "Helvetica Neue", helvetica, arial, sans-serif;
+	font-family: "Ringside Regular SSm A", "Ringside Regular SSm B", "Helvetica Neue", helvetica, arial, sans-serif;
 	font-size: 15px;
 	font-size: 0.9375rem;
-	font-weight: 400;
+	font-weight: 300;
 	line-height: 1.66;
 }
 
@@ -422,7 +422,8 @@ h3,
 h4,
 h5,
 h6 {
-	clear: both;
+  clear: both;
+  font-family: "Ringside Condensed SSm A", "Ringside Condensed SSm B", "Helvetica Neue", helvetica, arial, sans-serif;
 	line-height: 1.4;
 	margin: 0 0 0.75em;
 	padding: 1.5em 0 0;
@@ -651,7 +652,7 @@ input[type="checkbox"] {
 
 input[type="radio"] + label,
 input[type="checkbox"] + label {
-	font-weight: 400;
+	font-weight: 300;
 }
 
 button,
@@ -716,24 +717,24 @@ input[type="submit"].secondary:focus {
 /* Placeholder text color -- selectors need to be separate to work. */
 ::-webkit-input-placeholder {
 	color: #333;
-	font-family: "Libre Franklin", "Helvetica Neue", helvetica, arial, sans-serif;
+	font-family: "Ringside Regular SSm A", "Ringside Regular SSm B", "Helvetica Neue", helvetica, arial, sans-serif;
 }
 
 :-moz-placeholder {
 	color: #333;
-	font-family: "Libre Franklin", "Helvetica Neue", helvetica, arial, sans-serif;
+	font-family: "Ringside Regular SSm A", "Ringside Regular SSm B", "Helvetica Neue", helvetica, arial, sans-serif;
 }
 
 ::-moz-placeholder {
 	color: #333;
-	font-family: "Libre Franklin", "Helvetica Neue", helvetica, arial, sans-serif;
+	font-family: "Ringside Regular SSm A", "Ringside Regular SSm B", "Helvetica Neue", helvetica, arial, sans-serif;
 	opacity: 1;
 	/* Since FF19 lowers the opacity of the placeholder by default */
 }
 
 :-ms-input-placeholder {
 	color: #333;
-	font-family: "Libre Franklin", "Helvetica Neue", helvetica, arial, sans-serif;
+	font-family: "Ringside Regular SSm A", "Ringside Regular SSm B", "Helvetica Neue", helvetica, arial, sans-serif;
 }
 
 /*--------------------------------------------------------------
@@ -772,7 +773,7 @@ li > ol {
 }
 
 dt {
-	font-weight: 700;
+	font-weight: 800;
 }
 
 dd {
@@ -1248,7 +1249,8 @@ body {
 	letter-spacing: 0.08em;
 	margin: 0;
 	padding: 0;
-	text-transform: uppercase;
+  text-transform: uppercase;
+  font-family: "Ringside Condensed SSm A", "Ringside Condensed SSm B", Helvetica, Arial, sans-serif;
 }
 
 .site-title,
@@ -1591,7 +1593,8 @@ body.page:not(.twentyseventeen-front-page) .entry-title {
 	font-weight: 800;
 	letter-spacing: 0.1818em;
 	padding-bottom: 0.25em;
-	text-transform: uppercase;
+  text-transform: uppercase;
+  font-family: "Ringside Condensed SSm A", "Ringside Condensed SSm B", Helvetica, Arial, sans-serif;
 }
 
 .entry-meta a {
@@ -2514,7 +2517,7 @@ p > object:only-child {
 }
 
 .site-content .wp-playlist-current-item .wp-playlist-item-title {
-	font-weight: 700;
+	font-weight: 800;
 }
 
 .site-content .wp-playlist-current-item .wp-playlist-item-album {
@@ -2649,7 +2652,7 @@ p > object:only-child {
 	display: block;
 	font-size: 14px;
 	font-size: 0.875rem;
-	font-weight: 700;
+	font-weight: 800;
 	letter-spacing: 1px;
 	padding: 3em;
 	text-transform: uppercase;
@@ -2698,7 +2701,7 @@ p > object:only-child {
 .no-svg .dropdown-toggle .svg-fallback.icon-angle-down {
 	font-size: 20px;
 	font-size: 1.25rem;
-	font-weight: 400;
+	font-weight: 300;
 	line-height: 1;
 	-webkit-transform: rotate(180deg); /* Chrome, Safari, Opera */
 	-ms-transform: rotate(180deg); /* IE 9 */
@@ -2733,7 +2736,7 @@ p > object:only-child {
 	clip: auto;
 	font-size: 16px;
 	font-size: 1rem;
-	font-weight: 400;
+	font-weight: 300;
 	height: auto;
 	position: relative !important; /* overrides previous !important styles */
 	width: auto;

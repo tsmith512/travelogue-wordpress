@@ -23,6 +23,9 @@ function rnf_theme_register_scripts_and_styles() {
   // Drop the Libre Franklin, I'm gonna use something else.
   wp_deregister_style('twentyseventeen-fonts');
 
+  wp_register_style('rnf-hco-typefaces', '//cloud.typography.com/6795652/6519212/css/fonts.css', array(), null);
+  wp_enqueue_style('rnf-hco-typefaces');
+
   // Add my own overrides. @TODO: Now that Twentyseventeen's CSS has been copied in; merge these files
   wp_register_style('rnf-style', get_stylesheet_uri(), array(), RNF_VERSION);
   wp_enqueue_style('rnf-style');
