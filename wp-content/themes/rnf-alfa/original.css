@@ -1244,7 +1244,7 @@ body {
 	clear: none;
 	font-size: 24px;
 	font-size: 1.5rem;
-	font-weight: 800;
+	font-weight: 300;
 	line-height: 1.25;
 	letter-spacing: 0.08em;
 	margin: 0;
@@ -1569,17 +1569,29 @@ body.page:not(.twentyseventeen-front-page) .entry-title {
 	font-size: 0.875rem;
 	font-weight: 800;
 	letter-spacing: 0.14em;
-	text-transform: uppercase;
+  text-transform: uppercase;
+  font-style: italic;
 }
 
 .entry-header .entry-title {
 	margin-bottom: 0.25em;
 }
 
+/* Entry title as an h1, that's a page view */
+h1.entry-title {
+  font-style: italic;
+  font-weight: 800;
+  letter-spacing: -0.025em;;
+}
+
+/* It's an entry title _link_ so this will be titles in a list, not a page view */
 .entry-title a {
 	color: #333;
 	text-decoration: none;
-	margin-left: -2px;
+  margin-left: -2px;
+  font-style: italic;
+  font-weight: 800;
+  letter-spacing: -0.025em;;
 }
 
 .entry-title:not(:first-child) {
