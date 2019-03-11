@@ -495,7 +495,8 @@ i {
 }
 
 blockquote {
-	color: #666;
+  color: #666;
+  font-family: "Ringside Condensed SSm A", "Ringside Condensed SSm B", Helvetica, Arial, sans-serif;
 	font-size: 18px;
 	font-size: 1.125rem;
 	font-style: italic;
@@ -506,7 +507,8 @@ blockquote {
 }
 
 blockquote cite {
-	display: block;
+  display: block;
+  font-family: "Ringside Condensed SSm A", "Ringside Condensed SSm B", Helvetica, Arial, sans-serif;
 	font-style: normal;
 	font-weight: 600;
 	margin-top: 0.5em;
