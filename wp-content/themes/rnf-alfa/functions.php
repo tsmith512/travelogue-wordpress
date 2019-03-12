@@ -1,14 +1,5 @@
 <?php
 /**
- * Implements wp_enqueue_scripts to pull in the parent theme's scripts and
- * stylesheets (since this is a twentyseventeen with very light customization).
- */
-function rnf_theme_enqueue_parent_styles() {
-  wp_enqueue_style( 'parent-style', get_template_directory_uri() . '/style.css' );
-}
-add_action( 'wp_enqueue_scripts', 'rnf_theme_enqueue_parent_styles', 5 );
-
-/**
  * Implements init to drop twentyseventeen's social icons SVGs include in the
  * footer.
  */
@@ -23,13 +14,17 @@ add_action('init', 'rnf_theme_dequeue_icons', 100);
  * enqueue this stuff on post_gallery filter.
  */
 function rnf_theme_register_scripts_and_styles() {
-  // twentyseventeen-style is registered by the parent theme but it's the active
-  // (so, child) theme's CSS file. I'll unregister that because it has a cache
-  // buster tied to the WP core version, not its own revision. Reregistering it
-  // by the same name makes sure that the parent theme's CSS dependencies
-  // (mostly for gberg blocks) still render.
+  // I've copied in twentyseventeen's original CSS and modified it.
+  // Reregistering it by the same name makes sure that the parent theme's CSS
+  // dependencies (mostly for gutenberg blocks) still render.
   wp_deregister_style('twentyseventeen-style');
   wp_register_style('twentyseventeen-style', get_stylesheet_uri(), array(), RNF_VERSION);
+
+  // Drop the Libre Franklin, I'm gonna use something else.
+  wp_deregister_style('twentyseventeen-fonts');
+
+  wp_register_style('rnf-hco-typefaces', '//cloud.typography.com/6795652/6519212/css/fonts.css', array(), null);
+  wp_enqueue_style('rnf-hco-typefaces');
 
   // (Own) General site-wide stuff
   wp_register_script('rnf-alfa-js-main', get_stylesheet_directory_uri() . '/js/main.js', array('sticky-sidebar'), RNF_VERSION, true);
@@ -117,6 +112,7 @@ function twentyseventeen_time_link() {
     get_the_modified_date()
   );
 
+  // Wrap the time string in a link, and preface it with 'Posted on'.
   $esc_path = esc_url( get_permalink() );
   $time_header = "<a href='{$esc_path}' rel='bookmark'>{$time_string}</a>";
 
@@ -127,7 +123,7 @@ function twentyseventeen_time_link() {
     // Wrap the time string in a link, and preface it with 'Posted on'.
     $timestamp = get_post_time('U', true);
 
-    $time_header .= " | <a href='#' class='tqor-map-jump' data-timestamp='{$timestamp}'>Map</a>";
+    $time_header .= " / <a href='#' class='tqor-map-jump' data-timestamp='{$timestamp}'>Map</a>";
   }
 
   return $time_header;
