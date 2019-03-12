@@ -36,11 +36,3 @@
   font-size: 0.75em;
   color: #999;
 }
-
-/* Twentyseventeen does a line-height drop to 1.5 for wider screens, but I think
-   it's a little too tight. */
-@media screen and (min-width: 48em) {
-  body {
-    line-height: 1.75;
-  }
-}
