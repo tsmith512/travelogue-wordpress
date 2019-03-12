@@ -27,5 +27,7 @@
     "autoptimize_service_availablity": "a:2:{s:12:\"extra_imgopt\";a:3:{s:6:\"status\";s:2:\"up\";s:5:\"hosts\";a:1:{i:1;s:26:\"https:\/\/cdn.shortpixel.ai\/\";}s:16:\"launch-threshold\";s:4:\"4096\";}s:7:\"critcss\";a:2:{s:6:\"status\";s:2:\"up\";s:5:\"hosts\";a:1:{i:1;s:24:\"https:\/\/criticalcss.com\/\";}}}",
     "autoptimize_show_adv": "1",
     "autoptimize_version": "2.4.4",
+    "rocket_lazyload_dismiss_imagify_notice": "0",
+    "rocket_lazyload_options": "a:1:{s:6:\"images\";s:1:\"1\";}",
     ".label": "rnf_perf_options"
 }
