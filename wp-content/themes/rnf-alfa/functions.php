@@ -18,17 +18,13 @@ function rnf_theme_register_scripts_and_styles() {
   // Reregistering it by the same name makes sure that the parent theme's CSS
   // dependencies (mostly for gutenberg blocks) still render.
   wp_deregister_style('twentyseventeen-style');
-  wp_register_style('twentyseventeen-style', get_stylesheet_directory_uri() . '/original.css', array(), RNF_VERSION);
+  wp_register_style('twentyseventeen-style', get_stylesheet_uri(), array(), RNF_VERSION);
 
   // Drop the Libre Franklin, I'm gonna use something else.
   wp_deregister_style('twentyseventeen-fonts');
 
   wp_register_style('rnf-hco-typefaces', '//cloud.typography.com/6795652/6519212/css/fonts.css', array(), null);
   wp_enqueue_style('rnf-hco-typefaces');
-
-  // Add my own overrides. @TODO: Now that Twentyseventeen's CSS has been copied in; merge these files
-  wp_register_style('rnf-style', get_stylesheet_uri(), array(), RNF_VERSION);
-  wp_enqueue_style('rnf-style');
 
   // (Own) General site-wide stuff
   wp_register_script('rnf-alfa-js-main', get_stylesheet_directory_uri() . '/js/main.js', array('sticky-sidebar'), RNF_VERSION, true);
