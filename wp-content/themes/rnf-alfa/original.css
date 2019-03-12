@@ -495,6 +495,7 @@ i {
 }
 
 blockquote {
+  position: relative;
   color: #666;
   font-family: "Ringside Condensed SSm A", "Ringside Condensed SSm B", Helvetica, Arial, sans-serif;
   font-size: 18px;
@@ -502,16 +503,38 @@ blockquote {
   font-style: italic;
   line-height: 1.7;
   margin: 0;
-  overflow: hidden;
   padding: 0;
 }
 
-blockquote cite {
+/* Swap margin-top/margin-bottom on bq p's so that there isn't a margin-bottom
+   before a cite */
+blockquote p {
+  margin-bottom: 0;
+}
+
+blockquote p + p {
+  margin-top: 1.5em;
+}
+
+blockquote cite,
+blockquote + cite,
+blockquote + .attribution,
+.entry-content blockquote.wp-block-quote cite /* gutenberg override */ {
   display: block;
+  margin-top: 0;
+  margin-left: 1rem;
   font-family: "Ringside Condensed SSm A", "Ringside Condensed SSm B", Helvetica, Arial, sans-serif;
-  font-style: normal;
-  font-weight: 600;
-  margin-top: 0.5em;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 0.875rem;
+  color: #999;
+}
+
+blockquote cite:before,
+blockquote + cite:before,
+blockquote + .attribution:before,
+.entry-content blockquote.wp-block-quote cite:before /* gutenberg override */ {
+  content: "\2014\2009";
 }
 
 address {
@@ -563,7 +586,16 @@ q {
   quotes: "“" "”" "‘" "’";
 }
 
-blockquote:before,
+blockquote:before {
+  content: "\201C";
+  font-weight: 300;
+  position: absolute;
+  left: -0.5em;
+  top: -0.375em;
+  font-size: 2.5em;
+  opacity: 0.25;
+}
+
 blockquote:after {
   content: "";
 }
@@ -954,6 +986,24 @@ a:hover .nav-title,
 .post-navigation a:hover .icon {
   color: #222;
 }
+
+/* Override TwentySeventeen's default links -- I want in-content links to be more accessible */
+.entry-content a {
+  color: rgb(27, 119, 236);
+  text-decoration: underline;
+  text-decoration-color: rgba(27, 119, 236, 0.25);
+
+  /* Override twentyseventeen's stuff */
+  box-shadow: none !important;
+  transition: none !important;
+}
+
+.entry-content a:hover {
+  color: rgb(15, 95, 195);
+  text-decoration: underline;
+  text-decoration-color: rgb(15, 95, 195);
+}
+
 
 /*--------------------------------------------------------------
 11.0 Featured Image Hover

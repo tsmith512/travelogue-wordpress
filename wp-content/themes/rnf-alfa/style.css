@@ -8,56 +8,6 @@
  * Template: twentyseventeen
  */
 
-.entry-content a {
-  color: rgb(27, 119, 236);
-  text-decoration: underline;
-  text-decoration-color: rgba(27, 119, 236, 0.25);
-
-  /* Override twentyseventeen's stuff */
-  box-shadow: none !important;
-  transition: none !important;
-}
-
-.entry-content a:hover {
-  color: rgb(15, 95, 195);
-  text-decoration: underline;
-  text-decoration-color: rgb(15, 95, 195);
-}
-
-/* BLOCKQUOTE ADJUSTMENTS */
-
-article.format-standard blockquote:before,
-article.format-quote blockquote:before {
-  content: "\201C";
-  font-weight: 300;
-  position: absolute;
-  left: -0.375em;
-  top: -0.375em;
-  font-size: 3em;
-  opacity: 0.5;
-}
-
-/* Add hanging quote icons for blockquotes used in regular posts. */
-article.format-standard blockquote  {
-  position: relative;
-  overflow: visible;
-    /* No idea why this is set to hidden for standard-post blockquotes in twentyseventeen */
-}
-
-/* Overriding the style on the gutenberg bq block requires weird specificity */
-blockquote + .attribution,
-.entry-content blockquote.wp-block-quote cite {
-  color: #999;
-  font-style: italic;
-  font-size: 0.875rem;
-  font-weight: inherit;
-}
-blockquote + .attribution:before,
-.entry-content blockquote.wp-block-quote cite:before {
-  content: "\2014\2009";
-}
-/* /QUOTE */
-
 .rnf-card {
   border: 1px solid #eee;
   background: #fbfbfb;
