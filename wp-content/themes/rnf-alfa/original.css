@@ -1,14 +1,20 @@
-/**
- * @file original.css
- *
- * This is a modified copy of twentyseventeen/style.css.
- * See https://wordpress.org/themes/twentyseventeen/ by the WordPress team for
- * more information about this file, and its original.
+/*
+ * Theme Name: RNF Theme - v1 Alfa
+ * Theme URI: https://www.routenotfound.com
+ * Description: Child of TwentySeventeen for Route Not Found, initial launch
+ * Version: 1.0
+ * Author: Taylor Smith
+ * Author URI: https://www.tsmithcreative.com
+ * Template: twentyseventeen
  */
 
 /*--------------------------------------------------------------
->>> TABLE OF CONTENTS:
+ * This is a modified copy of twentyseventeen/style.css.
+ * See https://wordpress.org/themes/twentyseventeen/ by the WordPress team for
+ * more information about this file, and its original.
+ * >>> TABLE OF CONTENTS:
 ----------------------------------------------------------------
+
 1.0 Normalize
 2.0 Accessibility
 3.0 Alignments
