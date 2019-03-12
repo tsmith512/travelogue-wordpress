@@ -48,8 +48,11 @@ function rnf_theme_register_scripts_and_styles() {
   wp_dequeue_script('html5');
   wp_dequeue_script('twentyseventeen-global');
   wp_dequeue_script('jquery-scrollto');
+  /* Remove twentyseventeen's preconnect for Google Fonts */
+  remove_filter('wp_resource_hints', 'twentyseventeen_resource_hints', 10);
 }
 add_action( 'wp_enqueue_scripts', 'rnf_theme_register_scripts_and_styles', 20 );
+
 
 /**
  * Implements wp_default_scripts to drop jQuery Migrate from pages viewed in

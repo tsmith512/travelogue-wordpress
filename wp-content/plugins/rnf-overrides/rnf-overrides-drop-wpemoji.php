@@ -48,7 +48,7 @@ function rnf_disable_emojis_tinymce( $plugins ) {
 function rnf_disable_emojis_remove_dns_prefetch( $urls, $relation_type ) {
   if ( 'dns-prefetch' == $relation_type ) {
     /** This filter is documented in wp-includes/formatting.php */
-    $emoji_svg_url = apply_filters( 'emoji_svg_url', 'https://s.w.org/images/core/emoji/11/svg/' );
+    $emoji_svg_url = apply_filters( 'emoji_svg_url', 'https://s.w.org/images/core/emoji/11.2.0/svg/' );
     // TS Edit: This line used 2 instead of 11 and the apply_filters didn't
     // transform it so I edited that. Guess I'll need to be watching for this to
     // change in the future.
