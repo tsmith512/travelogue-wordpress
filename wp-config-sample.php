@@ -46,6 +46,9 @@ define('DISABLE_WP_CRON', true);
 
 define('RNF_VERSION', trim(exec('git describe --always')));
 
+/** Changes location where Autoptimize stores optimized files */
+define('AUTOPTIMIZE_CACHE_CHILD_DIR','/uploads/autoptimize/');
+
 // ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
 define('DB_NAME', 'database_name_here');
