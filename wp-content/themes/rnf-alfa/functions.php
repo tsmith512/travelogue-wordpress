@@ -1,14 +1,5 @@
 <?php
 /**
- * Implements wp_enqueue_scripts to pull in the parent theme's scripts and
- * stylesheets (since this is a twentyseventeen with very light customization).
- */
-function rnf_theme_enqueue_parent_styles() {
-  wp_enqueue_style( 'parent-style', get_template_directory_uri() . '/style.css' );
-}
-add_action( 'wp_enqueue_scripts', 'rnf_theme_enqueue_parent_styles', 5 );
-
-/**
  * Implements init to drop twentyseventeen's social icons SVGs include in the
  * footer.
  */
@@ -23,13 +14,17 @@ add_action('init', 'rnf_theme_dequeue_icons', 100);
  * enqueue this stuff on post_gallery filter.
  */
 function rnf_theme_register_scripts_and_styles() {
-  // twentyseventeen-style is registered by the parent theme but it's the active
-  // (so, child) theme's CSS file. I'll unregister that because it has a cache
-  // buster tied to the WP core version, not its own revision. Reregistering it
-  // by the same name makes sure that the parent theme's CSS dependencies
-  // (mostly for gberg blocks) still render.
+  // I've copied in twentyseventeen's original CSS and modified it.
+  // Reregistering it by the same name makes sure that the parent theme's CSS
+  // dependencies (mostly for gutenberg blocks) still render.
   wp_deregister_style('twentyseventeen-style');
   wp_register_style('twentyseventeen-style', get_stylesheet_uri(), array(), RNF_VERSION);
+
+  // Drop the Libre Franklin, I'm gonna use something else.
+  wp_deregister_style('twentyseventeen-fonts');
+
+  wp_register_style('rnf-hco-typefaces', '//cloud.typography.com/6795652/6519212/css/fonts.css', array(), null);
+  wp_enqueue_style('rnf-hco-typefaces');
 
   // (Own) General site-wide stuff
   wp_register_script('rnf-alfa-js-main', get_stylesheet_directory_uri() . '/js/main.js', array('sticky-sidebar'), RNF_VERSION, true);
@@ -53,8 +48,11 @@ function rnf_theme_register_scripts_and_styles() {
   wp_dequeue_script('html5');
   wp_dequeue_script('twentyseventeen-global');
   wp_dequeue_script('jquery-scrollto');
+  /* Remove twentyseventeen's preconnect for Google Fonts */
+  remove_filter('wp_resource_hints', 'twentyseventeen_resource_hints', 10);
 }
 add_action( 'wp_enqueue_scripts', 'rnf_theme_register_scripts_and_styles', 20 );
+
 
 /**
  * Implements wp_default_scripts to drop jQuery Migrate from pages viewed in
@@ -104,22 +102,32 @@ add_action( 'wp_enqueue_scripts', 'rnf_theme_register_lightbox', 10 );
  * add a "show on map" link in the same place.
  */
 function twentyseventeen_time_link() {
-	$time_string = '<time class="entry-date published updated" datetime="%1$s">%2$s</time>';
-	if ( get_the_time( 'U' ) !== get_the_modified_time( 'U' ) ) {
-		$time_string = '<time class="entry-date published" datetime="%1$s">%2$s</time><time class="updated" datetime="%3$s">%4$s</time>';
-	}
+  $time_string = '<time class="entry-date published updated" datetime="%1$s">%2$s</time>';
+  if ( get_the_time( 'U' ) !== get_the_modified_time( 'U' ) ) {
+    $time_string = '<time class="entry-date published" datetime="%1$s">%2$s</time><time class="updated" datetime="%3$s">%4$s</time>';
+  }
 
-	$time_string = sprintf( $time_string,
-		get_the_date( DATE_W3C ),
-		get_the_date(),
-		get_the_modified_date( DATE_W3C ),
-		get_the_modified_date()
-	);
+  // Put together the date permalink:
+  $time_string = sprintf( $time_string,
+    get_the_date( DATE_W3C ),
+    get_the_date(),
+    get_the_modified_date( DATE_W3C ),
+    get_the_modified_date()
+  );
 
   // Wrap the time string in a link, and preface it with 'Posted on'.
   $esc_path = esc_url( get_permalink() );
-  $timestamp = get_post_time('U', true);
-  return "<a href='{$esc_path}' rel='bookmark'>{$time_string}</a> | " .
-         "<a href='#' class='tqor-map-jump' data-timestamp='{$timestamp}'>Map</a>";
+  $time_header = "<a href='{$esc_path}' rel='bookmark'>{$time_string}</a>";
 
+  // Now determine if we should show a link to the post on a map. That logic
+  // is determined in rnf-geo.php and is: is post _about_ a trip _during_ a trip?
+  $post = get_post();
+  if (isset($post->rnf_geo_post_is_on_trip) && $post->rnf_geo_post_is_on_trip === TRUE) {
+    // Wrap the time string in a link, and preface it with 'Posted on'.
+    $timestamp = get_post_time('U', true);
+
+    $time_header .= " / <a href='#' class='tqor-map-jump' data-timestamp='{$timestamp}'>Map</a>";
+  }
+
+  return $time_header;
 }

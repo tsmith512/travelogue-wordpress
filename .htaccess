@@ -30,16 +30,19 @@ RewriteCond %{REQUEST_URI} !/$
 RewriteCond %{DOCUMENT_ROOT}/wp/$1 -d
 RewriteRule (.*) /$1/ [R=302,L]
 
-# In this docroot, if the file doesn't exist, send it along to /wp/
-# (so: catch theme and plugin assets here)
+# If the requested file or directory exists in /wp/, use that. This catches
+# all of WP core assets, PHP files, admin/login stuff, and AJAX.
 RewriteCond %{REQUEST_URI} !^/wp/
+RewriteCond %{DOCUMENT_ROOT}/wp/%{REQUEST_URI} -f [OR]
+RewriteCond %{DOCUMENT_ROOT}/wp/%{REQUEST_URI} -d
+RewriteRule ^(.*)$ /wp/$1 [L]
+
+# If the requested path doesn't exist in this docroot (outside /wp/), then send
+# the request over to WP's index (so... pretty paths, WP rewrites/aliases, etc.)
+# otherwise use the path as requested (so: theme and plugin assets, uploads)
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ /wp/$1
-
-# And if there's a request for the home page (site root), send it
-# straight to the WordPress index
-RewriteRule ^(/)?$ wp/index.php [L]
+RewriteRule . wp/index.php [L]
 </IfModule>
 
 # Caching of assets and uploads

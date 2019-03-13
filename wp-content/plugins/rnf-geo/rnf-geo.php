@@ -28,7 +28,8 @@ require_once "rnf-geo-settings.php";
 function rnf_geo_register_assets() {
   wp_register_script('mapbox-core', 'https://api.mapbox.com/mapbox.js/v3.0.1/mapbox.js', array(), null, true);
   wp_register_style('mapbox-style', 'https://api.mapbox.com/mapbox.js/v3.0.1/mapbox.css', array(), null);
-  wp_register_script('rnf-geo-js', plugin_dir_url( __FILE__ ) . 'js/rnf-geo.js', array('mapbox-core'), RNF_VERSION, true);
+  wp_register_script('rnf-geo-js', plugin_dir_url( __FILE__ ) . 'js/rnf-geo.js', array('mapbox-core', 'rnf-geo-polyfills'), RNF_VERSION, true);
+  wp_register_script('rnf-geo-polyfills', plugin_dir_url( __FILE__ ) . 'js/polyfills.js', array(), RNF_VERSION, true);
   wp_register_style('rnf-geo-style', plugin_dir_url( __FILE__ ) . 'css/rnf-geo-maps.css', array('mapbox-style'), RNF_VERSION);
 
   // Figure out where we are so we can tell the map where to start
@@ -180,3 +181,41 @@ function rnf_geo_category_add_id_display($term) {
   }
 }
 add_action('category_edit_form_fields', 'rnf_geo_category_add_id_display');
+
+/**
+ * Check to see if a post was actually published during the trip it is about.
+ * We will only show a "map" link on posts that are actually visible on the map.
+ */
+function rnf_geo_is_post_during_trip(&$post) {
+  // Assume a post isn't written during the trip it is about as a baseline.
+  $post->rnf_geo_post_is_on_trip = false;
+
+  // @TODO: This is repeated from rnf_geo_register_assets, need to abstract it
+  $trip_term_id = wp_get_post_categories($post->ID, array('meta_key' => 'rnf_geo_trip_id'));
+
+  if (!empty($trip_term_id) && $trip_term_id[0] > 0) {
+    // We got a WP category ID, look up its associated trip:
+    $trip_id = get_term_meta($trip_term_id[0], 'rnf_geo_trip_id', true);
+
+    if (is_numeric($trip_id) && (int) $trip_id > 0) {
+      // We have a trip ID to match up with.
+
+      // Get the post's unix timestamp
+      $timestamp = get_post_time('U', true);
+
+      // Get the timestamps of the beginning and end of the trip
+      $trip_details = rnf_geo_get_trips($trip_id);
+      $trip_details = reset($trip_details);
+
+      // So is this post actually dated _during_ the trip it is about?
+      $post->rnf_geo_post_is_on_trip = ($trip_details->starttime <= $timestamp && $timestamp <= $trip_details->endtime);
+    } else {
+      // There was a category attached to this post with an rnf_geo_trip_id
+      // value, but we didn't get a value... that's really weird.
+    }
+  } else {
+    // This isn't even about a trip.
+    // @TODO: So clearly, no link should show, but does that logic belong here?
+  }
+}
+add_action('the_post', 'rnf_geo_is_post_during_trip');

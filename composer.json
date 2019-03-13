@@ -30,23 +30,19 @@
     "vendor-dir": "wp-content/vendor"
   },
   "require": {
-    "johnpbloch/wordpress": "=5.0.3"
+    "johnpbloch/wordpress": "=5.1.1"
   },
   "require-dev": {
     "wpackagist-theme/twentyseventeen":"~2.0",
     "wpackagist-plugin/auto-upload-images": "3.1.1",
     "wpackagist-plugin/tumblr-importer":"0.8",
+    "wpackagist-plugin/wp-cfm": "1.5",
+    "wpackagist-plugin/autoptimize":"2.4.4",
+    "wpackagist-plugin/rocket-lazy-load":"2.1.3",
     "fancyapps/fancybox":"3.5.x"
   },
   "extra": {
     "wordpress-install-dir": "wp"
   },
-  "scripts": {
-    "post-update-cmd": [
-      "cp .htaccess-wp wp/.htaccess"
-    ],
-    "post-install-cmd": [
-      "cp .htaccess-wp wp/.htaccess"
-    ]
-  }
+  "scripts": {}
 }

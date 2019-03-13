@@ -4,24 +4,24 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e984c4c576005ebeafafd713c91e8fa7",
+    "content-hash": "07c1bd72d970caf951d6a2e7a92ecbf5",
     "packages": [
         {
             "name": "johnpbloch/wordpress",
-            "version": "5.0.3",
+            "version": "5.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/johnpbloch/wordpress.git",
-                "reference": "516609b5bc19b1dd7cff9f9b4e9d1026363049ce"
+                "reference": "b5673ea8f30a518eaf311c90f1d074c44b54e15e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/johnpbloch/wordpress/zipball/516609b5bc19b1dd7cff9f9b4e9d1026363049ce",
-                "reference": "516609b5bc19b1dd7cff9f9b4e9d1026363049ce",
+                "url": "https://api.github.com/repos/johnpbloch/wordpress/zipball/b5673ea8f30a518eaf311c90f1d074c44b54e15e",
+                "reference": "b5673ea8f30a518eaf311c90f1d074c44b54e15e",
                 "shasum": ""
             },
             "require": {
-                "johnpbloch/wordpress-core": "5.0.3",
+                "johnpbloch/wordpress-core": "5.1.1",
                 "johnpbloch/wordpress-core-installer": "^1.0",
                 "php": ">=5.3.2"
             },
@@ -43,27 +43,27 @@
                 "cms",
                 "wordpress"
             ],
-            "time": "2019-01-09T18:42:21+00:00"
+            "time": "2019-03-13T00:27:35+00:00"
         },
         {
             "name": "johnpbloch/wordpress-core",
-            "version": "5.0.3",
+            "version": "5.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/johnpbloch/wordpress-core.git",
-                "reference": "76c8acab20262adc0eb70d20aace3d36c2f3a16f"
+                "reference": "dba22982e7cb433b68f1b12a0bd4e5851f967010"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/johnpbloch/wordpress-core/zipball/76c8acab20262adc0eb70d20aace3d36c2f3a16f",
-                "reference": "76c8acab20262adc0eb70d20aace3d36c2f3a16f",
+                "url": "https://api.github.com/repos/johnpbloch/wordpress-core/zipball/dba22982e7cb433b68f1b12a0bd4e5851f967010",
+                "reference": "dba22982e7cb433b68f1b12a0bd4e5851f967010",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.2"
             },
             "provide": {
-                "wordpress/core-implementation": "5.0.3"
+                "wordpress/core-implementation": "5.1.1"
             },
             "type": "wordpress-core",
             "notification-url": "https://packagist.org/downloads/",
@@ -83,7 +83,7 @@
                 "cms",
                 "wordpress"
             ],
-            "time": "2019-01-09T18:42:15+00:00"
+            "time": "2019-03-13T00:27:30+00:00"
         },
         {
             "name": "johnpbloch/wordpress-core-installer",
@@ -276,15 +276,49 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/auto-upload-images.3.1.1.zip",
-                "reference": null,
-                "shasum": null
+                "url": "https://downloads.wordpress.org/plugin/auto-upload-images.3.1.1.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/auto-upload-images/"
+        },
+        {
+            "name": "wpackagist-plugin/autoptimize",
+            "version": "2.4.4",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/autoptimize/",
+                "reference": "tags/2.4.4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/autoptimize.2.4.4.zip"
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/autoptimize/"
+        },
+        {
+            "name": "wpackagist-plugin/rocket-lazy-load",
+            "version": "2.1.3",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/rocket-lazy-load/",
+                "reference": "tags/2.1.3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/rocket-lazy-load.2.1.3.zip"
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/rocket-lazy-load/"
         },
         {
             "name": "wpackagist-plugin/tumblr-importer",
@@ -296,9 +330,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/tumblr-importer.0.8.zip",
-                "reference": null,
-                "shasum": null
+                "url": "https://downloads.wordpress.org/plugin/tumblr-importer.0.8.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
@@ -307,18 +339,34 @@
             "homepage": "https://wordpress.org/plugins/tumblr-importer/"
         },
         {
-            "name": "wpackagist-theme/twentyseventeen",
-            "version": "2.0",
+            "name": "wpackagist-plugin/wp-cfm",
+            "version": "1.5",
             "source": {
                 "type": "svn",
-                "url": "https://themes.svn.wordpress.org/twentyseventeen/",
-                "reference": "2.0"
+                "url": "https://plugins.svn.wordpress.org/wp-cfm/",
+                "reference": "trunk"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/theme/twentyseventeen.2.0.zip",
-                "reference": null,
-                "shasum": null
+                "url": "https://downloads.wordpress.org/plugin/wp-cfm.zip?timestamp=1543344129"
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/wp-cfm/"
+        },
+        {
+            "name": "wpackagist-theme/twentyseventeen",
+            "version": "2.1",
+            "source": {
+                "type": "svn",
+                "url": "https://themes.svn.wordpress.org/twentyseventeen/",
+                "reference": "2.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/theme/twentyseventeen.2.1.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
