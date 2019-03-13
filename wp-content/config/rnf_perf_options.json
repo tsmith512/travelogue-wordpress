@@ -1,5 +1,5 @@
 {
-    "autoptimize_cache_clean": "0",
+    "autoptimize_cache_clean": "",
     "autoptimize_cache_nogzip": "on",
     "autoptimize_cdn_url": "",
     "autoptimize_css": "",
@@ -12,7 +12,7 @@
     "autoptimize_css_inline": "",
     "autoptimize_css_justhead": "",
     "autoptimize_extra_settings": "a:5:{s:31:\"autoptimize_extra_radio_field_4\";s:1:\"2\";s:32:\"autoptimize_extra_select_field_6\";s:1:\"2\";s:34:\"autoptimize_extra_checkbox_field_1\";s:1:\"1\";s:30:\"autoptimize_extra_text_field_2\";s:0:\"\";s:30:\"autoptimize_extra_text_field_3\";s:0:\"\";}",
-    "autoptimize_html": "",
+    "autoptimize_html": "on",
     "autoptimize_html_keepcomments": "",
     "autoptimize_imgopt_launched": "on",
     "autoptimize_js": "on",
