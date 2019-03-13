@@ -1089,12 +1089,15 @@ body:not(.title-tagline-hidden) .site-branding-text {
   position: relative;
   height: 0;
   padding-top: 25%; /* Intrinsic Ratio technique to make this always a 4:1 header */
-  background: url('img/test.jpg');
-    /* @TODO: Okay so this is a first pass on how this will work; need to
-    support multiple images, multiple sizes for responsive image optimization
-    and also making sure this loads after everything else.*/
+  background-color: black;
   background-size: cover;
   background-position: center center;
+}
+
+.custom-header.rnf-add-header-bg-image {
+  background-image: url('img/test.jpg');
+    /* @TODO: Okay so this is a first pass on how this will work; need to
+    support multiple images, multiple sizes for responsive image optimization */
 }
 
 /*--------------------------------------------------------------

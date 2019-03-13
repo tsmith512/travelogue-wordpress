@@ -21,6 +21,8 @@
     if ( true === supportsInlineSVG() ) {
       document.documentElement.className = document.documentElement.className.replace( /(\s*)no-svg(\s*)/, '$1svg$2' );
     }
+
+    document.querySelector('.custom-header').classList.add('rnf-add-header-bg-image');
   });
 
 })();
