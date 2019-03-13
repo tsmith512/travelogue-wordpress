@@ -1009,19 +1009,18 @@ body {
 }
 
 .site-header {
-  background-color: #fafafa; /* @TODO: Should the header background go here instead of on .site-branding? */
+  background-color: #000; /* @TODO: Should the header background go here instead of on .site-branding? */
   position: relative;
 }
 
 /* Site branding */
 
 .site-branding {
-  background: black;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
   padding: 1em 0;
-  position: relative;
-  -webkit-transition: margin-bottom 0.2s;
-  transition: margin-bottom 0.2s;
-  z-index: 3;
 }
 
 .site-branding a {
@@ -1038,8 +1037,8 @@ body {
 .site-title {
   background: white;
   clear: none;
-  font-size: 32px;
-  font-size: 2rem;
+  font-size: 24px;
+  font-size: 1.5rem;
   font-weight: 800;
   line-height: 1.25;
   letter-spacing: -0.025em;
@@ -1088,6 +1087,17 @@ body:not(.title-tagline-hidden) .site-branding-text {
 
 .custom-header {
   position: relative;
+  height: 0;
+  padding-top: 25%; /* Intrinsic Ratio technique to make this always a 4:1 header */
+  background-color: black;
+  background-size: cover;
+  background-position: center center;
+}
+
+.custom-header.rnf-add-header-bg-image {
+  background-image: url('img/test.jpg');
+    /* @TODO: Okay so this is a first pass on how this will work; need to
+    support multiple images, multiple sizes for responsive image optimization */
 }
 
 /*--------------------------------------------------------------
@@ -2485,7 +2495,7 @@ p > object:only-child {
   /* Site Branding */
 
   .site-branding {
-    padding: 3em 0;
+    padding: 2em 0;
   }
 
   /* Front Page */
@@ -2596,6 +2606,7 @@ p > object:only-child {
 
   .site-branding {
     margin-bottom: 0;
+    padding: 3em 0;
   }
 
   .custom-logo-link {
@@ -3373,11 +3384,14 @@ p > object:only-child {
     padding: 0;
   }
 
-  .custom-header-media {
+  .custom-header {
+    position: static;
+    height: auto;
     padding: 0;
   }
 
   .site-branding {
+    position: static;
     margin-top: 0;
     margin-bottom: 1.75em !important; /* override styles added by JavaScript */
   }
