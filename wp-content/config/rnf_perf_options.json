@@ -29,5 +29,12 @@
     "autoptimize_version": "2.4.4",
     "rocket_lazyload_dismiss_imagify_notice": "0",
     "rocket_lazyload_options": "a:1:{s:6:\"images\";s:1:\"1\";}",
+    "smush_option": "a:1:{s:7:\"version\";s:5:\"3.1.1\";}",
+    "wp-smush-hide_smush_welcome": "1",
+    "wp-smush-image_sizes": "a:6:{i:0;s:9:\"thumbnail\";i:1;s:6:\"medium\";i:2;s:5:\"large\";i:3;s:30:\"twentyseventeen-featured-image\";i:4;s:32:\"twentyseventeen-thumbnail-avatar\";i:5;s:12:\"medium_large\";}",
+    "wp-smush-install-type": "existing",
+    "wp-smush-resize_sizes": "a:2:{s:5:\"width\";i:2048;s:6:\"height\";i:2048;}",
+    "wp-smush-settings": "a:17:{s:11:\"networkwide\";b:0;s:4:\"auto\";b:1;s:5:\"lossy\";b:0;s:10:\"strip_exif\";b:0;s:6:\"resize\";b:0;s:9:\"detection\";b:0;s:8:\"original\";b:0;s:6:\"backup\";b:0;s:10:\"png_to_jpg\";b:0;s:7:\"nextgen\";b:0;s:2:\"s3\";b:0;s:9:\"gutenberg\";b:0;s:3:\"cdn\";b:0;s:11:\"auto_resize\";b:0;s:4:\"webp\";b:1;s:5:\"usage\";b:1;s:17:\"accessible_colors\";b:0;}",
+    "wp-smush-version": "3.1.1",
     ".label": "rnf_perf_options"
 }
