@@ -34,7 +34,7 @@ gulp.task('header-images-fetch', (cb) => {
     }
 
     headerImages.forEach((filename, index) => {
-      outputCSS.push('.header-' + filename + ' { background-image: url("../img/headers/narrow/' + filename + '.jpg"); }');
+      outputCSS.push('.header-' + filename + ' { background-image: url("../img/headers/SIZE/' + filename + '.jpg"); }');
       outputList.push('header-' + filename);
     });
 
@@ -49,7 +49,12 @@ gulp.task('header-images-fetch', (cb) => {
       '})();'
     ].join('\n'));
 
-    fs.writeFileSync('dist/css/header-images.css', outputCSS.join('\n'));
+    fs.writeFileSync('dist/css/header-images.css', [
+      outputCSS.join('\n').replace(/SIZE/g, 'tiny'),
+      ("@media (min-width: 480px) {" + outputCSS.join('\n').replace(/SIZE/g, 'narrow') + "}"),
+      ("@media (min-width: 960px) {" + outputCSS.join('\n').replace(/SIZE/g, 'medium') + "}"),
+      ("@media (min-width: 1280px) {" + outputCSS.join('\n').replace(/SIZE/g, 'wide') + "}"),
+    ].join('\n'));
 
     cb();
   });
