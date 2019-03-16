@@ -23,7 +23,7 @@ function rnf_theme_register_scripts_and_styles() {
   // Drop the Libre Franklin, I'm gonna use something else.
   wp_deregister_style('twentyseventeen-fonts');
 
-  wp_register_style('rnf-header-images', get_stylesheet_directory_uri() . '/header-images.css', array(), RNF_VERSION);
+  wp_register_style('rnf-header-images', get_stylesheet_directory_uri() . '/dist/css/header-images.css', array(), RNF_VERSION);
   wp_enqueue_style('rnf-header-images');
 
   wp_register_style('rnf-hco-typefaces', '//cloud.typography.com/6795652/6519212/css/fonts.css', array(), null);
