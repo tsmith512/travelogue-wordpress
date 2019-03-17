@@ -32,7 +32,7 @@ function rnf_theme_register_scripts_and_styles() {
   // (Own) General site-wide stuff
   wp_register_script('rnf-alfa-js-main', get_stylesheet_directory_uri() . '/js/main.js', array('sticky-sidebar'), RNF_VERSION, true);
   wp_enqueue_script('rnf-alfa-js-main');
-  wp_register_script('rnf-alfa-js-header-images', get_stylesheet_directory_uri() . '/js/header-images.js', array(), RNF_VERSION, true);
+  wp_register_script('rnf-alfa-js-header-images', get_stylesheet_directory_uri() . '/dist/js/header-images.js', array(), RNF_VERSION, true);
   wp_enqueue_script('rnf-alfa-js-header-images');
 
   // (Own) Media handlers
