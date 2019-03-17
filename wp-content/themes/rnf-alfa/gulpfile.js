@@ -75,4 +75,18 @@ gulp.task('header-images-sizes', () => {
     .pipe(gulp.dest('dist/img/headers/tiny/'));
 });
 
-gulp.task('default', false, ['help']);
+
+gulp.task('header-images-sizes', () => {
+  return gulp.src('sources/img/headers/original/*.jpg')
+    .pipe(imagemin([imagemin.jpegtran({progressive: true})]))
+    .pipe(gulp.dest('dist/img/headers/wide/'))
+    .pipe(resize({width: 1280, height: 1280, crop: false, upscale: false, quality: 1}))
+    .pipe(imagemin([imagemin.jpegtran({progressive: true})]))
+    .pipe(gulp.dest('dist/img/headers/medium/'))
+    .pipe(resize({width: 720, height: 720, crop: false, upscale: false, quality: 1}))
+    .pipe(imagemin([imagemin.jpegtran({progressive: true})]))
+    .pipe(gulp.dest('dist/img/headers/narrow/'))
+    .pipe(resize({width: 360, height: 360, crop: false, upscale: false, quality: 1}))
+    .pipe(imagemin([imagemin.jpegtran({progressive: true})]))
+    .pipe(gulp.dest('dist/img/headers/tiny/'));
+});
