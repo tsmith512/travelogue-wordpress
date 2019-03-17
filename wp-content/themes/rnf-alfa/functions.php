@@ -122,7 +122,7 @@ function twentyseventeen_time_link() {
 
   // Wrap the time string in a link, and preface it with 'Posted on'.
   $esc_path = esc_url( get_permalink() );
-  $time_header = "<a href='{$esc_path}' rel='bookmark'>{$time_string}</a>";
+  $time_header = "// <a href='{$esc_path}' rel='bookmark'>{$time_string}</a>";
 
   // Now determine if we should show a link to the post on a map. That logic
   // is determined in rnf-geo.php and is: is post _about_ a trip _during_ a trip?
