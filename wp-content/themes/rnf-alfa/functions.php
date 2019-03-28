@@ -38,6 +38,9 @@ function rnf_theme_register_scripts_and_styles() {
   // (Own) Media handlers
   wp_register_script('rnf-alfa-js-media', get_stylesheet_directory_uri() . '/js/media.js', array('fancybox-script', 'jquery'), RNF_VERSION, true);
 
+  // LoadCSS polyfill
+  wp_register_script('rnf-loadcss', content_url() . '/vendor/filamentgroup/loadCSS/src/cssrelpreload.js', array(), RNF_VERSION, true);
+
   // Was loading this conditionally on `post_gallery` filter, but I haven't
   // figured out how to attach it to Gutenberg blocks yet, and let's face it,
   // this is an entirely photo-driven site, this is actually needed on all
@@ -66,6 +69,9 @@ add_action( 'wp_enqueue_scripts', 'rnf_theme_register_scripts_and_styles', 20 );
 function rn_theme_css_preload($html, $handle, $href, $media) {
   // Only working on the HCO typefaces
   if (in_array($handle, array('rnf-hco-typefaces'))) {
+    // We're going to use rel=preload, so pull in the polyfill
+    wp_enqueue_script('rnf-loadcss');
+
     // Set rel=preload
     $preload = str_replace('stylesheet', 'preload', $html);
 
