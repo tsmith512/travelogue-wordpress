@@ -17,6 +17,8 @@ wp-content/uploads
 
 # Auto-generated stuff
 wp-content/upgrade
+wp-content/themes/rnf-alfa/sources/img/headers
+wp-content/themes/rnf-alfa/dist
 sitemap.xml
 sitemap.xml.gz
 *.log
