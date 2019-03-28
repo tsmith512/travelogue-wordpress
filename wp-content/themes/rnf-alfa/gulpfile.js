@@ -21,7 +21,7 @@ const resize = require('gulp-image-resize');
 gulp.task('header-images-fetch', (cb) => {
   exec('mkdir -p sources/img/headers/original/'); // Make sure the image download directory exists
   exec('mkdir -p dist/css dist/js'); // Make sure the output directories exist
-  exec('AWS_CREDENTIAL_FILE=~/.aws/credentials && s3cmd get s3://routenotfound-assets/header_images/* sources/img/headers/original/', () => {
+  exec('AWS_CREDENTIAL_FILE=~/.aws/credentials s3cmd get s3://routenotfound-assets/header_images/* sources/img/headers/original/', () => {
     const headerImages = [];
     const outputCSS = [];
     const outputList = [];
