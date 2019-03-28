@@ -75,8 +75,6 @@
     else {
       map.setView(window.tqor.cache[timestamp], 10);
     }
-    // Add the 'visible' class to open the map (if on mobile, ignored otherwise)
-    map._container.classList.add('visible');
     map.invalidateSize();
   }
 
@@ -109,6 +107,10 @@
       e.preventDefault();
       var timestamp = el.getAttribute('data-timestamp');
       mapToTimestamp(timestamp);
+
+      // And add the visible class to the container so it opens on mobile.
+      map._container.classList.toggle('visible');
+      map.invalidateSize();
     });
   });
 
