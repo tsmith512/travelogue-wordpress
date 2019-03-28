@@ -58,6 +58,29 @@ function rnf_theme_register_scripts_and_styles() {
 }
 add_action( 'wp_enqueue_scripts', 'rnf_theme_register_scripts_and_styles', 20 );
 
+/**
+ * Implements style_loader_tag filter to rewrite CSS tags after they've been
+ * assembled so we can use rel=preload to reduce render-blocking of external
+ * CSS.
+ */
+function rn_theme_css_preload($html, $handle, $href, $media) {
+  // Only working on the HCO typefaces
+  if (in_array($handle, array('rnf-hco-typefaces'))) {
+    // Set rel=preload
+    $preload = str_replace('stylesheet', 'preload', $html);
+
+    // And apply once it is loaded
+    $resolve = str_replace('/>', "as=\"style\" onload=\"this.rel='stylesheet';this.onload=null;\" /><noscript>{$html}</noscript>", $preload);
+
+    // Return the new tag
+    return $resolve;
+  }
+
+  // No work to do for non HCO typefaces
+  return $html;
+}
+add_filter('style_loader_tag', 'rn_theme_css_preload', 900, 4);
+
 
 /**
  * Implements wp_default_scripts to drop jQuery Migrate from pages viewed in
