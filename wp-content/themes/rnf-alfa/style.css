@@ -1088,10 +1088,15 @@ body:not(.title-tagline-hidden) .site-branding-text {
 .custom-header {
   position: relative;
   height: 0;
-  padding-top: 25%; /* Intrinsic Ratio technique to make this always a 4:1 header */
+  padding-top: 33.333%; /* Intrinsic Ratio technique to make this always a 3:1 header */
   background-color: black;
   background-size: cover;
   background-position: center center;
+}
+@media screen and (min-width: 30em) {
+  .custom-header {
+    padding-top: 25%; /* Intrinsic Ratio technique to make this always a 4:1 header */
+  }
 }
 
 .custom-header.rnf-add-header-bg-image {
