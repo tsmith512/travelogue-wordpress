@@ -23,15 +23,23 @@ function rnf_theme_register_scripts_and_styles() {
   // Drop the Libre Franklin, I'm gonna use something else.
   wp_deregister_style('twentyseventeen-fonts');
 
+  wp_register_style('rnf-header-images', get_stylesheet_directory_uri() . '/dist/css/header-images.css', array(), RNF_VERSION);
+  wp_enqueue_style('rnf-header-images');
+
   wp_register_style('rnf-hco-typefaces', '//cloud.typography.com/6795652/6519212/css/fonts.css', array(), null);
   wp_enqueue_style('rnf-hco-typefaces');
 
   // (Own) General site-wide stuff
   wp_register_script('rnf-alfa-js-main', get_stylesheet_directory_uri() . '/js/main.js', array('sticky-sidebar'), RNF_VERSION, true);
   wp_enqueue_script('rnf-alfa-js-main');
+  wp_register_script('rnf-alfa-js-header-images', get_stylesheet_directory_uri() . '/dist/js/header-images.js', array(), RNF_VERSION, true);
+  wp_enqueue_script('rnf-alfa-js-header-images');
 
   // (Own) Media handlers
   wp_register_script('rnf-alfa-js-media', get_stylesheet_directory_uri() . '/js/media.js', array('fancybox-script', 'jquery'), RNF_VERSION, true);
+
+  // LoadCSS polyfill
+  wp_register_script('rnf-loadcss', content_url() . '/vendor/filamentgroup/loadCSS/src/cssrelpreload.js', array(), RNF_VERSION, true);
 
   // Was loading this conditionally on `post_gallery` filter, but I haven't
   // figured out how to attach it to Gutenberg blocks yet, and let's face it,
@@ -52,6 +60,32 @@ function rnf_theme_register_scripts_and_styles() {
   remove_filter('wp_resource_hints', 'twentyseventeen_resource_hints', 10);
 }
 add_action( 'wp_enqueue_scripts', 'rnf_theme_register_scripts_and_styles', 20 );
+
+/**
+ * Implements style_loader_tag filter to rewrite CSS tags after they've been
+ * assembled so we can use rel=preload to reduce render-blocking of external
+ * CSS.
+ */
+function rn_theme_css_preload($html, $handle, $href, $media) {
+  // Only working on the HCO typefaces
+  if (in_array($handle, array('rnf-hco-typefaces', 'rnf-header-images', 'fancybox-style'))) {
+    // We're going to use rel=preload, so pull in the polyfill
+    wp_enqueue_script('rnf-loadcss');
+
+    // Set rel=preload
+    $preload = str_replace('stylesheet', 'preload', $html);
+
+    // And apply once it is loaded
+    $resolve = str_replace('/>', "as=\"style\" onload=\"this.rel='stylesheet';this.onload=null;\" /><noscript>{$html}</noscript>", $preload);
+
+    // Return the new tag
+    return $resolve;
+  }
+
+  // No work to do for non HCO typefaces
+  return $html;
+}
+add_filter('style_loader_tag', 'rn_theme_css_preload', 900, 4);
 
 
 /**
@@ -117,7 +151,7 @@ function twentyseventeen_time_link() {
 
   // Wrap the time string in a link, and preface it with 'Posted on'.
   $esc_path = esc_url( get_permalink() );
-  $time_header = "<a href='{$esc_path}' rel='bookmark'>{$time_string}</a>";
+  $time_header = "// <a href='{$esc_path}' rel='bookmark'>{$time_string}</a>";
 
   // Now determine if we should show a link to the post on a map. That logic
   // is determined in rnf-geo.php and is: is post _about_ a trip _during_ a trip?
