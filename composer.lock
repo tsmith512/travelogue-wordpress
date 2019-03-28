@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "07c1bd72d970caf951d6a2e7a92ecbf5",
+    "content-hash": "0e50ee371b34c86291e22ac486e0d74f",
     "packages": [
         {
             "name": "johnpbloch/wordpress",
@@ -263,6 +263,16 @@
                 "type": "git",
                 "url": "https://github.com/fancyapps/fancybox.git",
                 "reference": "v3.5.6"
+            },
+            "type": "library"
+        },
+        {
+            "name": "filamentgroup/loadCSS",
+            "version": "2.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/filamentgroup/loadCSS.git",
+                "reference": "v2.0.1"
             },
             "type": "library"
         },
