@@ -731,9 +731,9 @@ a:hover .nav-title,
 
 /* Override TwentySeventeen's default links -- I want in-content links to be more accessible */
 .entry-content a {
-  color: rgb(27, 119, 236);
+  color: #0033ee;
   text-decoration: underline;
-  text-decoration-color: rgba(27, 119, 236, 0.25);
+  text-decoration-color: #0033ee33;
 
   /* Override twentyseventeen's stuff */
   box-shadow: none !important;
@@ -741,9 +741,9 @@ a:hover .nav-title,
 }
 
 .entry-content a:hover {
-  color: rgb(15, 95, 195);
+  color: #3366ff;
   text-decoration: underline;
-  text-decoration-color: rgb(15, 95, 195);
+  text-decoration-color: #3366ffcc;
 }
 
 
