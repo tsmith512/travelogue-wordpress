@@ -30,7 +30,7 @@ function rnf_theme_register_scripts_and_styles() {
   wp_enqueue_style('rnf-hco-typefaces');
 
   // (Own) General site-wide stuff
-  wp_register_script('rnf-alfa-js-main', get_stylesheet_directory_uri() . '/js/main.js', array('sticky-sidebar'), RNF_VERSION, true);
+  wp_register_script('rnf-alfa-js-main', get_stylesheet_directory_uri() . '/js/main.js', array(), RNF_VERSION, true);
   wp_enqueue_script('rnf-alfa-js-main');
   wp_register_script('rnf-alfa-js-header-images', get_stylesheet_directory_uri() . '/dist/js/header-images.js', array(), RNF_VERSION, true);
   wp_enqueue_script('rnf-alfa-js-header-images');
@@ -47,9 +47,6 @@ function rnf_theme_register_scripts_and_styles() {
   // pages.
   wp_enqueue_style('fancybox-style');
   wp_enqueue_script('rnf-alfa-js-media');
-
-  // (Vendor) Sticky Sidebar
-  wp_register_script('sticky-sidebar', get_stylesheet_directory_uri() . '/vendor/sticky-sidebar/sticky-sidebar.min.js', array(), RNF_VERSION, true);
 
   // And remove TwentySeventeen stuff we do not need
   wp_dequeue_style('twentyseventeen-ie8');
