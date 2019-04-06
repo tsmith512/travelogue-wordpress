@@ -36,6 +36,25 @@ function rnf_trip_archives_in_chorno(&$query) {
 add_filter('pre_get_posts', 'rnf_trip_archives_in_chorno');
 
 /**
+ * Implements get_the_archive_title filter to override the title of archive
+ * pages so that we can swap the "Category:" prefix with something more
+ * specific.
+ */
+function rnf_overrides_archive_title_alter($title) {
+  if ( is_category() ) {
+    // @TODO: This is repeated from the function above; abstract/DRY?
+    $term = get_queried_object();
+    $trip_id = get_term_meta($term->term_id, 'rnf_geo_trip_id', true);
+
+    if (is_numeric($trip_id) && (int) $trip_id > 0) {
+      $title = sprintf( __( 'Trip: %s' ), single_cat_title( '', false ) );
+    }
+  }
+  return $title;
+}
+add_filter('get_the_archive_title', 'rnf_overrides_archive_title_alter');
+
+/**
  * Add embed handlers for a couple sites I link to a lot on here.
  * Informed by https://github.com/scottmac/opengraph/blob/master/OpenGraph.php
  * Disclaimer: This isn't the most awesome way to do this ever...
