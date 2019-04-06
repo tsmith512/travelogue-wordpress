@@ -47,7 +47,7 @@ function rnf_overrides_archive_title_alter($title) {
     $trip_id = get_term_meta($term->term_id, 'rnf_geo_trip_id', true);
 
     if (is_numeric($trip_id) && (int) $trip_id > 0) {
-      $title = sprintf( __( 'Trip: %s' ), single_cat_title( '', false ) );
+      $title = single_cat_title( '', false );
     }
   }
   return $title;
