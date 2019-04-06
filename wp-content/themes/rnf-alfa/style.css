@@ -2308,6 +2308,30 @@ p > object:only-child {
   margin-bottom: 0;
 }
 
+/* Going to do a little overriding of the Gutenberg gallery here to reduce the
+  spacing around these elements */
+
+.wp-block-gallery .blocks-gallery-item {
+  width: calc((100% - 8px)/2);
+  margin: 0 8px 8px 0;
+}
+
+.wp-block-gallery.columns-3 .blocks-gallery-item {
+  width: calc((100% - 16px)/3);
+  margin-right: 8px;
+}
+
+.wp-block-gallery.columns-4 .blocks-gallery-item {
+  width: calc((100% - 24px)/4);
+  margin-right: 8px;
+}
+
+.wp-block-gallery .blocks-gallery-item:last-child {
+  /* The rules above broke the "last child" margin reset for the last item in a
+  gallery that has an uneven number of items. */
+  margin-right: 0 !important;
+}
+
 /*--------------------------------------------------------------
 17.0 Customizer
 --------------------------------------------------------------*/
