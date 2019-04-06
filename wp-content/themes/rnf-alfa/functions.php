@@ -68,7 +68,7 @@ add_action( 'wp_enqueue_scripts', 'rnf_theme_register_scripts_and_styles', 20 );
  */
 function rnf_theme_css_preload($html, $handle, $href, $media) {
   // Only working on the HCO typefaces
-  if (in_array($handle, array('rnf-hco-typefaces', 'rnf-header-images', 'fancybox-style'))) {
+  if (in_array($handle, array('rnf-hco-typefaces', 'rnf-header-images', 'fancybox-style', 'mapbox-style'))) {
     // We're going to use rel=preload, so pull in the polyfill
     wp_enqueue_script('rnf-loadcss');
 
