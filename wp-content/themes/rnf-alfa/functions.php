@@ -66,7 +66,7 @@ add_action( 'wp_enqueue_scripts', 'rnf_theme_register_scripts_and_styles', 20 );
  * assembled so we can use rel=preload to reduce render-blocking of external
  * CSS.
  */
-function rn_theme_css_preload($html, $handle, $href, $media) {
+function rnf_theme_css_preload($html, $handle, $href, $media) {
   // Only working on the HCO typefaces
   if (in_array($handle, array('rnf-hco-typefaces', 'rnf-header-images', 'fancybox-style'))) {
     // We're going to use rel=preload, so pull in the polyfill
@@ -85,8 +85,28 @@ function rn_theme_css_preload($html, $handle, $href, $media) {
   // No work to do for non HCO typefaces
   return $html;
 }
-add_filter('style_loader_tag', 'rn_theme_css_preload', 900, 4);
+add_filter('style_loader_tag', 'rnf_theme_css_preload', 900, 4);
 
+/**
+ * Implements script_loader_tag filter to rewrite JS tags to add async or defer
+ * as appropriate.
+ */
+function rnf_theme_js_asyncdefer($tag, $handle, $src) {
+  // Async's -- Currently none.
+  /*
+  if (in_array($handle, array())) {
+    return str_replace('<script ', '<script async ', $tag);
+  }
+  */
+
+  // Defer's
+  if (in_array($handle, array('wp-embed', 'mapbox-core', 'jquery-core'))) {
+    return str_replace('<script ', '<script defer ', $tag);
+  }
+
+  return $tag;
+}
+add_filter('script_loader_tag', 'rnf_theme_js_asyncdefer', 900, 3);
 
 /**
  * Implements wp_default_scripts to drop jQuery Migrate from pages viewed in
