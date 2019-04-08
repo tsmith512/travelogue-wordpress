@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0e50ee371b34c86291e22ac486e0d74f",
+    "content-hash": "eec12de5b77e26df7f9e6f0119cc972c",
     "packages": [
         {
             "name": "johnpbloch/wordpress",
@@ -273,6 +273,16 @@
                 "type": "git",
                 "url": "https://github.com/filamentgroup/loadCSS.git",
                 "reference": "v2.0.1"
+            },
+            "type": "library"
+        },
+        {
+            "name": "mapbox/mapbox.js-bower",
+            "version": "3.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mapbox/mapbox.js-bower.git",
+                "reference": "v3.1.1"
             },
             "type": "library"
         },
