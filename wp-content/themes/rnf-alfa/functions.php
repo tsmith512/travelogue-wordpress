@@ -30,7 +30,7 @@ function rnf_theme_register_scripts_and_styles() {
   wp_enqueue_style('rnf-hco-typefaces');
 
   // (Own) General site-wide stuff
-  wp_register_script('rnf-alfa-js-main', get_stylesheet_directory_uri() . '/js/main.js', array('sticky-sidebar'), RNF_VERSION, true);
+  wp_register_script('rnf-alfa-js-main', get_stylesheet_directory_uri() . '/js/main.js', array(), RNF_VERSION, true);
   wp_enqueue_script('rnf-alfa-js-main');
   wp_register_script('rnf-alfa-js-header-images', get_stylesheet_directory_uri() . '/dist/js/header-images.js', array(), RNF_VERSION, true);
   wp_enqueue_script('rnf-alfa-js-header-images');
@@ -48,9 +48,6 @@ function rnf_theme_register_scripts_and_styles() {
   wp_enqueue_style('fancybox-style');
   wp_enqueue_script('rnf-alfa-js-media');
 
-  // (Vendor) Sticky Sidebar
-  wp_register_script('sticky-sidebar', get_stylesheet_directory_uri() . '/vendor/sticky-sidebar/sticky-sidebar.min.js', array(), RNF_VERSION, true);
-
   // And remove TwentySeventeen stuff we do not need
   wp_dequeue_style('twentyseventeen-ie8');
   wp_dequeue_script('html5');
@@ -66,9 +63,9 @@ add_action( 'wp_enqueue_scripts', 'rnf_theme_register_scripts_and_styles', 20 );
  * assembled so we can use rel=preload to reduce render-blocking of external
  * CSS.
  */
-function rn_theme_css_preload($html, $handle, $href, $media) {
+function rnf_theme_css_preload($html, $handle, $href, $media) {
   // Only working on the HCO typefaces
-  if (in_array($handle, array('rnf-hco-typefaces', 'rnf-header-images', 'fancybox-style'))) {
+  if (in_array($handle, array('rnf-hco-typefaces', 'rnf-header-images', 'fancybox-style', 'mapbox-style'))) {
     // We're going to use rel=preload, so pull in the polyfill
     wp_enqueue_script('rnf-loadcss');
 
@@ -85,8 +82,28 @@ function rn_theme_css_preload($html, $handle, $href, $media) {
   // No work to do for non HCO typefaces
   return $html;
 }
-add_filter('style_loader_tag', 'rn_theme_css_preload', 900, 4);
+add_filter('style_loader_tag', 'rnf_theme_css_preload', 900, 4);
 
+/**
+ * Implements script_loader_tag filter to rewrite JS tags to add async or defer
+ * as appropriate.
+ */
+function rnf_theme_js_asyncdefer($tag, $handle, $src) {
+  // Async's -- Currently none.
+  /*
+  if (in_array($handle, array())) {
+    return str_replace('<script ', '<script async ', $tag);
+  }
+  */
+
+  // Defer's
+  if (in_array($handle, array('wp-embed', 'mapbox-core', 'jquery-core'))) {
+    return str_replace('<script ', '<script defer ', $tag);
+  }
+
+  return $tag;
+}
+add_filter('script_loader_tag', 'rnf_theme_js_asyncdefer', 900, 3);
 
 /**
  * Implements wp_default_scripts to drop jQuery Migrate from pages viewed in

@@ -334,7 +334,7 @@ h6 {
   font-family: "Ringside Condensed SSm A", "Ringside Condensed SSm B", "Helvetica Neue", helvetica, arial, sans-serif;
   line-height: 1.4;
   margin: 0 0 0.75em;
-  padding: 1.5em 0 0;
+  padding: 0.75em 0 0;
 }
 
 h1:first-child,
@@ -731,9 +731,9 @@ a:hover .nav-title,
 
 /* Override TwentySeventeen's default links -- I want in-content links to be more accessible */
 .entry-content a {
-  color: rgb(27, 119, 236);
+  color: #0033ee;
   text-decoration: underline;
-  text-decoration-color: rgba(27, 119, 236, 0.25);
+  text-decoration-color: #0033ee33;
 
   /* Override twentyseventeen's stuff */
   box-shadow: none !important;
@@ -741,9 +741,9 @@ a:hover .nav-title,
 }
 
 .entry-content a:hover {
-  color: rgb(15, 95, 195);
+  color: #3366ff;
   text-decoration: underline;
-  text-decoration-color: rgb(15, 95, 195);
+  text-decoration-color: #3366ffcc;
 }
 
 
@@ -987,6 +987,7 @@ body {
 }
 
 .wrap {
+  position: relative;
   margin-left: auto;
   margin-right: auto;
   max-width: 700px;
@@ -1233,12 +1234,11 @@ body:not(.title-tagline-hidden) .site-branding-text {
 .page .panel-content .entry-title,
 .page-title,
 body.page:not(.twentyseventeen-front-page) .entry-title {
-  color: #222;
-  font-size: 14px;
-  font-size: 0.875rem;
-  font-weight: 800;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  color: #999;
+  font-size: 40px;
+  font-size: 2.5rem;
+  font-weight: 300;
+  letter-spacing: -1px;
   font-style: italic;
 }
 
@@ -1380,6 +1380,12 @@ h1.entry-title {
 .archive .site-main > article,
 .search .site-main > article {
   padding-bottom: 2em;
+  border-bottom: 0.25em solid black;
+  margin-bottom: 2em;
+}
+
+.site-main > article:last-of-type {
+  border-bottom: none !important;
 }
 
 body:not(.twentyseventeen-front-page) .entry-header {
@@ -1483,7 +1489,7 @@ body:not(.twentyseventeen-front-page) .entry-header {
   font-size: 0.6875rem;
   font-weight: 800;
   letter-spacing: 0.1818em;
-  padding-left: 2.5em;
+  /* padding-left: 2.5em; @TODO: Space was used by the icons which I have removed */
   position: relative;
   text-transform: uppercase;
 }
@@ -2308,6 +2314,31 @@ p > object:only-child {
   margin-bottom: 0;
 }
 
+/* Going to do a little overriding of the Gutenberg gallery here to reduce the
+  spacing around these elements */
+@media screen and (min-width: 600px) {
+  .wp-block-gallery .blocks-gallery-item {
+    width: calc((100% - 8px)/2);
+    margin: 0 8px 8px 0;
+  }
+
+  .wp-block-gallery.columns-3 .blocks-gallery-item {
+    width: calc((100% - 16px)/3);
+    margin-right: 8px;
+  }
+
+  .wp-block-gallery.columns-4 .blocks-gallery-item {
+    width: calc((100% - 24px)/4);
+    margin-right: 8px;
+  }
+
+  .wp-block-gallery .blocks-gallery-item:last-child {
+    /* The rules above broke the "last child" margin reset for the last item in a
+    gallery that has an uneven number of items. */
+    margin-right: 0 !important;
+  }
+}
+
 /*--------------------------------------------------------------
 17.0 Customizer
 --------------------------------------------------------------*/
@@ -2456,13 +2487,13 @@ p > object:only-child {
   h2,
   .home.blog .entry-title,
   .page .panel-content .recent-posts .entry-title {
-    font-size: 26px;
-    font-size: 1.625rem;
+    font-size: 24px;
+    font-size: 1.5rem;
   }
 
   h3 {
-    font-size: 22px;
-    font-size: 1.375rem;
+    font-size: 20px;
+    font-size: 1.25rem;
   }
 
   h4 {
@@ -2598,9 +2629,20 @@ p > object:only-child {
   }
 
   .has-sidebar #secondary {
-    float: right;
-    padding-top: 0;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 3em;
     width: 36%;
+  }
+  .archive.has-sidebar #secondary {
+    top: 5em; /* To make room for the archive title on those pages */
+  }
+
+  #secondary .secondary_inner {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 1em;
   }
 
   .error404 #primary {
@@ -2997,7 +3039,8 @@ p > object:only-child {
   .blog .site-main > article,
   .archive .site-main > article,
   .search .site-main > article {
-    padding-bottom: 4em;
+    padding-bottom: 3em;
+    margin-bottom: 3em;
   }
 
   .navigation.pagination {

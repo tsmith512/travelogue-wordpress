@@ -11,17 +11,23 @@
  */
 
 const gulp = require('gulp');
-const gutil = require('gulp-util');
-
+const del = require('del');
 const exec = require('child_process').exec;
 const fs = require('fs');
 const imagemin = require('gulp-imagemin');
 const resize = require('gulp-image-resize');
 
+gulp.task('dist-clean', () => {
+  return del([
+    'sources/img/headers/original/**/*',
+    'dist/**/*'
+  ]);
+});
+
 gulp.task('header-images-fetch', (cb) => {
   exec('mkdir -p sources/img/headers/original/'); // Make sure the image download directory exists
   exec('mkdir -p dist/css dist/js'); // Make sure the output directories exist
-  exec('AWS_CREDENTIAL_FILE=~/.aws/credentials && s3cmd get s3://routenotfound-assets/header_images/* sources/img/headers/original/', () => {
+  exec('AWS_CREDENTIAL_FILE=~/.aws/credentials s3cmd get s3://routenotfound-assets/header_images/* sources/img/headers/original/', () => {
     const headerImages = [];
     const outputCSS = [];
     const outputList = [];
@@ -67,12 +73,24 @@ gulp.task('header-images-sizes', () => {
     .pipe(resize({width: 1280, height: 1280, crop: false, upscale: false, quality: 1}))
     .pipe(imagemin([imagemin.jpegtran({progressive: true})]))
     .pipe(gulp.dest('dist/img/headers/medium/'))
-    .pipe(resize({width: 720, height: 720, crop: false, upscale: false, quality: 1}))
+    .pipe(resize({width: 760, height: 760, crop: false, upscale: false, quality: 1}))
     .pipe(imagemin([imagemin.jpegtran({progressive: true})]))
     .pipe(gulp.dest('dist/img/headers/narrow/'))
-    .pipe(resize({width: 360, height: 360, crop: false, upscale: false, quality: 1}))
+    .pipe(resize({width: 520, height: 520, crop: false, upscale: false, quality: 1}))
     .pipe(imagemin([imagemin.jpegtran({progressive: true})]))
     .pipe(gulp.dest('dist/img/headers/tiny/'));
 });
 
-gulp.task('build', gulp.series('header-images-fetch', 'header-images-sizes'));
+gulp.task('webfonts-fetch', (cb) => {
+  exec('mkdir -p dist/webfonts'); // Make sure the output directories exist
+  exec('AWS_CREDENTIAL_FILE=~/.aws/credentials s3cmd get --recursive s3://routenotfound-assets/webfonts/ dist/webfonts/', () => { cb(); });
+});
+
+gulp.task('build',
+  gulp.series('dist-clean',
+    gulp.parallel(
+      gulp.series('header-images-fetch', 'header-images-sizes'),
+      'webfonts-fetch'
+    )
+  )
+);
