@@ -11,7 +11,6 @@
  */
 
 const gulp = require('gulp');
-const gutil = require('gulp-util');
 
 const exec = require('child_process').exec;
 const fs = require('fs');

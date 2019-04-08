@@ -5,7 +5,6 @@
   "devDependencies": {
     "gulp": "^4.0.0",
     "gulp-image-resize": "^0.13.0",
-    "gulp-imagemin": "^5.0.3",
-    "gulp-util": "^3.0.8"
+    "gulp-imagemin": "^5.0.3"
   }
 }
