@@ -334,7 +334,7 @@ h6 {
   font-family: "Ringside Condensed SSm A", "Ringside Condensed SSm B", "Helvetica Neue", helvetica, arial, sans-serif;
   line-height: 1.4;
   margin: 0 0 0.75em;
-  padding: 1.5em 0 0;
+  padding: 0.75em 0 0;
 }
 
 h1:first-child,
@@ -1380,6 +1380,12 @@ h1.entry-title {
 .archive .site-main > article,
 .search .site-main > article {
   padding-bottom: 2em;
+  border-bottom: 0.25em solid black;
+  margin-bottom: 2em;
+}
+
+.site-main > article:last-of-type {
+  border-bottom: none !important;
 }
 
 body:not(.twentyseventeen-front-page) .entry-header {
@@ -3032,7 +3038,8 @@ p > object:only-child {
   .blog .site-main > article,
   .archive .site-main > article,
   .search .site-main > article {
-    padding-bottom: 4em;
+    padding-bottom: 3em;
+    margin-bottom: 3em;
   }
 
   .navigation.pagination {
