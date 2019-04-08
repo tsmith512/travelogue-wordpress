@@ -75,4 +75,9 @@ gulp.task('header-images-sizes', () => {
     .pipe(gulp.dest('dist/img/headers/tiny/'));
 });
 
+gulp.task('webfonts-fetch', (cb) => {
+  exec('mkdir -p dist/webfonts'); // Make sure the output directories exist
+  exec('AWS_CREDENTIAL_FILE=~/.aws/credentials s3cmd get --recursive s3://routenotfound-assets/webfonts/ dist/webfonts/', () => { cb(); });
+});
+
 gulp.task('build', gulp.series('header-images-fetch', 'header-images-sizes'));
