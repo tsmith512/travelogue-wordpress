@@ -11,11 +11,15 @@
  */
 
 const gulp = require('gulp');
-
+const del = require('del');
 const exec = require('child_process').exec;
 const fs = require('fs');
 const imagemin = require('gulp-imagemin');
 const resize = require('gulp-image-resize');
+
+gulp.task('dist-clean', () => {
+  return del(['dist/**/*']);
+});
 
 gulp.task('header-images-fetch', (cb) => {
   exec('mkdir -p sources/img/headers/original/'); // Make sure the image download directory exists
@@ -79,4 +83,11 @@ gulp.task('webfonts-fetch', (cb) => {
   exec('AWS_CREDENTIAL_FILE=~/.aws/credentials s3cmd get --recursive s3://routenotfound-assets/webfonts/ dist/webfonts/', () => { cb(); });
 });
 
-gulp.task('build', gulp.series('header-images-fetch', 'header-images-sizes'));
+gulp.task('build',
+  gulp.series('dist-clean',
+    gulp.parallel(
+      gulp.series('header-images-fetch', 'header-images-sizes'),
+      'webfonts-fetch'
+    )
+  )
+);
