@@ -46,10 +46,12 @@
       if (tripXhr.status === 200) {
         var tripResponse = JSON.parse(tripXhr.responseText);
         window.tqor.trips[trip_id] = tripResponse;
-        window.tqor.trips[trip_id].line = L.mapbox.featureLayer(tripResponse.line).addTo(map);
+        if (tripResponse.hasOwnProperty('line') && tripResponse.line.coordinates) {
+          window.tqor.trips[trip_id].line = L.mapbox.featureLayer(tripResponse.line).addTo(map);
 
-        if (callback) {
-          callback(tripResponse);
+          if (callback) {
+            callback(tripResponse);
+          }
         }
       }
     };
