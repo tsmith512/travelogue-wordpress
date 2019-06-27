@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3c7ef6c1db4d3fa67d92ab23b4e6bb4c",
+    "content-hash": "47989031aa099f1fdc797b6f5ad0bac9",
     "packages": [
         {
             "name": "johnpbloch/wordpress",
@@ -285,24 +285,6 @@
                 "reference": "v3.1.1"
             },
             "type": "library"
-        },
-        {
-            "name": "wpackagist-plugin/auto-upload-images",
-            "version": "3.1.1",
-            "source": {
-                "type": "svn",
-                "url": "https://plugins.svn.wordpress.org/auto-upload-images/",
-                "reference": "tags/3.1.1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/auto-upload-images.3.1.1.zip"
-            },
-            "require": {
-                "composer/installers": "~1.0"
-            },
-            "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/auto-upload-images/"
         },
         {
             "name": "wpackagist-plugin/autoptimize",
