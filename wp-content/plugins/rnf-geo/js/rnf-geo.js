@@ -161,5 +161,27 @@
     }
   }
 
+  var currentLocation = new XMLHttpRequest();
+  currentLocation.open('GET', tqor.locationApi + '/api/location/latest');
+  currentLocation.setRequestHeader('Content-Type', 'application/json');
+  currentLocation.onload = function () {
+    if (currentLocation.status === 200) {
+      var response = JSON.parse(currentLocation.responseText);
+      if (response.hasOwnProperty('full_city')) {
+        // Set the current city in the widget:
+        document.getElementById('rnf-location').innerText = response.full_city;
+
+        // Set the current time in the widget:
+        var now = Math.floor(new Date().getTime() / 1000);
+        var then = response.time;
+        var diff = (now - then) / 60 / 60;
+        var output = (diff < 1) ? "less than an hour ago" : (Math.floor(diff) + " hours ago")
+        document.getElementById('rnf-timestamp').innerText = output;
+        window.tqor.currentLocation = response;
+      }
+    }
+  };
+  currentLocation.send();
+
 
 })();
