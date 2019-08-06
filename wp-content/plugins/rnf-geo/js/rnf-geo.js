@@ -67,7 +67,7 @@
         if (xhr.status === 200) {
           var response = JSON.parse(xhr.responseText);
           if (response.hasOwnProperty('lat')) {
-            map.setView([response.lat, response.lon], 10);
+            map.setView([response.lat, response.lon], 8);
             window.tqor.cache[timestamp] = [response.lat, response.lon];
           }
         }
@@ -75,7 +75,7 @@
       xhr.send();
     }
     else {
-      map.setView(window.tqor.cache[timestamp], 10);
+      map.setView(window.tqor.cache[timestamp], 8);
     }
     map.invalidateSize();
   }
@@ -105,7 +105,10 @@
                 }
               }
             ];
-            L.mapbox.featureLayer().setGeoJSON(markerGeoJSON).addTo(map);
+            if (window.tqor.hasOwnProperty('postMarker')) {
+              window.tqor.postMarker.removeFrom(map);
+            }
+            window.tqor.postMarker = L.mapbox.featureLayer().setGeoJSON(markerGeoJSON).addTo(map);
           }
         }
       };
@@ -127,7 +130,10 @@
           }
         }
       ];
-      L.mapbox.featureLayer().setGeoJSON(markerGeoJSON).addTo(map);
+      if (window.tqor.hasOwnProperty('postMarker')) {
+        window.tqor.postMarker.removeFrom(map);
+      }
+      window.tqor.postMarker = L.mapbox.featureLayer().setGeoJSON(markerGeoJSON).addTo(map);
     }
   }
 
@@ -160,6 +166,7 @@
       e.preventDefault();
       var timestamp = el.getAttribute('data-timestamp');
       mapToTimestamp(timestamp);
+      addMarkerToTimestamp(timestamp);
 
       // And add the visible class to the container so it opens on mobile.
       map._container.parentElement.classList.toggle('visible');
