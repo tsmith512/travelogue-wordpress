@@ -193,9 +193,8 @@
               window.map.fitBounds(trip.boundaries, {animate: true, padding: [10, 10]});
             }
 
-            // If we're on this trip, add a marker for the post location.
-            var currentTimestamp = Date.now() / 1000;
-            if (trip.starttime <= currentTimestamp && currentTimestamp <= trip.endtime) {
+            // If the post was written during this trip, add a marker
+            if (trip.starttime <= window.tqor.start.timestamp && window.tqor.start.timestamp <= trip.endtime) {
               addMarkerToTimestamp(window.tqor.start.timestamp);
             }
           });
