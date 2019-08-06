@@ -80,6 +80,57 @@
     map.invalidateSize();
   }
 
+  var addMarkerToTimestamp = function(timestamp) {
+    if (!window.tqor.cache.hasOwnProperty(timestamp)) {
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', tqor.locationApi + '/api/location/history/timestamp/' + timestamp);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.onload = function () {
+        if (xhr.status === 200) {
+          var response = JSON.parse(xhr.responseText);
+          if (response.hasOwnProperty('lat')) {
+            window.tqor.cache[timestamp] = [response.lat, response.lon];
+            // Drop a marker on the map:
+            var markerGeoJSON = [
+              {
+                type: "Feature",
+                geometry: {
+                  type: "Point",
+                  coordinates: [response.lon, response.lat]
+                },
+                properties: {
+                  "marker-color": "#FF6633",
+                  "marker-size": "small",
+                  "marker-symbol": "post"
+                }
+              }
+            ];
+            L.mapbox.featureLayer().setGeoJSON(markerGeoJSON).addTo(map);
+          }
+        }
+      };
+      xhr.send();
+    }
+    else {
+      // Drop a marker on the map:
+      var markerGeoJSON = [
+        {
+          type: "Feature",
+          geometry: {
+            type: "Point",
+            coordinates: window.tqor.cache[timestamp]
+          },
+          properties: {
+            "marker-color": "#FF6633",
+            "marker-size": "small",
+            "marker-symbol": "post"
+          }
+        }
+      ];
+      L.mapbox.featureLayer().setGeoJSON(markerGeoJSON).addTo(map);
+    }
+  }
+
   var rnfCustomMapControl = L.Control.extend({
     options: {
       position: 'topright',
@@ -144,7 +195,7 @@
         } else {
           loadAllTrips(tripsToLoad);
         }
-        mapToTimestamp(window.tqor.start.timestamp);
+        addMarkerToTimestamp(window.tqor.start.timestamp);
         break;
       default:
         var currentTimestamp = Date.now() / 1000;
