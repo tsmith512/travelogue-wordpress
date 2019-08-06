@@ -35,6 +35,7 @@ function rnf_geo_register_assets() {
 
   // Figure out where we are so we can tell the map where to start
   $object = get_queried_object();
+  $current = rnf_geo_current_trip();
   $start = array();
   if ($object instanceof WP_Post) {
     // A single post was called, let's start the map on the post's location
@@ -62,6 +63,18 @@ function rnf_geo_register_assets() {
         'trip_id' => $trip_id,
       );
     }
+  } else if (!empty($current->wp_category)) {
+    // There's no queried object, but we're currently traveling and the trip has
+    // a corresponding category, so show that.
+    $start = array(
+      'type' => 'trip',
+      'trip_id' => $current->id, // Note: this is the trip ID, not the term ID
+    );
+
+    // @TODO: This does mean that when the general blog is loaded during a trip,
+    // the map will only show the route line for the current trip... Should it
+    // show others in the past?
+
   } else {
     // There is no queried object. The main use-case for this is the default
     // blog view.

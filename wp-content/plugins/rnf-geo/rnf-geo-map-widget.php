@@ -39,10 +39,10 @@ class RNF_Geo_Map_Widget extends WP_Widget {
         <?php if (!empty($current->wp_category)): ?>
           <div class="trip-info">
             <span class="rnf-geo-widget-icon rnf-geo-widget-icon-marker">Current Location:</span>
-            <em>Austin, Texas &bull; 2 hours ago.</em>
+            <em><span id="rnf-location"></span> &bull; <span id="rnf-timestamp"></span></em>
             <hr />
             <span class="rnf-geo-widget-icon rnf-geo-widget-icon-trip">Trip:</span>
-            <a href="#">Current Trip</a>
+            <a href="<?php echo get_term_link($current->wp_category); ?>"><?php echo $current->wp_category->name; ?></a>
           </div>
         <?php endif; ?>
       </div>
