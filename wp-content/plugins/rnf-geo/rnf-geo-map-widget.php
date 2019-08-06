@@ -33,8 +33,16 @@ class RNF_Geo_Map_Widget extends WP_Widget {
     wp_enqueue_script('rnf-geo-js');
 
     ?>
-
-      <div id="map"></div>
+      <div class="rnf-geo-map-widget">
+        <div id="map"></div>
+        <div class="trip-info">
+          <span class="rnf-geo-widget-icon rnf-geo-widget-icon-marker">Current Location:</span>
+          <em>Austin, Texas &bull; 2 hours ago.</em>
+          <hr />
+          <span class="rnf-geo-widget-icon rnf-geo-widget-icon-trip">Trip:</span>
+          <a href="#">Current Trip</a>
+        </div>
+      </div>
 
     <?php
   }

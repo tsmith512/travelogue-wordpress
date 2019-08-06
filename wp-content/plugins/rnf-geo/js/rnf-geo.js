@@ -98,7 +98,7 @@
 
     _closeMapClick: function (e) {
       L.DomEvent.stop(e);
-      map._container.classList.toggle('visible');
+      map._container.parentElement.classList.toggle('visible');
     }
   });
   map.addControl(new rnfCustomMapControl());
@@ -111,7 +111,7 @@
       mapToTimestamp(timestamp);
 
       // And add the visible class to the container so it opens on mobile.
-      map._container.classList.toggle('visible');
+      map._container.parentElement.classList.toggle('visible');
       map.invalidateSize();
     });
   });
