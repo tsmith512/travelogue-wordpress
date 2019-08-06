@@ -261,6 +261,7 @@
             }
           }
         ];
+
         window.tqor.currentLocation.markerLayer = L.mapbox.featureLayer().setGeoJSON(markerGeoJSON).addTo(map);
       }
     };
