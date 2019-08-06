@@ -2,7 +2,7 @@
 
 function rnf_geo_admin_page() {
   $trips = rnf_geo_get_trips();
-
+  $current = rnf_geo_current_trip();
   ?>
   <div class="wrap">
     <h1>Trips in Location Tracker <a id="rnf-cache-clear" class="page-title-action">Clear Trips Cache</a></h1>
@@ -20,7 +20,8 @@ function rnf_geo_admin_page() {
       </thead>
       <tbody>
         <?php foreach ($trips as $index => $trip): ?>
-          <tr>
+          <?php /* This is a terrible way to mark a row, do it better. */ ?>
+          <tr <?php if (isset($current->id) && $trip->id == $current->id) { echo "style='font-weight: bold; background-color: #ccffcc;'"; } ?>>
             <td><?php print $trip->id; ?></td>
             <td><?php print $trip->machine_name; ?></td>
             <td><?php print $trip->label; ?></td>

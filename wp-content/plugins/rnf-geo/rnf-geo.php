@@ -228,3 +228,20 @@ function rnf_geo_is_post_during_trip(&$post) {
   }
 }
 add_action('the_post', 'rnf_geo_is_post_during_trip');
+
+/**
+ * Determine which, if any, trip we may currently be on. Will return false if
+ * current time is not in a trip range, otherwise will return current trip
+ * object and, if created, the corresponding post category object.
+ */
+function rnf_geo_current_trip() {
+  $trips =  rnf_geo_get_trips();
+  $current_trip = false;
+  foreach ($trips as $trip) {
+    if ($trip->starttime < time() && time() < $trip->endtime) {
+      $current_trip = $trip;
+      break;
+    }
+  }
+  return $current_trip;
+}
