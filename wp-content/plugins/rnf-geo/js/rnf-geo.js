@@ -171,7 +171,7 @@
     currentLocation.onload = function () {
       if (currentLocation.status === 200) {
         var response = JSON.parse(currentLocation.responseText);
-        if (response.hasOwnProperty('full_city')) {
+        if (response.hasOwnProperty('time')) {
           // Set the current city in the widget:
           document.getElementById('rnf-location').innerText = response.full_city;
 
@@ -183,6 +183,24 @@
           document.getElementById('rnf-timestamp').innerText = output;
           window.tqor.currentLocation = response;
         }
+
+        // Drop a marker on the map:
+        var markerGeoJSON = [
+          {
+            type: "Feature",
+            geometry: {
+              type: "Point",
+              coordinates: [response.lon, response.lat]
+            },
+            properties: {
+              "marker-color": "#FF6633",
+              "marker-size": "small",
+              "marker-symbol": "car"
+            }
+          }
+        ];
+        window.tqor.currentLocation.markerLayer = L.mapbox.featureLayer().setGeoJSON(markerGeoJSON).addTo(map);
+        console.log(response);
       }
     };
     currentLocation.send();
