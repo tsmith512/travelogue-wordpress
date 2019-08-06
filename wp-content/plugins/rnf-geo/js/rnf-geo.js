@@ -145,7 +145,6 @@
           loadAllTrips(tripsToLoad);
         }
         mapToTimestamp(window.tqor.start.timestamp);
-        // @TODO: On a post-only page, it'd be great to only load the trip it was on?
         break;
       default:
         var currentTimestamp = Date.now() / 1000;
