@@ -169,6 +169,14 @@ function rnf_geo_ajax_create_trip_category() {
 add_action( 'wp_ajax_tqor_create_term', 'rnf_geo_ajax_create_trip_category' );
 
 /**
+ * Dump the trip cache.
+ */
+function rnf_geo_ajax_clear_trip_cache() {
+  delete_transient('rnf_geo_trips_cache');
+}
+add_action( 'wp_ajax_tqor_clear_trip_cache', 'rnf_geo_ajax_clear_trip_cache' );
+
+/**
  * Display a Location Tracker Trip ID on the taxonomy term management page if
  * there is one.
  */
