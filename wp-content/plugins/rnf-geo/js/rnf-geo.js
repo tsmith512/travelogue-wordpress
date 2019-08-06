@@ -188,14 +188,20 @@
       case 'post':
         if (window.tqor.start.hasOwnProperty('trip_id')) {
           loadTrip(window.tqor.start.trip_id, function(trip) {
+            // If this trip has a line, zoom the map in
             if (trip.hasOwnProperty('boundaries')) {
               window.map.fitBounds(trip.boundaries, {animate: true, padding: [10, 10]});
+            }
+
+            // If we're on this trip, add a marker for the post location.
+            var currentTimestamp = Date.now() / 1000;
+            if (trip.starttime <= currentTimestamp && currentTimestamp <= trip.endtime) {
+              addMarkerToTimestamp(window.tqor.start.timestamp);
             }
           });
         } else {
           loadAllTrips(tripsToLoad);
         }
-        addMarkerToTimestamp(window.tqor.start.timestamp);
         break;
       default:
         var currentTimestamp = Date.now() / 1000;
