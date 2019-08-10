@@ -252,6 +252,9 @@ function rnf_geo_current_trip() {
   $current_trip = false;
   foreach ($trips as $trip) {
     if ($trip->starttime < time() && time() < $trip->endtime) {
+      // @TODO: Though there's no business logic case for two trips to overlap,
+      // this would only return the lowest index trip in the case that multiple
+      // are active...
       $current_trip = $trip;
       break;
     }
