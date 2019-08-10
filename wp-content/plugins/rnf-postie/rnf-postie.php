@@ -7,11 +7,12 @@
  */
 
 function rnf_postie_inreach_author($email) {
-  // @TODO: The site won't post from just anybody. Rather than allow for
-  // anonymous posting, I'm going to "whitelist" inReach by changing the inReach
-  // email address to my own. (Also to-do: do this by WP lookup, not by putting
-  // my email address in the codebase...). Docs indicate the $email parameter is
-  // single email address.
+  // Test the email address and change it to mine if it's allowable.
+  if ($email == "PLACEHOLDER@EXAMPLE.COM") {
+    // For a multi-author site, this should be a setting. For me, this is fine.
+    $admin = get_userdata(1);
+    return $admin->get('user_email');
+  }
   return $email;
 }
 add_filter('postie_filter_email', 'rnf_postie_inreach_author');
