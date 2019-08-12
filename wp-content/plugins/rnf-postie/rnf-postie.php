@@ -6,6 +6,10 @@
  * Author: Taylor Smith
  */
 
+/**
+ * Filter to whitelist authors by rewriting acceptable email addresses as my own
+ * which Postie will then credit to me.
+ */
 function rnf_postie_inreach_author($email) {
   // Test the email address and change it to mine if it's allowable.
   if ($email == "PLACEHOLDER@EXAMPLE.COM") {
@@ -17,15 +21,64 @@ function rnf_postie_inreach_author($email) {
 }
 add_filter('postie_filter_email', 'rnf_postie_inreach_author');
 
+/**
+ * Clean up the Garmin inReach email by removing a bunch of stuff.
+ */
 function rnf_postie_inreach_content_clean($post, $headers) {
-  // @TODO: The inReach email may include personally identifying info or the
-  // ability to open 2-way messages. Check if the post is an inReach post
-  // something in ($headers) and clean anything from $post['post_content'] as
-  // necessary. See https://developer.wordpress.org/reference/functions/wp_insert_post/
+  // Only process emails via Garmin
+  if ($headers["from"]["host"] == "garmin.com") {
+    // Let's just take my name out of it, shall we?
+    $post["post_title"] = "Update via inReach";
+
+    // Processing message content line-at-a-time.
+    $content = explode("  ", $post["post_content"]);
+    foreach ($content as $index => &$line) {
+      if ($index == 0) {
+        // The first line is the message I wrote, pass it on.
+        continue;
+      }
+
+      if (strpos($line, "send a reply to") !== false) {
+        // This is the line with the "view on map and reply" link, and while the
+        // map is cool, I don't want to expose the link to reply.
+        $line = null;
+      }
+
+      if (strpos($line, "sent this message from") !== false) {
+        // inReach includes "Eric Bob sent this message from: Lat 30.274075 Lon -97.740579"
+        // Swap that around to a Google Maps search and take my name out of it.
+        if (preg_match_all('/(-?\d{1,3}\.\d+)/', $line, $coords)) {
+          $link_text = "{$coords[0][0]}, {$coords[0][1]}";
+          $google_maps_url = "https://www.google.com/maps/search/{$coords[0][0]},{$coords[0][1]}";
+          $line = "<p><em>Sent from <a href=\"{$google_maps_url}\">{$link_text}</a>.</em></p>";
+        }
+      }
+
+      if (strpos($line, "Do not reply directly") !== false || strpos($line, "sent to you using the inReach") !== false) {
+        // Two disclaimer / product placement/ad lines.
+        $line = null;
+      }
+
+      if (strpos($line, "<img src") !== false) {
+        // Remove the tracking pixel
+        $line = null;
+      }
+
+    }
+
+    $post["post_content"] = implode("\n", $content);
+  }
   return $post;
 }
 add_filter('postie_post_before', 'rnf_postie_inreach_content_clean', 10, 2);
 
+/**
+ * Look up if there's an active trip with a category when the email is parsed
+ * and assign the new post to it. NOTE! Postie backdates posts to the email's
+ * own sent date, and this filter evaluates based on the current server time
+ * (because that's what rnf_geo_current_trip does). In my use case, these will
+ * be the same because cron runs often.
+ */
 function rnf_postie_default_trip_category($category) {
   // Geo functions are provided by the rnf-geo plugin, check for it:
   if (!function_exists('rnf_geo_current_trip')) {
