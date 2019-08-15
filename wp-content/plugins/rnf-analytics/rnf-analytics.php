@@ -10,7 +10,7 @@
  * Implements admin_menu to add the options page to the Settings menu for admins.
  */
 function rnf_analytics_add_admin_menu() {
-  add_submenu_page('options-general.php', 'RNF Analytics Settings', 'RNF Analytics', 'manage_options', 'rnf-analytics-settings', 'rnf_analytics_options_page');
+  add_submenu_page('rnf-overrides', 'RNF Analytics Settings', 'Analytics', 'manage_options', 'rnf-analytics-settings', 'rnf_analytics_options_page');
 }
 add_action('admin_menu', 'rnf_analytics_add_admin_menu');
 

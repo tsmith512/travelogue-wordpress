@@ -13,7 +13,7 @@
 function rnf_overrides_add_admin_menu() {
   add_menu_page('RNF Options', 'RNF Options', 'edit_posts', 'rnf-overrides', 'rnf_overrides_admin_page', 'dashicons-location-alt', 78);
 }
-add_action('admin_menu', 'rnf_overrides_add_admin_menu');
+add_action('admin_menu', 'rnf_overrides_add_admin_menu', 5);
 require_once "rnf-overrides-admin.php";
 
 /**

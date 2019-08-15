@@ -14,8 +14,8 @@ add_action( 'widgets_init', function() { register_widget( 'RNF_Geo_Map_Widget' )
  * See rnf-geo-settings.php for the output of this page.
  */
 function rnf_geo_add_admin_menu() {
-  add_menu_page('RNF Geo', 'RNF Geo', 'manage_options', 'rnf-geo', 'rnf_geo_admin_page', 'dashicons-location-alt', 78);
-  add_submenu_page('rnf-geo', 'RNF Geo Settings', 'Settings', 'manage_options', 'rnf-geo-settings', 'rnf_geo_options_page');
+  add_submenu_page('rnf-overrides', 'Trip List', 'Trip List', 'manage_options', 'rnf-geo', 'rnf_geo_admin_page');
+  add_submenu_page('rnf-overrides', 'Geo Settings', 'Geo Settings', 'manage_options', 'rnf-geo-settings', 'rnf_geo_options_page');
 }
 add_action('admin_menu', 'rnf_geo_add_admin_menu');
 require_once "rnf-geo-admin.php";
