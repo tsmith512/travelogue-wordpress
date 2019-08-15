@@ -22,8 +22,16 @@ require_once "rnf-postie-settings.php";
  * which Postie will then credit to me.
  */
 function rnf_postie_inreach_author($email) {
+  // So we can inspect the domain, refer to $domain[1]
+  $domain = explode('@', $email);
+
+  // Get the whitelisting options
+  $options = get_option( 'rnf_postie_settings' );
+  $accept_addresses = $options['emails'];
+  $accept_domains = $options['domains'];
+
   // Test the email address and change it to mine if it's allowable.
-  if ($email == "PLACEHOLDER@EXAMPLE.COM") {
+  if (in_array($email, $accept_addresses) || in_array($domain[1], $accept_domains)) {
     // For a multi-author site, this should be a setting. For me, this is fine.
     $admin = get_userdata(1);
     return $admin->get('user_email');
