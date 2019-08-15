@@ -7,6 +7,17 @@
  */
 
 /**
+ * Implements admin_menu to add the options page to the sidebar menu for admins.
+ * See rnf-postie-settings.php for the output of this page.
+ */
+function rnf_postie_add_admin_menu() {
+  add_submenu_page('postie-settings', 'RNF Postie Settings', 'RNF Postie', 'manage_options', 'rnf-postie', 'rnf_postie_options_page');
+}
+add_action('admin_menu', 'rnf_postie_add_admin_menu');
+require_once "rnf-postie-settings.php";
+
+
+/**
  * Filter to whitelist authors by rewriting acceptable email addresses as my own
  * which Postie will then credit to me.
  */
