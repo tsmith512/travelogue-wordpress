@@ -9,7 +9,6 @@
 function rnf_meta_add_header_tags() {
   // Figure out where we are so we can tell the map where to start
   $object = get_queried_object();
-  $current = rnf_geo_current_trip();
 
   // Set up some defaults and placeholders
   $info = array(
