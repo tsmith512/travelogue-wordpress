@@ -16,9 +16,9 @@ function rnf_meta_add_header_tags() {
 
   $info = array(
     'title' => false,
+    'image' => false,
     'site' => get_bloginfo('title'),
     'current' => false,
-    'description' => false,
     'url' => is_singular() ? get_permalink() :
       ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://')
       . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'],
@@ -37,11 +37,19 @@ function rnf_meta_add_header_tags() {
 */
 
   if ($object instanceof WP_Post) {
+    $info['title'] = $object->post_title;
 
     // We have a post, is it on a trip?
     $trip_terms = wp_get_post_categories($object->ID, array('meta_key' => 'rnf_geo_trip_id', 'fields' => 'all'));
     if (!empty($trip_terms)) {
       $info['current'] = $trip_terms[0]->name;
+    }
+
+    $imgreg = '/<img .*src=["\']([^ "^\']*)["\']/';
+    preg_match_all( $imgreg, $object->post_content, $matches );
+
+    if (!empty($matches[1])) {
+      $info['image'] = reset($matches[1]);
     }
 
   } elseif ($object instanceof WP_Term) {
