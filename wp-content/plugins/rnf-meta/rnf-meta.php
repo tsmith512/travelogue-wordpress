@@ -11,9 +11,7 @@ function rnf_meta_add_header_tags() {
   $object = get_queried_object();
   $current = rnf_geo_current_trip();
 
-  $meta = array();
-  // <meta (name|property)="X" content="Y">
-
+  // Set up some defaults and placeholders
   $info = array(
     'title' => false,
     'image' => false,
@@ -22,20 +20,10 @@ function rnf_meta_add_header_tags() {
     'url' => is_singular() ? get_permalink() :
       ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://')
       . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'],
+    'type' => is_singular() ? 'article' : 'website',
   );
 
-/*
-<link rel="canonical" href="http://dizzy.site/2019/08/15/heres-a-longer-test-message/"/>
-<meta name="description" content="So we made it to the place...paragraph...more text ..Here&#039;s a picture:Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi ut leo mi. Proin ultricies sed lorem id gravida. Ut consectetur nec magna vitae interdum. Sed finibus placerat malesuada. Nunc bibendum mauris a ante eleifend, in"/>
-<meta property="og:locale" content="en_US"/>
-<meta property="og:title" content="Here&#039;s a longer test message"/>
-<meta property="og:url" content="http://dizzy.site/2019/08/15/heres-a-longer-test-message/"/>
-<meta property="og:type" content="article"/>
-<meta name="twitter:title" content="Here&#039;s a longer test message"/>
-<meta name="twitter:url" content="http://dizzy.site/2019/08/15/heres-a-longer-test-message/"/>
-<meta name="twitter:card" content="summary_large_image"/>
-*/
-
+  // Some stuff is different depending on what it is
   if ($object instanceof WP_Post) {
     $info['title'] = $object->post_title;
 
@@ -73,9 +61,35 @@ function rnf_meta_add_header_tags() {
     // blog view.
   }
 
+  // Catch the home page / general archive
   if (!$info['title'] && is_front_page()) {
     $info['title'] = get_bloginfo('title');
   }
-var_dump($info);
+
+  $meta = array();
+  $meta[] = "<meta property='og:locale' content='en_US' />";
+  $meta[] = "<meta property='og:title' content='{$info['title']}' />";
+  $meta[] = "<meta property='og:site_name' content='{$info['site']}' />";
+  $meta[] = "<meta property='og:url' content='{$info['url']}' />";
+  $meta[] = "<meta property='og:type' content='{$info['type']}' />";
+  $meta[] = "<meta property='og:image' content='{$info['image']}' />";
+  $meta[] = "<meta name='twitter:title' content='{$info['title']}' />";
+  $meta[] = "<meta name='twitter:url' content='{$info['url']}' />";
+  $meta[] = "<meta name='twitter:image' content='{$info['image']}' />";
+  $meta[] = "<meta name='twitter:card' content='summary_large_image' />";
+
+  echo implode("\n", $meta);
 }
 add_action('wp_head', 'rnf_meta_add_header_tags', 5);
+
+function rnf_meta_add_namespace($output) {
+  if (stristr($output, 'xmlns:og') === false) {
+    $output = $output . ' xmlns:og="http://ogp.me/ns#"';
+  }
+  if (stristr($output, 'xmlns:fb') === false) {
+    $output = $output . ' xmlns:fb="http://ogp.me/ns/fb#"';
+  }
+
+  return $output;
+}
+add_filter('language_attributes', 'rnf_meta_add_namespace');
