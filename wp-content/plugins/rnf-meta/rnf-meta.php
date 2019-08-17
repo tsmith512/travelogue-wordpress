@@ -13,7 +13,8 @@ function rnf_meta_add_header_tags() {
   // Set up some defaults and placeholders
   $info = array(
     'title' => FALSE,
-    'image' => FALSE,
+    'image' => NULL,
+    'description' => NULL, // @TODO: Facebook requires this but it'll be empty for the time being
     'site' => get_bloginfo('title'),
     'trip' => FALSE,
     'url' => is_singular() ? get_permalink() :
@@ -76,9 +77,10 @@ function rnf_meta_add_header_tags() {
   $meta[] = "<meta property='og:locale' content='en_US' />";
   $meta[] = "<meta property='og:title' content='{$title}' />";
   $meta[] = "<meta property='og:site_name' content='{$info['site']}' />";
+  $meta[] = "<meta property='og:descrpition' content='{$info['description']}' />";
   $meta[] = "<meta property='og:url' content='{$info['url']}' />";
   $meta[] = "<meta property='og:type' content='{$info['type']}' />";
-  $meta[] = ($info['image']) ? "<meta property='og:image' content='{$info['image']}' />" : "";
+  $meta[] = "<meta property='og:image' content='{$info['image']}' />";
   $meta[] = "<meta name='twitter:title' content='{$title}' />";
   $meta[] = "<meta name='twitter:url' content='{$info['url']}' />";
   $meta[] = ($info['image']) ? "<meta name='twitter:image' content='{$info['image']}' />" : "";
