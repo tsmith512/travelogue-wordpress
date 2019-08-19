@@ -1268,18 +1268,21 @@ h1.entry-title {
 }
 
 .entry-meta {
-  color: #767676;
-  font-size: 11px;
-  font-size: 0.6875rem;
-  font-weight: 800;
-  letter-spacing: 0.1818em;
+  color: #CCC;
+  font-size: 12px;
+  font-size: 0.75rem;
+  letter-spacing: 0.1212em;
   padding-bottom: 0.25em;
   text-transform: uppercase;
   font-family: "Ringside Condensed SSm A", "Ringside Condensed SSm B", Helvetica, Arial, sans-serif;
 }
 
+.entry-meta:after {
+  content: " //";
+}
+
 .entry-meta a {
-  color: #767676;
+  color: #0033ee;
 }
 
 .byline,
