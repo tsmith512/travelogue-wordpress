@@ -2607,14 +2607,14 @@ p > object:only-child {
   /* Layout */
 
   .wrap {
-    max-width: 1000px;
+    max-width: 1200px;
     padding-left: 3em;
     padding-right: 3em;
   }
 
   .has-sidebar:not(.error404) #primary {
     float: left;
-    width: 58%;
+    width: 56%;
   }
 
   .has-sidebar #secondary {
@@ -2622,7 +2622,7 @@ p > object:only-child {
     top: 0;
     bottom: 0;
     right: 3em;
-    width: 36%;
+    width: 38%;
   }
   .archive.has-sidebar #secondary {
     top: 5em; /* To make room for the archive title on those pages */
@@ -2927,12 +2927,12 @@ p > object:only-child {
 
   .page-two-column .panel-content .entry-header {
     float: left;
-    width: 36%;
+    width: 38%;
   }
 
   .page-two-column .panel-content .entry-content {
     float: right;
-    width: 58%;
+    width: 56%;
   }
 
   /* Front Page - Recent Posts */
@@ -2940,7 +2940,7 @@ p > object:only-child {
   .page-two-column .panel-content .recent-posts {
     clear: right;
     float: right;
-    width: 58%;
+    width: 56%;
   }
 
   .panel-content .recent-posts article {
@@ -3011,7 +3011,7 @@ p > object:only-child {
   body.page-two-column:not(.archive) #primary .entry-header,
   body.page-two-column.archive:not(.has-sidebar) #primary .page-header {
     float: left;
-    width: 36%;
+    width: 38%;
   }
 
   .blog:not(.has-sidebar) #primary article,
@@ -3022,7 +3022,7 @@ p > object:only-child {
   body.page-two-column:not(.archive) #primary .entry-content,
   body.page-two-column #comments {
     float: right;
-    width: 58%;
+    width: 56%;
   }
 
   .blog .site-main > article,
@@ -3035,7 +3035,7 @@ p > object:only-child {
   .navigation.pagination {
     clear: both;
     float: right;
-    width: 58%;
+    width: 56%;
   }
 
   .has-sidebar .navigation.pagination,
@@ -3200,25 +3200,25 @@ p > object:only-child {
 
   .site-footer .widget-column.footer-widget-1 {
     float: left;
-    width: 36%;
+    width: 38%;
   }
 
   .site-footer .widget-column.footer-widget-2 {
     float: right;
-    width: 58%;
+    width: 56%;
   }
 
   .social-navigation {
     clear: left;
     float: left;
     margin-bottom: 0;
-    width: 36%;
+    width: 38%;
   }
 
   .site-info {
     float: left;
     padding: 0.7em 0 0;
-    width: 58%;
+    width: 56%;
   }
 
   .social-navigation + .site-info {
