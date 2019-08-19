@@ -67,7 +67,7 @@
         if (xhr.status === 200) {
           var response = JSON.parse(xhr.responseText);
           if (response.hasOwnProperty('lat')) {
-            map.setView([response.lat, response.lon], 10);
+            map.setView([response.lat, response.lon], 8);
             window.tqor.cache[timestamp] = [response.lat, response.lon];
           }
         }
@@ -75,9 +75,66 @@
       xhr.send();
     }
     else {
-      map.setView(window.tqor.cache[timestamp], 10);
+      map.setView(window.tqor.cache[timestamp], 8);
     }
     map.invalidateSize();
+  }
+
+  var addMarkerToTimestamp = function(timestamp) {
+    if (!window.tqor.cache.hasOwnProperty(timestamp)) {
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', tqor.locationApi + '/api/location/history/timestamp/' + timestamp);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.onload = function () {
+        if (xhr.status === 200) {
+          var response = JSON.parse(xhr.responseText);
+          if (response.hasOwnProperty('lat')) {
+            window.tqor.cache[timestamp] = [response.lat, response.lon];
+            // Drop a marker on the map:
+            var markerGeoJSON = [
+              {
+                type: "Feature",
+                geometry: {
+                  type: "Point",
+                  coordinates: [response.lon, response.lat]
+                },
+                properties: {
+                  "marker-color": "#FF6633",
+                  "marker-size": "small",
+                  "marker-symbol": "post"
+                }
+              }
+            ];
+            if (window.tqor.hasOwnProperty('postMarker')) {
+              window.tqor.postMarker.removeFrom(map);
+            }
+            window.tqor.postMarker = L.mapbox.featureLayer().setGeoJSON(markerGeoJSON).addTo(map);
+          }
+        }
+      };
+      xhr.send();
+    }
+    else {
+      // Drop a marker on the map:
+      var markerGeoJSON = [
+        {
+          type: "Feature",
+          geometry: {
+            type: "Point",
+            coordinates: window.tqor.cache[timestamp]
+          },
+          properties: {
+            "marker-color": "#FF6633",
+            "marker-size": "small",
+            "marker-symbol": "post"
+          }
+        }
+      ];
+      if (window.tqor.hasOwnProperty('postMarker')) {
+        window.tqor.postMarker.removeFrom(map);
+      }
+      window.tqor.postMarker = L.mapbox.featureLayer().setGeoJSON(markerGeoJSON).addTo(map);
+    }
   }
 
   var rnfCustomMapControl = L.Control.extend({
@@ -98,7 +155,7 @@
 
     _closeMapClick: function (e) {
       L.DomEvent.stop(e);
-      map._container.classList.toggle('visible');
+      map._container.parentElement.classList.toggle('visible');
     }
   });
   map.addControl(new rnfCustomMapControl());
@@ -109,9 +166,10 @@
       e.preventDefault();
       var timestamp = el.getAttribute('data-timestamp');
       mapToTimestamp(timestamp);
+      addMarkerToTimestamp(timestamp);
 
       // And add the visible class to the container so it opens on mobile.
-      map._container.classList.toggle('visible');
+      map._container.parentElement.classList.toggle('visible');
       map.invalidateSize();
     });
   });
@@ -137,15 +195,19 @@
       case 'post':
         if (window.tqor.start.hasOwnProperty('trip_id')) {
           loadTrip(window.tqor.start.trip_id, function(trip) {
+            // If this trip has a line, zoom the map in
             if (trip.hasOwnProperty('boundaries')) {
               window.map.fitBounds(trip.boundaries, {animate: true, padding: [10, 10]});
+            }
+
+            // If the post was written during this trip, add a marker
+            if (trip.starttime <= window.tqor.start.timestamp && window.tqor.start.timestamp <= trip.endtime) {
+              addMarkerToTimestamp(window.tqor.start.timestamp);
             }
           });
         } else {
           loadAllTrips(tripsToLoad);
         }
-        mapToTimestamp(window.tqor.start.timestamp);
-        // @TODO: On a post-only page, it'd be great to only load the trip it was on?
         break;
       default:
         var currentTimestamp = Date.now() / 1000;
@@ -159,6 +221,51 @@
         });
         // @TODO: Where should we center the map in this case?
     }
+  }
+
+  // @TODO: There's probably a better way to handle this logic, but WordPress
+  // will only output this information panel if we're on a trip that has an
+  // associated category. So this check is asking "are we on a trip with content?"
+  if (document.querySelectorAll('.rnf-geo-map-widget .trip-info').length) {
+    var currentLocation = new XMLHttpRequest();
+    currentLocation.open('GET', tqor.locationApi + '/api/location/latest');
+    currentLocation.setRequestHeader('Content-Type', 'application/json');
+    currentLocation.onload = function () {
+      if (currentLocation.status === 200) {
+        var response = JSON.parse(currentLocation.responseText);
+        if (response.hasOwnProperty('time')) {
+          // Set the current city in the widget:
+          document.getElementById('rnf-location').innerText = response.full_city;
+
+          // Set the current time in the widget:
+          var now = Math.floor(new Date().getTime() / 1000);
+          var then = response.time;
+          var diff = (now - then) / 60 / 60;
+          var output = (diff < 1) ? "less than an hour ago" : (Math.floor(diff) + " hours ago")
+          document.getElementById('rnf-timestamp').innerText = output;
+          window.tqor.currentLocation = response;
+        }
+
+        // Drop a marker on the map:
+        var markerGeoJSON = [
+          {
+            type: "Feature",
+            geometry: {
+              type: "Point",
+              coordinates: [response.lon, response.lat]
+            },
+            properties: {
+              "marker-color": "#FF6633",
+              "marker-size": "small",
+              "marker-symbol": "car"
+            }
+          }
+        ];
+
+        window.tqor.currentLocation.markerLayer = L.mapbox.featureLayer().setGeoJSON(markerGeoJSON).addTo(map);
+      }
+    };
+    currentLocation.send();
   }
 
 

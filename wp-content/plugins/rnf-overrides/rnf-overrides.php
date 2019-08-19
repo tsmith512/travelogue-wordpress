@@ -7,6 +7,16 @@
  */
 
 /**
+ * Implements admin_menu to add the options page to the sidebar menu for admins.
+ * See rnf-geo-settings.php for the output of this page.
+ */
+function rnf_overrides_add_admin_menu() {
+  add_menu_page('RNF Options', 'RNF Options', 'edit_posts', 'rnf-overrides', 'rnf_overrides_admin_page', 'dashicons-location-alt', 78);
+}
+add_action('admin_menu', 'rnf_overrides_add_admin_menu', 5);
+require_once "rnf-overrides-admin.php";
+
+/**
  * Implements shortcode_atts_{$shortcode} filter to do an override on all
  * galleries to have links points to media files instead of attachment pages.
  * Legacy posts from Tumblr all link to attachment pages and that's hundreds of

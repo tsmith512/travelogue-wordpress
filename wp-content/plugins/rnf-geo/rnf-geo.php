@@ -14,8 +14,8 @@ add_action( 'widgets_init', function() { register_widget( 'RNF_Geo_Map_Widget' )
  * See rnf-geo-settings.php for the output of this page.
  */
 function rnf_geo_add_admin_menu() {
-  add_menu_page('RNF Geo', 'RNF Geo', 'manage_options', 'rnf-geo', 'rnf_geo_admin_page', 'dashicons-location-alt', 78);
-  add_submenu_page('rnf-geo', 'RNF Geo Settings', 'Settings', 'manage_options', 'rnf-geo-settings', 'rnf_geo_options_page');
+  add_submenu_page('rnf-overrides', 'Trip List', 'Trip List', 'manage_options', 'rnf-geo', 'rnf_geo_admin_page');
+  add_submenu_page('rnf-overrides', 'Geo Settings', 'Geo Settings', 'manage_options', 'rnf-geo-settings', 'rnf_geo_options_page');
 }
 add_action('admin_menu', 'rnf_geo_add_admin_menu');
 require_once "rnf-geo-admin.php";
@@ -35,6 +35,7 @@ function rnf_geo_register_assets() {
 
   // Figure out where we are so we can tell the map where to start
   $object = get_queried_object();
+  $current = rnf_geo_current_trip();
   $start = array();
   if ($object instanceof WP_Post) {
     // A single post was called, let's start the map on the post's location
@@ -62,6 +63,18 @@ function rnf_geo_register_assets() {
         'trip_id' => $trip_id,
       );
     }
+  } else if (!empty($current->wp_category)) {
+    // There's no queried object, but we're currently traveling and the trip has
+    // a corresponding category, so show that.
+    $start = array(
+      'type' => 'trip',
+      'trip_id' => $current->id, // Note: this is the trip ID, not the term ID
+    );
+
+    // @TODO: This does mean that when the general blog is loaded during a trip,
+    // the map will only show the route line for the current trip... Should it
+    // show others in the past?
+
   } else {
     // There is no queried object. The main use-case for this is the default
     // blog view.
@@ -169,6 +182,14 @@ function rnf_geo_ajax_create_trip_category() {
 add_action( 'wp_ajax_tqor_create_term', 'rnf_geo_ajax_create_trip_category' );
 
 /**
+ * Dump the trip cache.
+ */
+function rnf_geo_ajax_clear_trip_cache() {
+  delete_transient('rnf_geo_trips_cache');
+}
+add_action( 'wp_ajax_tqor_clear_trip_cache', 'rnf_geo_ajax_clear_trip_cache' );
+
+/**
  * Display a Location Tracker Trip ID on the taxonomy term management page if
  * there is one.
  */
@@ -220,3 +241,23 @@ function rnf_geo_is_post_during_trip(&$post) {
   }
 }
 add_action('the_post', 'rnf_geo_is_post_during_trip');
+
+/**
+ * Determine which, if any, trip we may currently be on. Will return false if
+ * current time is not in a trip range, otherwise will return current trip
+ * object and, if created, the corresponding post category object.
+ */
+function rnf_geo_current_trip() {
+  $trips =  rnf_geo_get_trips();
+  $current_trip = false;
+  foreach ($trips as $trip) {
+    if ($trip->starttime < time() && time() < $trip->endtime) {
+      // @TODO: Though there's no business logic case for two trips to overlap,
+      // this would only return the lowest index trip in the case that multiple
+      // are active...
+      $current_trip = $trip;
+      break;
+    }
+  }
+  return $current_trip;
+}

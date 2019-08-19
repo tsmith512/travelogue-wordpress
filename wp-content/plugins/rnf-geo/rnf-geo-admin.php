@@ -2,10 +2,10 @@
 
 function rnf_geo_admin_page() {
   $trips = rnf_geo_get_trips();
-
+  $current = rnf_geo_current_trip();
   ?>
   <div class="wrap">
-    <h1>Trips in Location Tracker</h1>
+    <h1>Trips in Location Tracker <a id="rnf-cache-clear" class="page-title-action">Clear Trips Cache</a></h1>
     <?php /* @TODO: Let's do this the right way... */ ?>
     <table id="tqor-trips-list" class="wp-list-table widefat fixed striped posts">
       <thead>
@@ -20,7 +20,8 @@ function rnf_geo_admin_page() {
       </thead>
       <tbody>
         <?php foreach ($trips as $index => $trip): ?>
-          <tr>
+          <?php /* This is a terrible way to mark a row, do it better. */ ?>
+          <tr <?php if (isset($current->id) && $trip->id == $current->id) { echo "style='font-weight: bold; background-color: #ccffcc;'"; } ?>>
             <td><?php print $trip->id; ?></td>
             <td><?php print $trip->machine_name; ?></td>
             <td><?php print $trip->label; ?></td>
@@ -50,6 +51,15 @@ function rnf_geo_admin_page() {
         var data = {
           'action': 'tqor_create_term',
           'trip_id': $(this).attr('data-trip-id')
+        };
+        jQuery.post(ajaxurl, data, function(response) {
+          // @TODO: This could be something that isn't a page refresh...
+          window.location.reload(true);
+        });
+      });
+      $('#rnf-cache-clear').on('click', function(){
+        var data = {
+          'action': 'tqor_clear_trip_cache'
         };
         jQuery.post(ajaxurl, data, function(response) {
           // @TODO: This could be something that isn't a page refresh...

@@ -32,9 +32,55 @@ class RNF_Geo_Map_Widget extends WP_Widget {
     wp_enqueue_style('rnf-geo-style');
     wp_enqueue_script('rnf-geo-js');
 
-    ?>
+    $object = get_queried_object();
+    $current = rnf_geo_current_trip();
 
-      <div id="map"></div>
+    // This widget includes some PHP and JS stuff to show info about the current
+    // trip, if we're on one. There's some logic to this. Default to no.
+    $show_current_trip_info = false;
+
+    // Are we on a trip?
+    if (!empty($current->wp_category)) {
+
+      // Is the current page request for a trip/category archive?
+      if ($object instanceof WP_Term) {
+
+        // Yes, so we should only show the box if it is the archive for the current trip.
+        if (!empty($object->term_id) && $object->term_id == $current->wp_category->term_id) {
+          $show_current_trip_info = true;
+        }
+      }
+
+      // Is the current page request for a post?
+      elseif ($object instanceof WP_Post) {
+        // Yes. This one's harder... get category IDs for the post:
+        $categories = array_map(function ($term) { return $term->term_id; }, get_the_category($object->ID));
+
+        // And if one of them is the current trip, show the box:
+        if (in_array($current->wp_category->term_id, $categories)) {
+          $show_current_trip_info = true;
+        }
+      }
+
+      // No, we don't know what was queried (most likely this is the home page /
+      // blog view). But we're on a trip, so show the thing.
+      else {
+        $show_current_trip_info = true;
+      }
+    }
+    ?>
+      <div class="rnf-geo-map-widget">
+        <div id="map"></div>
+        <?php if ($show_current_trip_info): ?>
+          <div class="trip-info">
+            <span class="rnf-geo-widget-icon rnf-geo-widget-icon-marker">Current Location:</span>
+            <em><span id="rnf-location"></span> &bull; <span id="rnf-timestamp"></span></em>
+            <hr />
+            <span class="rnf-geo-widget-icon rnf-geo-widget-icon-trip">Trip:</span>
+            <a href="<?php echo get_term_link($current->wp_category); ?>"><?php echo $current->wp_category->name; ?></a>
+          </div>
+        <?php endif; ?>
+      </div>
 
     <?php
   }

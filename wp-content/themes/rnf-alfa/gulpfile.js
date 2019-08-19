@@ -76,7 +76,7 @@ gulp.task('header-images-sizes', () => {
     .pipe(resize({width: 760, height: 760, crop: false, upscale: false, quality: 1}))
     .pipe(imagemin([imagemin.jpegtran({progressive: true})]))
     .pipe(gulp.dest('dist/img/headers/narrow/'))
-    .pipe(resize({width: 520, height: 520, crop: false, upscale: false, quality: 1}))
+    .pipe(resize({width: 600, height: 600, crop: false, upscale: false, quality: 1}))
     .pipe(imagemin([imagemin.jpegtran({progressive: true})]))
     .pipe(gulp.dest('dist/img/headers/tiny/'));
 });
