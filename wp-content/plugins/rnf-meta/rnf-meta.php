@@ -16,7 +16,6 @@ function rnf_meta_add_header_tags() {
     'image' => NULL,
     'description' => NULL, // @TODO: Facebook requires this but it'll be empty for the time being
     'site' => get_bloginfo('title'),
-    'trip' => FALSE,
     'url' => is_singular() ? get_permalink() :
       ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://')
       . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'],
@@ -25,12 +24,12 @@ function rnf_meta_add_header_tags() {
 
   // Some stuff is different depending on what it is
   if ($object instanceof WP_Post) {
-    $info['title'] = $object->post_title;
+    $info['title'] = $object->post_title ?: "Untitled";
 
     // We have a post, is it on a trip?
     $trip_terms = wp_get_post_categories($object->ID, array('meta_key' => 'rnf_geo_trip_id', 'fields' => 'all'));
     if (!empty($trip_terms)) {
-      $info['trip'] = $trip_terms[0]->name;
+      $info['title'] .= " ({$trip_terms[0]->name})";
     }
 
     $imgreg = '/<img .*src=["\']([^ "^\']*)["\']/';
@@ -42,17 +41,8 @@ function rnf_meta_add_header_tags() {
     }
 
   } elseif ($object instanceof WP_Term) {
-    // It's a taxonomy term. Check to see if a trip id is associated.
-    $trip_id = get_term_meta($object->term_id, 'rnf_geo_trip_id', true);
-
     // Use the term title as the page title
     $info['title'] = $object->name;
-
-    if (is_numeric($trip_id) && (int) $trip_id > 0) {
-      // And if it is also a trip, let's copy that value. This would distinguish
-      // between a trip archive and Uncategorized or Technical Notes...
-      $info['trip'] = $object->name;
-    }
   } else {
     // There is no queried object. The main use-case for this is the default
     // blog view.
@@ -71,17 +61,15 @@ function rnf_meta_add_header_tags() {
   // If we haven't identified a title to share, just bail.
   if (!$info['title']) { return; }
 
-  $title = $info['title'] . (($info['trip']) ? ", {$info['trip']}" : NULL);
-
   $meta = array();
   $meta[] = "<meta property='og:locale' content='en_US' />";
-  $meta[] = "<meta property='og:title' content='{$title}' />";
+  $meta[] = "<meta property='og:title' content='{$info['title']}' />";
   $meta[] = "<meta property='og:site_name' content='{$info['site']}' />";
   $meta[] = "<meta property='og:descrpition' content='{$info['description']}' />";
   $meta[] = "<meta property='og:url' content='{$info['url']}' />";
   $meta[] = "<meta property='og:type' content='{$info['type']}' />";
   $meta[] = "<meta property='og:image' content='{$info['image']}' />";
-  $meta[] = "<meta name='twitter:title' content='{$title}' />";
+  $meta[] = "<meta name='twitter:title' content='{$info['title']}' />";
   $meta[] = "<meta name='twitter:url' content='{$info['url']}' />";
   $meta[] = ($info['image']) ? "<meta name='twitter:image' content='{$info['image']}' />" : "";
   $meta[] = "<meta name='twitter:card' content='summary_large_image' />";
