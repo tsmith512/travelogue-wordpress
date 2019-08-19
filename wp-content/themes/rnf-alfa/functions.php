@@ -182,3 +182,15 @@ function twentyseventeen_time_link() {
 
   return $time_header;
 }
+
+/**
+ * Overrides twentyseventeen's default post edit link because it took a bunch of
+ * CSS to make a space in front of it when it could just be a space.
+ */
+function twentyseventeen_edit_link() {
+  edit_post_link(
+    "Edit",
+    ' / ',
+    ''
+  );
+}

@@ -1403,20 +1403,6 @@ body:not(.twentyseventeen-front-page) .entry-header {
   padding-top: 0;
 }
 
-.blog .entry-meta a.post-edit-link,
-.archive .entry-meta a.post-edit-link,
-.search .entry-meta a.post-edit-link {
-  color: #222;
-  display: inline-block;
-  margin-left: 1em;
-  white-space: nowrap;
-}
-
-.search .page .entry-meta a.post-edit-link {
-  margin-left: 0;
-  white-space: nowrap;
-}
-
 .taxonomy-description {
   color: #666;
   font-size: 13px;
