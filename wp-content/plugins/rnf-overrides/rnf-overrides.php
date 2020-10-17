@@ -30,15 +30,15 @@ function rnf_gallery_overrides($out, $pairs, $atts, $shortcode) {
 add_filter('shortcode_atts_gallery', 'rnf_gallery_overrides', 10, 4);
 
 /**
- * Implements pre_get_posts on category pages only for categories that have a
- * trip ID saved (i.e. someone is reading a full trip) so we can flip the order
+ * Implements pre_get_posts on category pages to flip the chrono order so
+ * they can be read oldest-to-newest. Exclude tech-notes from that because
+ * it's the only real blog category that newest-first is best.
  */
 function rnf_trip_archives_in_chorno(&$query) {
   if ($query->is_category) {
     $term = get_queried_object();
-    $trip_id = get_term_meta($term->term_id, 'rnf_geo_trip_id', true);
 
-    if (is_numeric($trip_id) && (int) $trip_id > 0) {
+    if ($term->slug != 'tech-notes') {
       $query->set( 'order', 'ASC' );
     }
   }

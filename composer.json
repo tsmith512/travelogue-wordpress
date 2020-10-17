@@ -54,15 +54,15 @@
     "vendor-dir": "wp-content/vendor"
   },
   "require": {
-    "johnpbloch/wordpress": "=5.2.2"
+    "johnpbloch/wordpress": "=5.5.1"
   },
   "require-dev": {
     "wpackagist-theme/twentyseventeen":"~2.0",
     "wpackagist-plugin/tumblr-importer":"0.8",
-    "wpackagist-plugin/wp-cfm": "1.5",
-    "wpackagist-plugin/autoptimize":"2.4.4",
-    "wpackagist-plugin/rocket-lazy-load":"2.1.3",
-    "wpackagist-plugin/postie":"1.9.38",
+    "wpackagist-plugin/wp-cfm": "1.6",
+    "wpackagist-plugin/autoptimize":"2.7.8",
+    "wpackagist-plugin/rocket-lazy-load":"2.3.4",
+    "wpackagist-plugin/postie":"1.9.53",
     "fancyapps/fancybox":"3.5.x",
     "filamentgroup/loadcss":"2.x.x",
     "mapbox/mapbox.js-bower":"3.1.x"
