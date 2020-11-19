@@ -216,5 +216,14 @@ function rnf_overrides_admin_bar_styles() {
 add_action('admin_enqueue_scripts', 'rnf_overrides_admin_bar_styles');
 add_action('wp_enqueue_scripts', 'rnf_overrides_admin_bar_styles');
 
+/**
+ * Filter the authentication cookie expriation time to extend login
+ * validity for a year.
+ */
+function rnf_overrides_login_session_duration($expire) {
+  return YEAR_IN_SECONDS;
+}
+add_filter('auth_cookie_expiration', 'rnf_overrides_login_session_duration');
+
 // Include external files
 include_once "rnf-overrides-drop-wpemoji.php";
