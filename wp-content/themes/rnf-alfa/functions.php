@@ -1,12 +1,21 @@
 <?php
 /**
  * Implements init to drop twentyseventeen's social icons SVGs include in the
- * footer.
+ * footer and include my own with just what I'm using.
  */
-function rnf_theme_dequeue_icons() {
-  remove_action( 'wp_footer', 'twentyseventeen_include_svg_icons', 9999 );
+function rnf_theme_swap_icons() {
+  remove_action( 'wp_footer', 'twentyseventeen_include_svg_icons', 9999);
+  add_action('wp_footer', 'rnf_include_svg_icons', 9999);
 }
-add_action('init', 'rnf_theme_dequeue_icons', 100);
+add_action('init', 'rnf_theme_swap_icons', 100);
+
+function rnf_include_svg_icons() {
+  $svg_icons = get_stylesheet_directory() . '/assets/images/svg-icons.svg';
+
+  if ( file_exists($svg_icons) ) {
+    require_once($svg_icons);
+  }
+}
 
 /**
  * Implements wp_enqueue_scripts to register scripts/styles for my overrides.
