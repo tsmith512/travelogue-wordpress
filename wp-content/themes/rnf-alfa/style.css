@@ -1236,8 +1236,7 @@ body:not(.title-tagline-hidden) .site-branding-text {
 }
 
 .page .panel-content .entry-title,
-.page-title,
-body.page:not(.twentyseventeen-front-page) .entry-title {
+.page-title {
   color: #999;
   font-size: 40px;
   font-size: 2.5rem;
@@ -1611,9 +1610,17 @@ body:not(.twentyseventeen-front-page) .entry-header {
   padding-bottom: 2em;
 }
 
-.page .entry-header .edit-link {
+.page .entry-header .edit-link,
+.page .entry-header .post-edit-link {
   font-size: 14px;
   font-size: 0.875rem;
+  display: block;
+  font-size: 11px;
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.1818em;
+  position: relative;
+  text-transform: uppercase;
 }
 
 .search .page .entry-header .edit-link {
@@ -2979,10 +2986,14 @@ p > object:only-child {
     padding: 5.5em 0 0;
   }
 
-  .single-post .entry-title,
-  .page .entry-title {
+  .single-post .entry-title {
     font-size: 26px;
     font-size: 1.625rem;
+  }
+
+  .page .entry-title {
+    font-size: 36px;
+    font-size: 2.25rem;
   }
 
   .comments-pagination,
