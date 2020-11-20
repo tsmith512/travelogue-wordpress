@@ -772,8 +772,8 @@ a:hover .nav-title,
 
 .navigation-top {
   background: #fff;
-  border-bottom: 1px solid #eee;
-  border-top: 1px solid #eee;
+  border-bottom: 1px solid #fff; /* If you set no border, there's a bleed problem from another element */
+  border-top: 1px solid #ddd;
   font-size: 16px;
   font-size: 1rem;
   position: relative;
@@ -785,15 +785,15 @@ a:hover .nav-title,
 }
 
 .navigation-top a {
-  color: #222;
-  font-weight: 600;
+  color: #888;
   -webkit-transition: color 0.2s;
   transition: color 0.2s;
 }
 
 .navigation-top .current-menu-item > a,
 .navigation-top .current_page_item > a {
-  color: #767676;
+  font-weight: 600;
+  color: #222;
 }
 
 .main-navigation {
@@ -802,7 +802,6 @@ a:hover .nav-title,
 }
 
 .main-navigation ul {
-  background: #fff;
   list-style: none;
   margin: 0;
   padding: 0 1.5em;
@@ -861,7 +860,7 @@ a:hover .nav-title,
 }
 
 .main-navigation a:hover {
-  color: #767676;
+  color: #000;
 }
 
 /* Menu toggle */
@@ -2666,14 +2665,9 @@ p > object:only-child {
   /* Navigation */
 
   .navigation-top {
-    bottom: 0;
+    background-color: #f6f6f6;
     font-size: 14px;
     font-size: 0.875rem;
-    left: 0;
-    position: absolute;
-    right: 0;
-    width: 100%;
-    z-index: 3;
   }
 
   .navigation-top .wrap {
