@@ -196,10 +196,51 @@ function twentyseventeen_time_link() {
  * Overrides twentyseventeen's default post edit link because it took a bunch of
  * CSS to make a space in front of it when it could just be a space.
  */
-function twentyseventeen_edit_link() {
+function twentyseventeen_edit_link($separator = TRUE) {
   edit_post_link(
     "Edit",
-    ' / ',
+    ($separator ? ' / ' : ''),
     ''
   );
+}
+
+/**
+ * Prints HTML with meta information for the categories, tags and comments.
+ */
+function twentyseventeen_entry_footer() {
+  /* translators: Used between list items, there is a space after the comma. */
+  $separate_meta = __( ', ', 'twentyseventeen' );
+
+  // Get Categories for posts.
+  $categories_list = get_the_category_list( $separate_meta );
+
+  // Get Tags for posts.
+  $tags_list = get_the_tag_list( '', $separate_meta );
+
+  // We don't want to output .entry-footer if it will be empty, so make sure its not.
+  if ( ( ( twentyseventeen_categorized_blog() && $categories_list ) || $tags_list ) || get_edit_post_link() ) {
+
+    echo '<footer class="entry-footer">';
+
+    if ( 'post' === get_post_type() ) {
+      if ( ( $categories_list && twentyseventeen_categorized_blog() ) || $tags_list ) {
+        echo '<span class="cat-tags-links">';
+
+        // Make sure there's more than one category before displaying.
+        if ( $categories_list && twentyseventeen_categorized_blog() ) {
+          echo '<span class="cat-links"><span class="screen-reader-text">' . __( 'Categories', 'twentyseventeen' ) . '</span>' . $categories_list . '</span>';
+        }
+
+        if ( $tags_list && ! is_wp_error( $tags_list ) ) {
+          echo '<span class="tags-links"><span class="screen-reader-text">' . __( 'Tags', 'twentyseventeen' ) . '</span>' . $tags_list . '</span>';
+        }
+
+        echo '</span>';
+      }
+    }
+
+    twentyseventeen_edit_link(FALSE);
+
+    echo '</footer> <!-- .entry-footer -->';
+  }
 }

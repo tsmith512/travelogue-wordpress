@@ -1470,6 +1470,7 @@ body:not(.twentyseventeen-front-page) .entry-header {
   padding: 2em 0;
 }
 
+.entry-footer .post-edit-link,
 .entry-footer .cat-links,
 .entry-footer .tags-links {
   display: block;
@@ -1477,7 +1478,6 @@ body:not(.twentyseventeen-front-page) .entry-header {
   font-size: 0.6875rem;
   font-weight: 800;
   letter-spacing: 0.1818em;
-  /* padding-left: 2.5em; @TODO: Space was used by the icons which I have removed */
   position: relative;
   text-transform: uppercase;
 }
@@ -1486,6 +1486,7 @@ body:not(.twentyseventeen-front-page) .entry-header {
   margin-top: 1em;
 }
 
+.entry-footer .post-edit-link
 .entry-footer .cat-links a,
 .entry-footer .tags-links a {
   color: #333;
