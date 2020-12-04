@@ -2258,6 +2258,18 @@ p > object:only-child {
   width: 1em;
 }
 
+/* Overrides for Cover Images on pages from the default block styles */
+.wp-block-cover-image .wp-block-cover__inner-container p,
+.wp-block-cover .wp-block-cover__inner-container p {
+  margin-bottom: 0;
+  font-family: "Ringside Condensed SSm A", "Ringside Condensed SSm B", "Helvetica Neue", helvetica, arial, sans-serif;
+  font-style: italic;
+  font-weight: 800;
+  text-transform: uppercase;
+  text-shadow: 1px 1px 0 black;
+  line-height: 1.125;
+}
+
 /*--------------------------------------------------------------
 16.1 Galleries
 --------------------------------------------------------------*/
