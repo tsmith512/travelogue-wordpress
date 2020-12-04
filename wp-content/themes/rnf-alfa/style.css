@@ -2686,7 +2686,7 @@ p > object:only-child {
   .navigation-top .wrap {
     max-width: 1000px;
     /* The font size is 14px here and we need 50px padding in ems */
-    padding: 0.75em 3.4166666666667em;
+    padding: 0 3.4166666666667em;
   }
 
   .navigation-top nav {
@@ -3282,7 +3282,7 @@ p > object:only-child {
 
   /* Navigation */
   .navigation-top .wrap {
-    padding: 0.75em 2em;
+    padding: 0 2em;
   }
 
   .navigation-top nav {
