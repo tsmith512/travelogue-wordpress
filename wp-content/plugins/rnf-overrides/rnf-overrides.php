@@ -85,6 +85,10 @@ function rnf_overrides_oembed_handler($matches, $attr, $url, $rawattr) {
 
     $old_libxml_error = libxml_use_internal_errors(true);
 
+    if ($response['response']['code'] !== 200) {
+      throw new Exception('Content unavailable');
+    }
+
     $doc = new DOMDocument();
     $doc->loadHTML($response['body']);
 
@@ -94,13 +98,28 @@ function rnf_overrides_oembed_handler($matches, $attr, $url, $rawattr) {
     // Handle general failure of "can't get and parse the content of that page"
     // by returning the URL as a link. We'll add an optional filter in case I
     // want to dress that up later.
-    $output = "<a href='{url}'>{$url}</a>";
+    $render = array();
+
+    $render[] = "<div class='rnf-card'>";
+
+    $render[] = "<p class='rnf-card-text'>";
+    $render[] = "<a href='{$url}' class='rnf-card-link'>{$url}</a>";
+
+    $render[] = "<span class='rnf-card-citation'>";
+    $render[] = "Content Unavailable";
+    $render[] = "</span>";
+    $render[] = "</p>";
+
+    $render[] = "</div>";
+
+    $output = implode(' ', $render);
+
 
     // In case this was a resolvable condition (timeout, remote content being
     // edited), cache this failure to keep the site moving in the short-term,
     // but only for an hour so it can hopefully resolve itself.
     set_transient($cache_name, $output, HOUR_IN_SECONDS);
-    return apply_filters('embed_rnf_failed', $value, $matches, $attr, $url, $rawattr);
+    return apply_filters('embed_rnf_failed', $output, $matches, $attr, $url, $rawattr);
   }
 
   $title_tags = $doc->getElementsByTagName('title');
