@@ -170,9 +170,9 @@ function twentyseventeen_time_link() {
   // Put together the date permalink:
   $time_string = sprintf( $time_string,
     get_the_date( DATE_W3C ),
-    get_the_date(),
+    get_the_date('d M Y'),
     get_the_modified_date( DATE_W3C ),
-    get_the_modified_date()
+    get_the_modified_date('d M Y')
   );
 
   // Wrap the time string in a link, and preface it with 'Posted on'.
