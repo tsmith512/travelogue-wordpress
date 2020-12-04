@@ -1,12 +1,21 @@
 <?php
 /**
  * Implements init to drop twentyseventeen's social icons SVGs include in the
- * footer.
+ * footer and include my own with just what I'm using.
  */
-function rnf_theme_dequeue_icons() {
-  remove_action( 'wp_footer', 'twentyseventeen_include_svg_icons', 9999 );
+function rnf_theme_swap_icons() {
+  remove_action( 'wp_footer', 'twentyseventeen_include_svg_icons', 9999);
+  add_action('wp_footer', 'rnf_include_svg_icons', 9999);
 }
-add_action('init', 'rnf_theme_dequeue_icons', 100);
+add_action('init', 'rnf_theme_swap_icons', 100);
+
+function rnf_include_svg_icons() {
+  $svg_icons = get_stylesheet_directory() . '/assets/images/svg-icons.svg';
+
+  if ( file_exists($svg_icons) ) {
+    require_once($svg_icons);
+  }
+}
 
 /**
  * Implements wp_enqueue_scripts to register scripts/styles for my overrides.
@@ -161,9 +170,9 @@ function twentyseventeen_time_link() {
   // Put together the date permalink:
   $time_string = sprintf( $time_string,
     get_the_date( DATE_W3C ),
-    get_the_date(),
+    get_the_date('d M Y'),
     get_the_modified_date( DATE_W3C ),
-    get_the_modified_date()
+    get_the_modified_date('d M Y')
   );
 
   // Wrap the time string in a link, and preface it with 'Posted on'.
@@ -177,7 +186,9 @@ function twentyseventeen_time_link() {
     // Wrap the time string in a link, and preface it with 'Posted on'.
     $timestamp = get_post_time('U', true);
 
-    $time_header .= " / <a href='#' class='tqor-map-jump' data-timestamp='{$timestamp}'>Map</a>";
+    $map_link_text = (!empty($post->rnf_geo_city)) ? $post->rnf_geo_city : "Map";
+
+    $time_header .= " / <a href='#' class='tqor-map-jump' data-timestamp='{$timestamp}'>{$map_link_text}</a>";
   }
 
   return $time_header;
@@ -187,10 +198,51 @@ function twentyseventeen_time_link() {
  * Overrides twentyseventeen's default post edit link because it took a bunch of
  * CSS to make a space in front of it when it could just be a space.
  */
-function twentyseventeen_edit_link() {
+function twentyseventeen_edit_link($separator = TRUE) {
   edit_post_link(
     "Edit",
-    ' / ',
+    ($separator ? ' / ' : ''),
     ''
   );
+}
+
+/**
+ * Prints HTML with meta information for the categories, tags and comments.
+ */
+function twentyseventeen_entry_footer() {
+  /* translators: Used between list items, there is a space after the comma. */
+  $separate_meta = __( ', ', 'twentyseventeen' );
+
+  // Get Categories for posts.
+  $categories_list = get_the_category_list( $separate_meta );
+
+  // Get Tags for posts.
+  $tags_list = get_the_tag_list( '', $separate_meta );
+
+  // We don't want to output .entry-footer if it will be empty, so make sure its not.
+  if ( ( ( twentyseventeen_categorized_blog() && $categories_list ) || $tags_list ) || get_edit_post_link() ) {
+
+    echo '<footer class="entry-footer">';
+
+    if ( 'post' === get_post_type() ) {
+      if ( ( $categories_list && twentyseventeen_categorized_blog() ) || $tags_list ) {
+        echo '<span class="cat-tags-links">';
+
+        // Make sure there's more than one category before displaying.
+        if ( $categories_list && twentyseventeen_categorized_blog() ) {
+          echo '<span class="cat-links"><span class="screen-reader-text">' . __( 'Categories', 'twentyseventeen' ) . '</span>' . $categories_list . '</span>';
+        }
+
+        if ( $tags_list && ! is_wp_error( $tags_list ) ) {
+          echo '<span class="tags-links"><span class="screen-reader-text">' . __( 'Tags', 'twentyseventeen' ) . '</span>' . $tags_list . '</span>';
+        }
+
+        echo '</span>';
+      }
+    }
+
+    twentyseventeen_edit_link(FALSE);
+
+    echo '</footer> <!-- .entry-footer -->';
+  }
 }

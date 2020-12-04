@@ -231,6 +231,10 @@ function rnf_geo_is_post_during_trip(&$post) {
 
       // So is this post actually dated _during_ the trip it is about?
       $post->rnf_geo_post_is_on_trip = ($trip_details->starttime <= $timestamp && $timestamp <= $trip_details->endtime);
+
+      if ($post->rnf_geo_post_is_on_trip) {
+        rnf_geo_attach_city($post);
+      }
     } else {
       // There was a category attached to this post with an rnf_geo_trip_id
       // value, but we didn't get a value... that's really weird.
@@ -241,6 +245,40 @@ function rnf_geo_is_post_during_trip(&$post) {
   }
 }
 add_action('the_post', 'rnf_geo_is_post_during_trip');
+
+/**
+ * Given a post that is on a trip, query the API to get what city it was
+ * written in and add that to the post object.
+ */
+function rnf_geo_attach_city(&$post) {
+  // Store these by timestamp so that they can be reused across
+  // posts at the same time (rare...) and also are automatically
+  // invalidated if a post's date changes.
+  $timestamp = get_post_time('U', true);
+  $transient = get_transient('rnf_geo_city_for_' . $timestamp);
+
+  if (empty($transient)) {
+    $options = get_option('rnf_geo_settings');
+    $endpoint = $options['location_tracker_endpoint'] . "/api/location/history/timestamp/{$timestamp}";
+    $result = wp_remote_get($endpoint);
+
+    if ($result['response']['code'] == 200) {
+      $location = json_decode($result['body']);
+
+      // Location stamps are 30 minutes apart. If the response we get was within an hour
+      // of the post type, we can assume that the location service has recent data. If
+      // the difference is more than 2 hours, the location tracker may be behind. Don't
+      // save for very long so we can refresh later.
+      $ttl = (abs($timestamp - $location->time) < 2 * HOUR_IN_SECONDS) ? YEAR_IN_SECONDS : HOUR_IN_SECONDS;
+      set_transient('rnf_geo_city_for_' . $timestamp, $location, $ttl);
+    }
+  } else {
+    $location = $transient;
+  }
+
+  // Check that there's a city name instead of "NM, US", but use the full text.
+  $post->rnf_geo_city = (!empty($location->city)) ? $location->full_city : false;
+}
 
 /**
  * Determine which, if any, trip we may currently be on. Will return false if

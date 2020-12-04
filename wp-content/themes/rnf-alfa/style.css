@@ -772,8 +772,8 @@ a:hover .nav-title,
 
 .navigation-top {
   background: #fff;
-  border-bottom: 1px solid #eee;
-  border-top: 1px solid #eee;
+  border-bottom: 1px solid #fff; /* If you set no border, there's a bleed problem from another element */
+  border-top: 1px solid #ddd;
   font-size: 16px;
   font-size: 1rem;
   position: relative;
@@ -785,15 +785,16 @@ a:hover .nav-title,
 }
 
 .navigation-top a {
-  color: #222;
-  font-weight: 600;
+  color: #888;
   -webkit-transition: color 0.2s;
   transition: color 0.2s;
+  font-style: italic;
 }
 
 .navigation-top .current-menu-item > a,
 .navigation-top .current_page_item > a {
-  color: #767676;
+  font-weight: 600;
+  color: #222;
 }
 
 .main-navigation {
@@ -802,7 +803,6 @@ a:hover .nav-title,
 }
 
 .main-navigation ul {
-  background: #fff;
   list-style: none;
   margin: 0;
   padding: 0 1.5em;
@@ -861,7 +861,7 @@ a:hover .nav-title,
 }
 
 .main-navigation a:hover {
-  color: #767676;
+  color: #000;
 }
 
 /* Menu toggle */
@@ -877,7 +877,7 @@ a:hover .nav-title,
   font-size: 0.875rem;
   font-weight: 800;
   line-height: 1.5;
-  margin: 1px auto 2px;
+  margin: 0 0 0 auto;
   padding: 1em;
   text-shadow: none;
 }
@@ -911,6 +911,10 @@ a:hover .nav-title,
 .toggled-on .menu-toggle .icon-bars,
 .menu-toggle .icon-close {
   display: none;
+}
+
+.toggled-on {
+  background: #eee;
 }
 
 .toggled-on .menu-toggle .icon-close {
@@ -1232,8 +1236,7 @@ body:not(.title-tagline-hidden) .site-branding-text {
 }
 
 .page .panel-content .entry-title,
-.page-title,
-body.page:not(.twentyseventeen-front-page) .entry-title {
+.page-title {
   color: #999;
   font-size: 40px;
   font-size: 2.5rem;
@@ -1471,6 +1474,7 @@ body:not(.twentyseventeen-front-page) .entry-header {
   padding: 2em 0;
 }
 
+.entry-footer .post-edit-link,
 .entry-footer .cat-links,
 .entry-footer .tags-links {
   display: block;
@@ -1478,7 +1482,6 @@ body:not(.twentyseventeen-front-page) .entry-header {
   font-size: 0.6875rem;
   font-weight: 800;
   letter-spacing: 0.1818em;
-  /* padding-left: 2.5em; @TODO: Space was used by the icons which I have removed */
   position: relative;
   text-transform: uppercase;
 }
@@ -1487,6 +1490,7 @@ body:not(.twentyseventeen-front-page) .entry-header {
   margin-top: 1em;
 }
 
+.entry-footer .post-edit-link
 .entry-footer .cat-links a,
 .entry-footer .tags-links a {
   color: #333;
@@ -1606,9 +1610,17 @@ body:not(.twentyseventeen-front-page) .entry-header {
   padding-bottom: 2em;
 }
 
-.page .entry-header .edit-link {
+.page .entry-header .edit-link,
+.page .entry-header .post-edit-link {
   font-size: 14px;
   font-size: 0.875rem;
+  display: block;
+  font-size: 11px;
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.1818em;
+  position: relative;
+  text-transform: uppercase;
 }
 
 .search .page .entry-header .edit-link {
@@ -2246,6 +2258,18 @@ p > object:only-child {
   width: 1em;
 }
 
+/* Overrides for Cover Images on pages from the default block styles */
+.wp-block-cover-image .wp-block-cover__inner-container p,
+.wp-block-cover .wp-block-cover__inner-container p {
+  margin-bottom: 0;
+  font-family: "Ringside Condensed SSm A", "Ringside Condensed SSm B", "Helvetica Neue", helvetica, arial, sans-serif;
+  font-style: italic;
+  font-weight: 800;
+  text-transform: uppercase;
+  text-shadow: 1px 1px 0 black;
+  line-height: 1.125;
+}
+
 /*--------------------------------------------------------------
 16.1 Galleries
 --------------------------------------------------------------*/
@@ -2666,20 +2690,15 @@ p > object:only-child {
   /* Navigation */
 
   .navigation-top {
-    bottom: 0;
+    background-color: #f6f6f6;
     font-size: 14px;
     font-size: 0.875rem;
-    left: 0;
-    position: absolute;
-    right: 0;
-    width: 100%;
-    z-index: 3;
   }
 
   .navigation-top .wrap {
     max-width: 1000px;
     /* The font size is 14px here and we need 50px padding in ems */
-    padding: 0.75em 3.4166666666667em;
+    padding: 0 3.4166666666667em;
   }
 
   .navigation-top nav {
@@ -2738,7 +2757,16 @@ p > object:only-child {
   }
 
   .main-navigation a {
-    padding: 1em 1.25em;
+    padding: 1em 1.25em 0.75em 1.25em;
+    border-bottom: .25em solid transparent;
+  }
+
+  .main-navigation a:hover {
+    border-bottom-color: #CCC;
+  }
+
+  .main-navigation .current-menu-item > a {
+    border-bottom-color: #222;
   }
 
   .main-navigation ul ul {
@@ -2970,10 +2998,14 @@ p > object:only-child {
     padding: 5.5em 0 0;
   }
 
-  .single-post .entry-title,
-  .page .entry-title {
+  .single-post .entry-title {
     font-size: 26px;
     font-size: 1.625rem;
+  }
+
+  .page .entry-title {
+    font-size: 36px;
+    font-size: 2.25rem;
   }
 
   .comments-pagination,
@@ -3262,7 +3294,7 @@ p > object:only-child {
 
   /* Navigation */
   .navigation-top .wrap {
-    padding: 0.75em 2em;
+    padding: 0 2em;
   }
 
   .navigation-top nav {
