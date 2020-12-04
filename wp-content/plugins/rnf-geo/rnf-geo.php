@@ -251,7 +251,28 @@ add_action('the_post', 'rnf_geo_is_post_during_trip');
  * written in and add that to the post object.
  */
 function rnf_geo_attach_city(&$post) {
-  $post->rnf_geo_city = "TEST";
+  // Store these by timestamp so that they can be reused across
+  // posts at the same time (rare...) and also are automatically
+  // invalidated if a post's date changes.
+  $timestamp = get_post_time('U', true);
+  $transient = get_transient('rnf_geo_city_for_' . $timestamp);
+
+  if (empty($transient)) {
+    $options = get_option('rnf_geo_settings');
+    $endpoint = $options['location_tracker_endpoint'] . "/api/location/history/timestamp/{$timestamp}";
+    $result = wp_remote_get($endpoint);
+
+    if ($result['response']['code'] == 200) {
+      $location = json_decode($result['body']);
+      // @TODO: Expiration time should be short for posts less than a certain age?
+      set_transient( 'rnf_geo_city_for_' . $timestamp, $location, 60 /*DAY_IN_SECONDS*/ );
+    }
+  } else {
+    $location = $transient;
+  }
+
+  // Check that there's a city name instead of "NM, US", but use the full text.
+  $post->rnf_geo_city = (!empty($location->city)) ? $location->full_city : false;
 }
 
 /**

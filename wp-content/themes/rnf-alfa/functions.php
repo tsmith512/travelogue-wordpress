@@ -186,7 +186,7 @@ function twentyseventeen_time_link() {
     // Wrap the time string in a link, and preface it with 'Posted on'.
     $timestamp = get_post_time('U', true);
 
-    $map_link_text = (isset($post->rnf_geo_city)) ? $post->rnf_geo_city : "Map";
+    $map_link_text = (!empty($post->rnf_geo_city)) ? $post->rnf_geo_city : "Map";
 
     $time_header .= " / <a href='#' class='tqor-map-jump' data-timestamp='{$timestamp}'>{$map_link_text}</a>";
   }
