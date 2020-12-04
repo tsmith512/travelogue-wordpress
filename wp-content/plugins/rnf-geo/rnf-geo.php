@@ -264,8 +264,13 @@ function rnf_geo_attach_city(&$post) {
 
     if ($result['response']['code'] == 200) {
       $location = json_decode($result['body']);
-      // @TODO: Expiration time should be short for posts less than a certain age?
-      set_transient( 'rnf_geo_city_for_' . $timestamp, $location, 60 /*DAY_IN_SECONDS*/ );
+
+      // Location stamps are 30 minutes apart. If the response we get was within an hour
+      // of the post type, we can assume that the location service has recent data. If
+      // the difference is more than 2 hours, the location tracker may be behind. Don't
+      // save for very long so we can refresh later.
+      $ttl = (abs($timestamp - $location->time) < 2 * HOUR_IN_SECONDS) ? YEAR_IN_SECONDS : HOUR_IN_SECONDS;
+      set_transient('rnf_geo_city_for_' . $timestamp, $location, $ttl);
     }
   } else {
     $location = $transient;
