@@ -231,6 +231,10 @@ function rnf_geo_is_post_during_trip(&$post) {
 
       // So is this post actually dated _during_ the trip it is about?
       $post->rnf_geo_post_is_on_trip = ($trip_details->starttime <= $timestamp && $timestamp <= $trip_details->endtime);
+
+      if ($post->rnf_geo_post_is_on_trip) {
+        rnf_geo_attach_city($post);
+      }
     } else {
       // There was a category attached to this post with an rnf_geo_trip_id
       // value, but we didn't get a value... that's really weird.
@@ -241,6 +245,14 @@ function rnf_geo_is_post_during_trip(&$post) {
   }
 }
 add_action('the_post', 'rnf_geo_is_post_during_trip');
+
+/**
+ * Given a post that is on a trip, query the API to get what city it was
+ * written in and add that to the post object.
+ */
+function rnf_geo_attach_city(&$post) {
+  $post->rnf_geo_city = "TEST";
+}
 
 /**
  * Determine which, if any, trip we may currently be on. Will return false if
