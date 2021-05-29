@@ -54,7 +54,7 @@
     "vendor-dir": "wp-content/vendor"
   },
   "require": {
-    "johnpbloch/wordpress": "=5.5.3"
+    "johnpbloch/wordpress": "5.7.x"
   },
   "require-dev": {
     "wpackagist-theme/twentyseventeen":"~2.0",
