@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9b3fc57b4aa2dae883fc5106387dce64",
+    "content-hash": "b2f0448ef1f3586660a5e489472423d1",
     "packages": [
         {
             "name": "johnpbloch/wordpress",
@@ -369,15 +369,15 @@
         },
         {
             "name": "wpackagist-plugin/wp-cfm",
-            "version": "1.6",
+            "version": "1.7",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/wp-cfm/",
-                "reference": "tags/1.6"
+                "reference": "tags/1.7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/wp-cfm.1.6.zip"
+                "url": "https://downloads.wordpress.org/plugin/wp-cfm.1.7.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
