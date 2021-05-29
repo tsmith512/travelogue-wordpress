@@ -387,15 +387,15 @@
         },
         {
             "name": "wpackagist-theme/twentyseventeen",
-            "version": "2.4",
+            "version": "2.7",
             "source": {
                 "type": "svn",
                 "url": "https://themes.svn.wordpress.org/twentyseventeen/",
-                "reference": "2.4"
+                "reference": "2.7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/theme/twentyseventeen.2.4.zip"
+                "url": "https://downloads.wordpress.org/theme/twentyseventeen.2.7.zip"
             },
             "require": {
                 "composer/installers": "~1.0"
