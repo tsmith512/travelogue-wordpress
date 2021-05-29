@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5b3db00a7c375104359fb8ab0cdff2a7",
+    "content-hash": "48789ddd3d410c1ce058d4dc382cc4df",
     "packages": [
         {
             "name": "johnpbloch/wordpress",
@@ -353,24 +353,6 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/rocket-lazy-load/"
-        },
-        {
-            "name": "wpackagist-plugin/tumblr-importer",
-            "version": "0.8",
-            "source": {
-                "type": "svn",
-                "url": "https://plugins.svn.wordpress.org/tumblr-importer/",
-                "reference": "tags/0.8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/tumblr-importer.0.8.zip"
-            },
-            "require": {
-                "composer/installers": "~1.0"
-            },
-            "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/tumblr-importer/"
         },
         {
             "name": "wpackagist-plugin/wp-cfm",

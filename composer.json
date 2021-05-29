@@ -58,7 +58,6 @@
   },
   "require-dev": {
     "wpackagist-theme/twentyseventeen":"~2.0",
-    "wpackagist-plugin/tumblr-importer":"0.8",
     "wpackagist-plugin/wp-cfm": "1.7",
     "wpackagist-plugin/autoptimize":"2.7.8",
     "wpackagist-plugin/rocket-lazy-load":"2.3.4",
