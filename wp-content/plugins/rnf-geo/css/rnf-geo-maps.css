@@ -78,7 +78,7 @@
   .rnf-geo-map-widget #map {
     position: absolute;
     top: 0;
-    bottom: 4em;
+    bottom: 0;
     height: auto;
     max-height: none;
   }
@@ -91,10 +91,6 @@
 
   .rnf-geo-map-widget.visible {
     display: block;
-  }
-
-  body.admin-bar #map {
-    top: 46px;
   }
 }
 
