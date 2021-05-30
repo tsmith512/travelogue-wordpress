@@ -2259,6 +2259,11 @@ p > object:only-child {
 }
 
 /* Overrides for Cover Images on pages from the default block styles */
+.wp-block-cover-image,
+.wp-block-cover {
+  margin: 1em 0;
+}
+
 .wp-block-cover-image .wp-block-cover__inner-container p,
 .wp-block-cover .wp-block-cover__inner-container p {
   margin-bottom: 0;
